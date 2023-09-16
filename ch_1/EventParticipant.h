@@ -1,14 +1,19 @@
 #ifndef EVENTPARTICIPANT_H
 #define EVENTPARTICIPANT_H
 
+#include <string>
+
 class EventParticipant {
     public:
-        EventParticipant(const char* name, int age, const char* sex, const char* team);
+        void setName(const std::string& name);
+        void setSex(const std::string& sex);
+        void setTeam(const std::string& team);
+        void setAge(int age);
+        virtual void setResult(int result);
     protected:
-        const char* name;
+        std::string name, sex, team;
         int age;
-        const char* sex;
-        const char* team;
 };
 
+#include "EventParticipant.cpp"
 #endif

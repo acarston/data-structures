@@ -1,9 +1,19 @@
+#pragma once
+
 #include "EventParticipant.h"
 
-EventParticipant::EventParticipant(const char* name, int age, const char* sex, const char* team) {
+void EventParticipant::setName(const std::string& name) {
     this->name = name;
-    this->age = age;
+};
+void EventParticipant::setSex(const std::string& sex) {
     this->sex = sex;
+};
+void EventParticipant::setTeam(const std::string& team) {
     this->team = team;
-}
-
+};
+void EventParticipant::setAge(int age) {
+    this->age = age;
+};
+void EventParticipant::setResult(int result) {
+    return;
+};
