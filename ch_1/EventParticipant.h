@@ -8,11 +8,23 @@ class EventParticipant {
         void setName(const std::string& name);
         void setSex(const std::string& sex);
         void setTeam(const std::string& team);
-        void setAge(int age);
-        virtual void setResult(int result);
+        void setAge(const std::string& age);
+        void setPlace(int place);
+        void setPoints(int points);
+
+        std::string getName();
+        std::string getSex();
+        std::string getTeam();
+        std::string getAge();
+        int getPlace();
+        int getPoints();
+
+        virtual void setResult(std::string result);
+        virtual std::string getResult();
+
     protected:
-        std::string name, sex, team;
-        int age;
+        std::string name, sex, team, age;
+        int place, points;
 };
 
 #include "EventParticipant.cpp"

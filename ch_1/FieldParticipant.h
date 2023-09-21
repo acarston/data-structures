@@ -3,9 +3,13 @@
 
 #include "EventParticipant.h"
 
-class FieldParticipant : public EventParticipant {
+class FieldParticipant: public EventParticipant {
+    public:
+        virtual std::string getResult();
+        virtual void setResult(std::string result);
+        
     private:
-        double distance;
+        std::string distance;
 };
 
 #include "FieldParticipant.cpp"

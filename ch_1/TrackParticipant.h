@@ -4,10 +4,12 @@
 #include "EventParticipant.h"
 
 class TrackParticipant: public EventParticipant {
-    // public:
-    //     TrackParticipant(const char* name, int age, const char* sex, const char* team, const char* time);
+    public:
+        virtual std::string getResult();
+        virtual void setResult(std::string result);
+        
     private:
-        const char* time;
+        std::string time;
 };
 
 #include "TrackParticipant.cpp"

@@ -1,5 +1,4 @@
 #include "FieldParticipant.h"
 
-// FieldParticipant::FieldParticipant(const char* name, int age, const char* sex, const char* team, double distance): EventParticipant::EventParticipant(name, age, sex, team) {
-//     this->distance = distance;
-// }
+void FieldParticipant::setResult(std::string result) { this->distance = result; }
+std::string FieldParticipant::getResult() { return distance; };
