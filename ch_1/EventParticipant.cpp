@@ -16,5 +16,6 @@ std::string EventParticipant::getAge() { return age; };
 int EventParticipant::getPlace() { return place; };
 int EventParticipant::getPoints() { return points; };
 
+/* implemented by children */
 void EventParticipant::setResult(std::string result) { return; };
 std::string EventParticipant::getResult() { return NULL; };
