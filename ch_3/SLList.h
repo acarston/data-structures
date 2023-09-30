@@ -6,18 +6,21 @@
 template <typename T>
 class SLList {
     public:
-        // friend class SLLNode<T>;
-
         SLList();
-        void push_back(T info);
-        void push_forward(T info);
-        void remove(unsigned int index); //TODO
-        void remove(T info); //TODO
+
         void out();
-        SLLNode<T>* iterate(unsigned int index, bool orLast = false);
-        void insert(T info, unsigned int index);
         unsigned int length();
         int find(T item);
+
+        SLLNode<T>* iterate(int index = -1, bool orLast = false);
+
+        void push_back(T info);
+        void push_forward(T info);
+        void removeAt(unsigned int index);
+        void removeFirst(T info);
+        void insert(T info, int index = -1);
+
+        void orderInsert(T info);
     private:
         SLLNode<T> *head, *tail;
 };
