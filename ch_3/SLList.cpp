@@ -48,8 +48,25 @@ void SLList<T>::insert(T info, unsigned int index) {
 
 template <typename T>
 void SLList<T>::remove(T info) {
-    
+    int index = find(info);
+    remove(index);
 };
+
+template <typename T>
+void SLList<T>::remove(unsigned int index) {
+    SLLNode<T>* toRemove = iterate(index);
+    SLLNode<T>* before = iterate(index - 1);
+
+    if (toRemove == nullptr) return;
+    if (before == nullptr) {
+        delete head;
+        head = nullptr;
+        return;
+    }
+
+    before->next = toRemove->next;
+    delete toRemove;
+}
 
 template <typename T>
 void SLList<T>::out() {
