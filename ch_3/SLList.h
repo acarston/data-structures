@@ -3,6 +3,13 @@
 
 #include "SLLNode.h"
 
+/* many of the methods here can technically be private.
+however, this class is a general SLL implementation,
+so it is appropriate for the object to have the 
+following functionality. i'm following the vector
+convention of lower-case methods, but opting for 
+camelCase instead of underscores */
+
 template <typename T>
 class SLList {
     public:
@@ -10,12 +17,12 @@ class SLList {
 
         void out();
         unsigned int length();
-        int find(T item);
+        int findFirst(T item);
 
-        SLLNode<T>* iterate(int index = -1, bool orLast = false);
+        SLLNode<T>* iterate(int index = -1);
 
-        void push_back(T info);
-        void push_forward(T info);
+        void pushBack(T info);
+        void pushForward(T info);
         void removeAt(unsigned int index);
         void removeFirst(T info);
         void insert(T info, int index = -1);
