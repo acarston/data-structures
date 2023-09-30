@@ -29,6 +29,29 @@ void SLList<T>::push_back(T info) {
 };
 
 template <typename T>
+void SLList<T>::push_forward(T info) {
+    if (head == nullptr) {
+        head = new SLLNode<T>(info);
+        return;
+    }
+    SLLNode<T> *newHead = new SLLNode<T>(info, head);
+    head = newHead;
+};
+
+template <typename T>
+void SLList<T>::insert(T info, unsigned int index) {
+    SLLNode<T>* toInsert = new SLLNode<T>(info);
+    SLLNode<T>* node = iterate(index);
+    toInsert->next = node->next;
+    node->next = toInsert;
+};
+
+template <typename T>
+void SLList<T>::remove(T info) {
+    
+};
+
+template <typename T>
 void SLList<T>::out() {
     SLLNode<T> *current = head;
     while (current != nullptr) {
@@ -36,4 +59,30 @@ void SLList<T>::out() {
         current = current->next;
     }
     std::cout << std::endl;
+};
+
+template <typename T>
+SLLNode<T>* SLList<T>::iterate(unsigned int index, bool orLast) {
+    SLLNode<T>* node = head;
+    for (int i = 0; i != index; ++i) {
+        if (node->next == nullptr) return orLast ? node : nullptr; // index out of range gives null or last node
+        node = node->next;
+    }
+    return node;
+};
+
+template <typename T>
+unsigned int SLList<T>::length() {
+    int i = 0;
+    for (SLLNode<T>* node = head; node != nullptr; node = node->next, ++i);
+    return i;
+};
+
+template <typename T>
+int SLList<T>::find(T item) {
+    int i = 0;
+    for (SLLNode<T>* node = head; node != nullptr; node = node->next, ++i) {
+        if (node->info == item) return i;
+    }
+    return -1;
 };
