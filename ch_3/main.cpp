@@ -1,7 +1,7 @@
 #include <iostream>
-#include <tuple>
 
 #include "SLList.h"
+#include "Flight.h"
 
 template <typename T>
 T getInput(const std::string& prompt) {
@@ -37,16 +37,28 @@ void Driver() { //TODO that thing in the assignment
 // void printAll(SLList<std::tuple<int, SLList<std::string>>>& list) {
 //     for (int i = 0; i < list.length(); ++i) {
 //         auto flight = list.iterate(i);
-//         std::cout << std::to_string()
+//         std::cout << std::to_string();
 //     }
 // };
 
-std::tuple<int, SLList<std::string>> UserReservation() {
+Flight& getFlight(SLList<Flight>& list, int id) {
+    for (int i = 0; i < list.length(); ++i) {
+        Flight flight = list.at(i);
+        if (flight.getId() == id) return flight;
+    }
+
+    Flight flight(id);
+    list.pushBack(flight);
+    getFlight(list, id);
+};
+
+void UserReservation(SLList<Flight>& list) {
     int flightNum;
-    SLList<std::string> names; // destroyed when out of scope???
-    auto flight = make_tuple(flightNum, names); 
+    // SLList<std::string> names; // destroyed when out of scope???
+    // auto flight = make_tuple(flightNum, names); 
 
     flightNum = getInput<int>("enter a flight number: ");
+    auto flight = getFlight(list, flightNum);
     while (true) {
         int option = getInput<int>("\n\t=== MENU ===\n1 - insert passenger(s) onto flight "
             + std::to_string(flightNum) + "\n2 - remove passenger from flight " + std::to_string(flightNum) + "\n3 - list passengers on flight "
@@ -58,17 +70,16 @@ std::tuple<int, SLList<std::string>> UserReservation() {
             while (true) {
                 in = getInput<std::string>("enter name (or [0] to exit): ");
                 if (in == "0") break;
-                else names.orderInsert(in);
+                else flight.addPassenger(in);
             }
         }
-        else if (option == 2) names.removeFirst(getInput<std::string>("enter name: "));
-        else if (option == 3 || option == 4) names.out();
-        else return flight;
+        else if (option == 2) flight.removePassenger(getInput<std::string>("enter name: "));
+        else if (option == 3 || option == 4) flight.printPassengers();
+        else return;
     }
-    return flight;
 };
 
-void UserInteract(SLList<std::tuple<int, SLList<std::string>>>& list) {
+void UserInteract(SLList<Flight>& list) {
     while (true) {
         std::string menu = "\t=== MAIN MENU ===\n1 - make or change a reservation\n2 - print all manifests\n3 - driver\n0 - exit\n\n:";
         int option = getInput<int>(menu); 
@@ -76,7 +87,7 @@ void UserInteract(SLList<std::tuple<int, SLList<std::string>>>& list) {
 
         switch (option) {
             case 1:
-                list.insert(UserReservation()); // doesnt check for duplicates!!!!!!!!!!
+                UserReservation(list); // doesnt check for duplicates!!!!!!!!!! should now
                 break;
             case 2:
                 //TODO, commented out
@@ -91,7 +102,7 @@ void UserInteract(SLList<std::tuple<int, SLList<std::string>>>& list) {
 };
 
 int main() {
-    SLList<std::tuple<int, SLList<std::string>>> list;
+    SLList<Flight> list;
     UserInteract(list);
 
     // SLList<int> list;

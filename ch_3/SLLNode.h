@@ -9,6 +9,7 @@ class SLLNode {
         // SLList can access info, next
         template<typename U> 
         friend class SLList;
+        // friend class Flight;
 
         SLLNode(T info, SLLNode* next = nullptr) {
             this->info = info;
@@ -19,5 +20,4 @@ class SLLNode {
         SLLNode* next;
 };
 
-#include "SLLNode.cpp"
 #endif

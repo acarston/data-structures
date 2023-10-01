@@ -20,6 +20,7 @@ class SLList {
         int findFirst(T item);
 
         SLLNode<T>* iterate(int index = -1);
+        T at(int index);
 
         void pushBack(T info);
         void pushForward(T info);
@@ -32,5 +33,4 @@ class SLList {
         SLLNode<T> *head, *tail;
 };
 
-#include "SLList.cpp"
 #endif

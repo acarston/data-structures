@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "SLList.h"
 
 template <typename T>
@@ -52,6 +54,11 @@ SLLNode<T>* SLList<T>::iterate(int index) {
     }
     return node;
 };
+
+template <typename T>
+T SLList<T>::at(int index) {
+    return iterate(index)->info;
+}
 
 
 template <typename T>
@@ -134,7 +141,7 @@ void SLList<T>::orderInsert(T info) {
     }
 
     for (int i = 0; i < length; ++i) {
-        T compareAgainst = iterate(i)->info;
+        T compareAgainst = at(i);
         if (info < compareAgainst) {
             insert(info, i - 1); // insert before compareAgainst
             return;
