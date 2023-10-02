@@ -41,10 +41,10 @@ void Driver() { //TODO that thing in the assignment
 //     }
 // };
 
-Flight& getFlight(SLList<Flight>& list, int id) {
+Flight* getFlight(SLList<Flight>& list, int id) {
     for (int i = 0; i < list.length(); ++i) {
-        Flight flight = list.at(i);
-        if (flight.getId() == id) return flight;
+        Flight* flight = &list.at(i);
+        if (flight->getId() == id) return flight;
     }
 
     Flight flight(id);
@@ -58,7 +58,7 @@ void UserReservation(SLList<Flight>& list) {
     // auto flight = make_tuple(flightNum, names); 
 
     flightNum = getInput<int>("enter a flight number: ");
-    auto flight = getFlight(list, flightNum);
+    Flight* flight = getFlight(list, flightNum);
     while (true) {
         int option = getInput<int>("\n\t=== MENU ===\n1 - insert passenger(s) onto flight "
             + std::to_string(flightNum) + "\n2 - remove passenger from flight " + std::to_string(flightNum) + "\n3 - list passengers on flight "
@@ -70,11 +70,11 @@ void UserReservation(SLList<Flight>& list) {
             while (true) {
                 in = getInput<std::string>("enter name (or [0] to exit): ");
                 if (in == "0") break;
-                else flight.addPassenger(in);
+                else flight->addPassenger(in);
             }
         }
-        else if (option == 2) flight.removePassenger(getInput<std::string>("enter name: "));
-        else if (option == 3 || option == 4) flight.printPassengers();
+        else if (option == 2) flight->removePassenger(getInput<std::string>("enter name: "));
+        else if (option == 3 || option == 4) flight->printPassengers();
         else return;
     }
 };
