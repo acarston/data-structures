@@ -65,77 +65,88 @@ void Driver() { //TODO that thing in the assignment
 //     return -1;
 // };
 
-void getFlightIndex(SLList<Flight>& list, int id, int& index) {
-    for (int i = 0; i < list.length(); ++i) {
-        Flight flight = list.at(i);
-        if (flight.getId() == id) index = i; return;
-    }
+// void getFlightIndex(SLList<Flight>& list, int id, int& index) {
+//     for (int i = 0; i < list.length(); ++i) {
+//         Flight flight = list.at(i);
+//         if (flight.getId() == id) index = i; return;
+//     }
 
-    Flight flight(id);
-    list.pushBack(flight);
-    getFlightIndex(list, id, index);
-};
+//     Flight flight(id);
+//     list.pushBack(flight);
+//     getFlightIndex(list, id, index);
+// };
 
-void UserReservation(SLList<Flight>& list) {
-    int flightNum;
-    // SLList<std::string> names; // destroyed when out of scope???
-    // auto flight = make_tuple(flightNum, names); 
+// void UserReservation(SLList<Flight>& list) {
+//     int flightNum;
+//     // SLList<std::string> names; // destroyed when out of scope???
+//     // auto flight = make_tuple(flightNum, names); 
 
-    flightNum = getInput<int>("enter a flight number: ");
-    int flightIndex;
-    getFlightIndex(list, flightNum, flightIndex);
-    // Flight* flight = getFlight(list, flightNum);
-    // auto flightIndex = getFlightIndex(list, flightNum);
-    while (true) {
-        int option = getInput<int>("\n\t=== MENU ===\n1 - insert passenger(s) onto flight "
-            + std::to_string(flightNum) + "\n2 - remove passenger from flight " + std::to_string(flightNum) + "\n3 - list passengers on flight "
-            + std::to_string(flightNum) + "\n4 - list passengers alphabetically\n0 - exit flight " + std::to_string(flightNum) + "\n\n:");
-        std::cout << "\n";
+//     flightNum = getInput<int>("enter a flight number: ");
+//     int flightIndex;
+//     getFlightIndex(list, flightNum, flightIndex);
+//     // Flight* flight = getFlight(list, flightNum);
+//     // auto flightIndex = getFlightIndex(list, flightNum);
+//     while (true) {
+//         int option = getInput<int>("\n\t=== MENU ===\n1 - insert passenger(s) onto flight "
+//             + std::to_string(flightNum) + "\n2 - remove passenger from flight " + std::to_string(flightNum) + "\n3 - list passengers on flight "
+//             + std::to_string(flightNum) + "\n4 - list passengers alphabetically\n0 - exit flight " + std::to_string(flightNum) + "\n\n:");
+//         std::cout << "\n";
         
-        if (option == 1) {
-            std::string in;
-            while (true) {
-                in = getInput<std::string>("enter name (or [0] to exit): ");
-                if (in == "0") break;
-                else list.at(flightIndex).addPassenger(in);
-            }
-        }
-        else if (option == 2) list.at(flightIndex).removePassenger(getInput<std::string>("enter name: "));
-        else if (option == 3 || option == 4) list.at(flightIndex).printPassengers();
-        else return;
-    }
-};
+//         if (option == 1) {
+//             std::string in;
+//             while (true) {
+//                 in = getInput<std::string>("enter name (or [0] to exit): ");
+//                 if (in == "0") break;
+//                 else list.at(flightIndex).addPassenger(in);
+//             }
+//         }
+//         else if (option == 2) list.at(flightIndex).removePassenger(getInput<std::string>("enter name: "));
+//         else if (option == 3 || option == 4) list.at(flightIndex).printPassengers();
+//         else return;
+//     }
+// };
 
-void UserInteract(SLList<Flight>& list) {
-    while (true) {
-        std::string menu = "\t=== MAIN MENU ===\n1 - make or change a reservation\n2 - print all manifests\n3 - driver\n0 - exit\n\n:";
-        int option = getInput<int>(menu); 
-        std::cout << "\n";
+// void UserInteract(SLList<Flight>& list) {
+//     while (true) {
+//         std::string menu = "\t=== MAIN MENU ===\n1 - make or change a reservation\n2 - print all manifests\n3 - driver\n0 - exit\n\n:";
+//         int option = getInput<int>(menu); 
+//         std::cout << "\n";
 
-        switch (option) {
-            case 1:
-                UserReservation(list); // doesnt check for duplicates!!!!!!!!!! should now
-                break;
-            case 2:
-                //TODO, commented out
-                break;
-            case 3:
-                Driver();
-                break;
-            default:
-                return;
-        }
-    }
-};
+//         switch (option) {
+//             case 1:
+//                 UserReservation(list); // doesnt check for duplicates!!!!!!!!!! should now
+//                 break;
+//             case 2:
+//                 //TODO, commented out
+//                 break;
+//             case 3:
+//                 Driver();
+//                 break;
+//             default:
+//                 return;
+//         }
+//     }
+// };
 
 int main() {
-    SLList<std::string> foo;
-    foo.orderInsert("Joe");
-    
-    SLList<Flight> list;
     Flight flight(1040);
-    // list.pushBack(flight);
     flight.addPassenger("Joe");
+
+    SLList<Flight> flights;
+    flights.pushBack(flight);
+
+    Flight flight2(1060);
+
+    SLList<Flight> flights2;
+    flights2.pushBack(flight2);
+
+    auto &fli = flights2.iterate(0)->getInfo();
+
+    fli.addPassenger("Joe");
+
+
+    // SLList<Flight> list;
+    // list.pushBack(flight);
     // UserInteract(list);
 
     // SLList<int> list;

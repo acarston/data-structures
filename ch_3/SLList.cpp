@@ -62,7 +62,7 @@ T SLList<T>::at(int index) {
 
 
 template <typename T>
-void SLList<T>::pushBack(T info) {
+void SLList<T>::pushBack(T& info) {
     if (head == nullptr) { // if the list is empty
         head = new SLLNode(info);
         return;

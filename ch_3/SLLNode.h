@@ -11,10 +11,13 @@ class SLLNode {
         friend class SLList;
         // friend class Flight;
 
-        SLLNode(T info, SLLNode* next = nullptr) {
+        SLLNode(T& info, SLLNode* next = nullptr) {
             this->info = info;
             this->next = next;
         };
+        T& getInfo() {
+            return info;
+        }
     private:
         T info;
         SLLNode* next;

@@ -22,7 +22,7 @@ class SLList {
         SLLNode<T>* iterate(int index = -1);
         T at(int index);
 
-        void pushBack(T info);
+        void pushBack(T& info);
         void pushForward(T info);
         void removeAt(unsigned int index);
         void removeFirst(T info);
