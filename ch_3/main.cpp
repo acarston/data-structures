@@ -134,8 +134,10 @@ int main() {
     
     SLList<Flight> list;
     Flight flight(1040);
-    // list.pushBack(flight);
-    flight.addPassenger("Joe");
+    list.pushBack(flight);
+
+    Flight& fli = list.iterate(0)->getInfo();
+    fli.addPassenger("Joe");
     // UserInteract(list);
 
     // SLList<int> list;

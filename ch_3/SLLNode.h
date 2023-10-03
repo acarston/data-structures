@@ -15,6 +15,7 @@ class SLLNode {
             this->info = info;
             this->next = next;
         };
+        T& getInfo() { return this->info; }
     private:
         T info;
         SLLNode* next;
