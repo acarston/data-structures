@@ -92,16 +92,17 @@ void UserReservation(SLList<Flight>& list) {
             + std::to_string(flightNum) + "\n4 - list passengers alphabetically\n0 - exit flight " + std::to_string(flightNum) + "\n\n:");
         std::cout << "\n";
         
+        Flight& flight = list.iterate(flightIndex)->getInfo();
         if (option == 1) {
             std::string in;
             while (true) {
                 in = getInput<std::string>("enter name (or [0] to exit): ");
                 if (in == "0") break;
-                else list.at(flightIndex).addPassenger(in);
+                else flight.addPassenger(in);
             }
         }
-        else if (option == 2) list.at(flightIndex).removePassenger(getInput<std::string>("enter name: "));
-        else if (option == 3 || option == 4) list.at(flightIndex).printPassengers();
+        else if (option == 2) flight.removePassenger(getInput<std::string>("enter name: "));
+        else if (option == 3 || option == 4) flight.printPassengers();
         else return;
     }
 };
@@ -128,17 +129,19 @@ void UserInteract(SLList<Flight>& list) {
     }
 };
 
-int main() {
-    SLList<std::string> foo;
-    foo.orderInsert("Joe");
+int main() { // TODO make functions UpperCamelCase
+    // SLList<std::string> foo;
+    // foo.orderInsert("Joe");
     
-    SLList<Flight> list;
-    Flight flight(1040);
-    list.pushBack(flight);
+    // SLList<Flight> list;
+    // Flight flight(1040);
+    // list.pushBack(flight);
 
-    Flight& fli = list.iterate(0)->getInfo();
-    fli.addPassenger("Joe");
-    // UserInteract(list);
+    // Flight& fli = list.iterate(0)->getInfo();
+    // fli.addPassenger("Joe");
+
+    SLList<Flight> list;
+    UserInteract(list);
 
     // SLList<int> list;
     // for (int i = 0; i < 3; ++i) {
