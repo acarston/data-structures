@@ -33,4 +33,5 @@ class SLList {
         SLLNode<T> *head, *tail;
 };
 
+#include "SLList.cpp"
 #endif

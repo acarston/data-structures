@@ -7,6 +7,7 @@
 
 class Flight {
     public: 
+        Flight() {};
         Flight(int id) { this->id = id; };
 
         int getId() { return this->id; };
