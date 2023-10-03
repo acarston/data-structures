@@ -107,6 +107,7 @@ void SLList<T>::removeAt(unsigned int index) {
 template <typename T>
 void SLList<T>::removeFirst(T info) {
     int index = findFirst(info);
+    if (index == -1) return; // do nothing if node DNE
     removeAt(index);
 };
 

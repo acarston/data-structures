@@ -4,7 +4,7 @@
 #include "Flight.h"
 
 template <typename T>
-T getInput(const std::string& prompt) {
+T GetInput(const std::string& prompt) {
     std::cout << prompt;
     T temp;
     std:: cin >> temp;
@@ -64,16 +64,26 @@ void Driver() { //TODO that thing in the assignment
 
 //     return -1;
 // };
+void PrintAll(SLList<Flight>& list) {
+    for (int i = 0; i < list.length(); ++i) {
+        Flight& flight = list.iterate(i)->getInfo();
+        std::cout << "flight number " << flight.getId() << ":\n";
+        flight.printPassengers();
+    }
+};
 
-void getFlightIndex(SLList<Flight>& list, int id, int& index) {
+void GetFlightIndex(SLList<Flight>& list, int id, int& index) {
     for (int i = 0; i < list.length(); ++i) {
         Flight flight = list.at(i);
-        if (flight.getId() == id) index = i; return;
+        if (flight.getId() == id) {
+            index = i; 
+            return;
+        }
     }
 
     Flight flight(id);
     list.pushBack(flight);
-    getFlightIndex(list, id, index);
+    GetFlightIndex(list, id, index);
 };
 
 void UserReservation(SLList<Flight>& list) {
@@ -81,27 +91,29 @@ void UserReservation(SLList<Flight>& list) {
     // SLList<std::string> names; // destroyed when out of scope???
     // auto flight = make_tuple(flightNum, names); 
 
-    flightNum = getInput<int>("enter a flight number: ");
+    flightNum = GetInput<int>("enter a flight number: ");
     int flightIndex;
-    getFlightIndex(list, flightNum, flightIndex);
+    GetFlightIndex(list, flightNum, flightIndex);
     // Flight* flight = getFlight(list, flightNum);
     // auto flightIndex = getFlightIndex(list, flightNum);
     while (true) {
-        int option = getInput<int>("\n\t=== MENU ===\n1 - insert passenger(s) onto flight "
+        int option = GetInput<int>("\n\t=== MENU ===\n1 - insert passenger(s) onto flight "
             + std::to_string(flightNum) + "\n2 - remove passenger from flight " + std::to_string(flightNum) + "\n3 - list passengers on flight "
             + std::to_string(flightNum) + "\n4 - list passengers alphabetically\n0 - exit flight " + std::to_string(flightNum) + "\n\n:");
         std::cout << "\n";
         
+        // define a reference to the current flight
         Flight& flight = list.iterate(flightIndex)->getInfo();
-        if (option == 1) {
+
+        if (option == 1) { 
             std::string in;
             while (true) {
-                in = getInput<std::string>("enter name (or [0] to exit): ");
+                in = GetInput<std::string>("enter name (or [0] to exit): ");
                 if (in == "0") break;
                 else flight.addPassenger(in);
             }
         }
-        else if (option == 2) flight.removePassenger(getInput<std::string>("enter name: "));
+        else if (option == 2) flight.removePassenger(GetInput<std::string>("enter name: "));
         else if (option == 3 || option == 4) flight.printPassengers();
         else return;
     }
@@ -110,15 +122,15 @@ void UserReservation(SLList<Flight>& list) {
 void UserInteract(SLList<Flight>& list) {
     while (true) {
         std::string menu = "\t=== MAIN MENU ===\n1 - make or change a reservation\n2 - print all manifests\n3 - driver\n0 - exit\n\n:";
-        int option = getInput<int>(menu); 
+        int option = GetInput<int>(menu); 
         std::cout << "\n";
 
         switch (option) {
             case 1:
-                UserReservation(list); // doesnt check for duplicates!!!!!!!!!! should now
+                UserReservation(list);
                 break;
             case 2:
-                //TODO, commented out
+                PrintAll(list);
                 break;
             case 3:
                 Driver();
