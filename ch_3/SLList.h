@@ -19,7 +19,7 @@ class SLList {
         int findFirst(T item);
 
         SLLNode<T>* iterate(int index = -1, bool headIfNeg = true);
-        T at(int index);
+        T& at(int index);
 
         void pushBack(T info);
         void pushForward(T info);

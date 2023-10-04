@@ -21,7 +21,7 @@ T GetInput(const std::string& prompt) {
 
 void PrintAll(SLList<Flight>& list) {
     for (int i = 0; i < list.length(); ++i) {
-        Flight& flight = list.iterate(i)->getInfo();
+        Flight& flight = list.at(i);
         std::cout << "flight number " << flight.GetId() << ":\n";
         flight.PrintPassengers();
     }
@@ -47,13 +47,14 @@ void Driver() { //TODO that thing in the assignment
 
     SLList<Flight> flights;
     int flightNums[] = {2430, 2515};
+    int flightIndex;
     for (int i = 0; i < 2; ++i) {
+        SetFlightIndex(flights, flightNums[i], flightIndex);
+        // Flight& flight = flights.iterate(flightIndex)->getInfo();
+        Flight& flight = flights.at(flightIndex);
+
         int j = i == 0 ? 0 : 5;
         int end = i == 0 ? 5 : 8;
-
-        int flightIndex;
-        SetFlightIndex(flights, flightNums[i], flightIndex);
-        Flight& flight = flights.iterate(flightIndex)->getInfo();
 
         for (; j < end; ++j) {
             std::cout << names[j] + " was inserted into flight " + std::to_string(flightNums[i]) + "\n";
@@ -63,6 +64,8 @@ void Driver() { //TODO that thing in the assignment
 
     std::cout << "\n";
     PrintAll(flights);
+
+    Flight& flight = flights.at(1);
 };
 
 void UserReservation(SLList<Flight>& list) {
@@ -85,8 +88,9 @@ void UserReservation(SLList<Flight>& list) {
         std::cout << "\n";
         
         // define a reference to the current flight
-        Flight& flight = list.iterate(flightIndex)->getInfo();
+        Flight& flight = list.at(flightIndex);
 
+        if (option == 0) return; // TODO make this a switch
         if (option == 1) { 
             std::string in;
             while (true) {

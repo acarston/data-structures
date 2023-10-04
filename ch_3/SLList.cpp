@@ -59,7 +59,7 @@ SLLNode<T>* SLList<T>::iterate(int index, bool headIfNeg) {
 };
 
 template <typename T>
-T SLList<T>::at(int index) {
+T& SLList<T>::at(int index) {
     return iterate(index)->info;
 }
 
