@@ -3,6 +3,14 @@
 #include "SLList.h"
 #include "Flight.h"
 
+void ExitMessage() {
+    std::cout << "terminating program..." << std::endl;
+};
+
+void InputError() {
+    std::cout << "invalid input!\n";
+};
+
 template <typename T>
 T GetInput(const std::string& prompt) {
     std::cout << prompt;
@@ -59,6 +67,12 @@ void GetFlightIndex(SLList<Flight>& list, int id, int& index) {
 void UserReservation(SLList<Flight>& list) {
     int flightNum;
     flightNum = GetInput<int>("enter a flight number: ");
+    
+    if (flightNum == 0) {
+        InputError();
+        ExitMessage();
+        exit(0);
+    }
 
     int flightIndex;
     GetFlightIndex(list, flightNum, flightIndex);
@@ -82,28 +96,31 @@ void UserReservation(SLList<Flight>& list) {
         }
         else if (option == 2) flight.RemovePassenger(GetInput<std::string>("enter name: "));
         else if (option == 3 || option == 4) flight.PrintPassengers();
-        else return;
+        else InputError();
     }
 };
 
 void UserInteract(SLList<Flight>& list) {
     while (true) {
         std::string menu = "\t=== MAIN MENU ===\n1 - make or change a reservation\n2 - print all manifests\n3 - driver\n0 - exit\n\n:";
-        int option = GetInput<int>(menu); 
+        char option = GetInput<char>(menu); 
         std::cout << "\n";
 
         switch (option) {
-            case 1:
+            case '0':
+                return;
+            case '1':
                 UserReservation(list);
                 break;
-            case 2:
+            case '2':
                 PrintAll(list);
                 break;
-            case 3:
+            case '3':
                 Driver();
                 break;
             default:
-                return;
+                InputError();
+                break;
         }
     }
 };
@@ -112,6 +129,7 @@ int main() {
     SLList<Flight> list;
     UserInteract(list);
 
+    ExitMessage();
     return 0;
 
 
