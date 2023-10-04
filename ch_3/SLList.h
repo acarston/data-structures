@@ -6,9 +6,8 @@
 /* many of the methods here can technically be private.
 however, this class is a general SLL implementation,
 so it is appropriate for the object to have the 
-following functionality. i'm following the vector
-convention of lower-case methods, but opting for 
-camelCase instead of underscores */
+following functionality. i'm opting for 
+lowerCamelCase to indicate generality */
 
 template <typename T>
 class SLList {
@@ -19,12 +18,12 @@ class SLList {
         unsigned int length();
         int findFirst(T item);
 
-        SLLNode<T>* iterate(int index = -1);
+        SLLNode<T>* iterate(int index = -1, bool headIfNeg = true);
         T at(int index);
 
         void pushBack(T info);
         void pushForward(T info);
-        void removeAt(unsigned int index);
+        void removeAt(int index);
         void removeFirst(T info);
         void insert(T info, int index = -1);
 

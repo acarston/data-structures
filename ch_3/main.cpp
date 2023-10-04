@@ -34,48 +34,18 @@ void Driver() { //TODO that thing in the assignment
     }
 };
 
-// void printAll(SLList<std::tuple<int, SLList<std::string>>>& list) {
-//     for (int i = 0; i < list.length(); ++i) {
-//         auto flight = list.iterate(i);
-//         std::cout << std::to_string();
-//     }
-// };
-
-// Flight* getFlight(SLList<Flight>& list, int id) {
-//     for (int i = 0; i < list.length(); ++i) {
-//         Flight* flight = &list.at(i);
-//         if (flight->getId() == id) return flight;
-//     }
-
-//     Flight flight(id);
-//     list.pushBack(flight);
-//     getFlight(list, id);
-// };
-
-// int getFlightIndex(SLList<Flight>& list, int id) {
-//     for (int i = 0; i < list.length(); ++i) {
-//         Flight flight = list.at(i);
-//         if (flight.getId() == id) return i;
-//     }
-
-//     Flight flight(id);
-//     list.pushBack(flight);
-//     getFlightIndex(list, id);
-
-//     return -1;
-// };
 void PrintAll(SLList<Flight>& list) {
     for (int i = 0; i < list.length(); ++i) {
         Flight& flight = list.iterate(i)->getInfo();
-        std::cout << "flight number " << flight.getId() << ":\n";
-        flight.printPassengers();
+        std::cout << "flight number " << flight.GetId() << ":\n";
+        flight.PrintPassengers();
     }
 };
 
 void GetFlightIndex(SLList<Flight>& list, int id, int& index) {
     for (int i = 0; i < list.length(); ++i) {
         Flight flight = list.at(i);
-        if (flight.getId() == id) {
+        if (flight.GetId() == id) {
             index = i; 
             return;
         }
@@ -88,14 +58,11 @@ void GetFlightIndex(SLList<Flight>& list, int id, int& index) {
 
 void UserReservation(SLList<Flight>& list) {
     int flightNum;
-    // SLList<std::string> names; // destroyed when out of scope???
-    // auto flight = make_tuple(flightNum, names); 
-
     flightNum = GetInput<int>("enter a flight number: ");
+
     int flightIndex;
     GetFlightIndex(list, flightNum, flightIndex);
-    // Flight* flight = getFlight(list, flightNum);
-    // auto flightIndex = getFlightIndex(list, flightNum);
+
     while (true) {
         int option = GetInput<int>("\n\t=== MENU ===\n1 - insert passenger(s) onto flight "
             + std::to_string(flightNum) + "\n2 - remove passenger from flight " + std::to_string(flightNum) + "\n3 - list passengers on flight "
@@ -110,11 +77,11 @@ void UserReservation(SLList<Flight>& list) {
             while (true) {
                 in = GetInput<std::string>("enter name (or [0] to exit): ");
                 if (in == "0") break;
-                else flight.addPassenger(in);
+                else flight.AddPassenger(in);
             }
         }
-        else if (option == 2) flight.removePassenger(GetInput<std::string>("enter name: "));
-        else if (option == 3 || option == 4) flight.printPassengers();
+        else if (option == 2) flight.RemovePassenger(GetInput<std::string>("enter name: "));
+        else if (option == 3 || option == 4) flight.PrintPassengers();
         else return;
     }
 };
@@ -141,34 +108,26 @@ void UserInteract(SLList<Flight>& list) {
     }
 };
 
-int main() { // TODO make functions UpperCamelCase
-    // SLList<std::string> foo;
-    // foo.orderInsert("Joe");
-    
-    // SLList<Flight> list;
-    // Flight flight(1040);
-    // list.pushBack(flight);
-
-    // Flight& fli = list.iterate(0)->getInfo();
-    // fli.addPassenger("Joe");
-
+int main() {
     SLList<Flight> list;
     UserInteract(list);
 
+    return 0;
+
+
     // SLList<int> list;
-    // for (int i = 0; i < 3; ++i) {
-    //     list.pushBack(i + 2);
-    // }
-    // for (int i = 0; i < 3; ++i) {
-    //     list.pushForward(i + 2);
-    // }
-    // list.out();
-    // list.removeAt(0);
-    // list.out();
-    // std::cout << list.length() << "\n";
+    // list.insert(3);
+    // list.insert(1);
+    // list.insert(2, 0);
+
     // list.removeFirst(3);
-    // list.out();
-    // SLLNode<int>* temp = new SLLNode<int>(9);
-    // list.insert(temp, 3);
-    // std::cout << list.iterate(6) << std::endl;
+    // list.removeAt(1);
+    // list.removeAt(-1);
+    // list.removeAt(8);
+    // list.removeAt(0);
+
+    // list.pushBack(1);
+    // list.pushBack(0);
+    // list.pushBack(2);
+    // list.pushForward(-1);
 };
