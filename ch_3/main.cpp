@@ -19,29 +19,6 @@ T GetInput(const std::string& prompt) {
     return temp;
 };
 
-void Driver() { //TODO that thing in the assignment
-    std::string names[] = {"Hamilton Dale", "Hamilton Leslie", "Hamilton Jonathan", "Hamilton Nicholas",
-        "Hamilton Annalisa", "Absorka Thor", "Snowwisper Nora", "Loki the Mutt"};
-
-    SLList<std::string> flight1, flight2;
-    int flightNums[] = {2430, 2515};
-    for (int i = 0; i < 2; ++i) {
-        int j = i == 0 ? 0 : 5;
-        int end = i == 0 ? 5 : 8;
-
-        for (; j < end; ++j) {
-            std::cout << names[j] + " was inserted into flight " + std::to_string(flightNums[i]) + "\n";
-
-            if (i == 0) flight1.orderInsert(names[j]);
-            else flight2.orderInsert(names[j]);
-        }
-
-        std::cout << "\nflight number: " + std::to_string(flightNums[i]) + "\n";
-        if (i == 0) flight1.out();
-        else flight2.out();
-    }
-};
-
 void PrintAll(SLList<Flight>& list) {
     for (int i = 0; i < list.length(); ++i) {
         Flight& flight = list.iterate(i)->getInfo();
@@ -50,7 +27,7 @@ void PrintAll(SLList<Flight>& list) {
     }
 };
 
-void GetFlightIndex(SLList<Flight>& list, int id, int& index) {
+void SetFlightIndex(SLList<Flight>& list, int id, int& index) {
     for (int i = 0; i < list.length(); ++i) {
         Flight flight = list.at(i);
         if (flight.GetId() == id) {
@@ -61,7 +38,31 @@ void GetFlightIndex(SLList<Flight>& list, int id, int& index) {
 
     Flight flight(id);
     list.pushBack(flight);
-    GetFlightIndex(list, id, index);
+    SetFlightIndex(list, id, index);
+};
+
+void Driver() { //TODO that thing in the assignment
+    std::string names[] = {"Hamilton Dale", "Hamilton Leslie", "Hamilton Jonathan", "Hamilton Nicholas",
+        "Hamilton Annalisa", "Absorka Thor", "Snowwisper Nora", "Loki the Mutt"};
+
+    SLList<Flight> flights;
+    int flightNums[] = {2430, 2515};
+    for (int i = 0; i < 2; ++i) {
+        int j = i == 0 ? 0 : 5;
+        int end = i == 0 ? 5 : 8;
+
+        int flightIndex;
+        SetFlightIndex(flights, flightNums[i], flightIndex);
+        Flight& flight = flights.iterate(flightIndex)->getInfo();
+
+        for (; j < end; ++j) {
+            std::cout << names[j] + " was inserted into flight " + std::to_string(flightNums[i]) + "\n";
+            flight.AddPassenger(names[j]);
+        }
+    }
+
+    std::cout << "\n";
+    PrintAll(flights);
 };
 
 void UserReservation(SLList<Flight>& list) {
@@ -75,7 +76,7 @@ void UserReservation(SLList<Flight>& list) {
     }
 
     int flightIndex;
-    GetFlightIndex(list, flightNum, flightIndex);
+    SetFlightIndex(list, flightNum, flightIndex);
 
     while (true) {
         int option = GetInput<int>("\n\t=== MENU ===\n1 - insert passenger(s) onto flight "
