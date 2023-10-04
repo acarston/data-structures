@@ -27,7 +27,7 @@ void PrintAll(SLList<Flight>& list) {
     }
 };
 
-void SetFlightIndex(SLList<Flight>& list, int id, int& index) {
+void SetFlightIndex(SLList<Flight>& list, int id, int& index) { //BAD NAME?????????????????????????
     for (int i = 0; i < list.length(); ++i) {
         Flight flight = list.at(i);
         if (flight.GetId() == id) {
@@ -41,7 +41,36 @@ void SetFlightIndex(SLList<Flight>& list, int id, int& index) {
     SetFlightIndex(list, id, index);
 };
 
-void Driver() { //TODO that thing in the assignment
+void DisplaceLoki (SLList<Flight>& list) {
+    Flight& flight = list.at(1); // BETTER WAY TO GET FLIGHT ?????????????????????????????????????
+
+    std::string flightNumStr = std::to_string(flight.GetId());
+    std::string loki = "Loki the Mutt";
+
+    int lokiIndex = flight.FindPassengerIndex(loki);
+    if (lokiIndex != -1) { 
+        std::cout << "found " + loki + " on flight " + flightNumStr + " at index " + std::to_string(lokiIndex) + "\n";
+    }
+    else {
+        std::cout << "could not find loki :((\n"; 
+        ExitMessage(); 
+        exit(0);
+    }
+
+    flight.RemovePassenger(loki);
+    std::cout << loki + " removed from flight " + flightNumStr + "\n";
+
+    int flightIndex;
+    SetFlightIndex(list, 2750, flightIndex);
+
+    list.at(flightIndex).AddPassenger(loki);
+    std::cout << loki + " added to flight " + std::to_string(2750) + "\n";
+
+    std::cout << "\nreprinting all manifests...\n\n";
+    PrintAll(list);
+};
+
+void Driver() { 
     std::string names[] = {"Hamilton Dale", "Hamilton Leslie", "Hamilton Jonathan", "Hamilton Nicholas",
         "Hamilton Annalisa", "Absorka Thor", "Snowwisper Nora", "Loki the Mutt"};
 
@@ -50,7 +79,6 @@ void Driver() { //TODO that thing in the assignment
     int flightIndex;
     for (int i = 0; i < 2; ++i) {
         SetFlightIndex(flights, flightNums[i], flightIndex);
-        // Flight& flight = flights.iterate(flightIndex)->getInfo();
         Flight& flight = flights.at(flightIndex);
 
         int j = i == 0 ? 0 : 5;
@@ -65,7 +93,7 @@ void Driver() { //TODO that thing in the assignment
     std::cout << "\n";
     PrintAll(flights);
 
-    Flight& flight = flights.at(1);
+    DisplaceLoki(flights);
 };
 
 void UserReservation(SLList<Flight>& list) {
