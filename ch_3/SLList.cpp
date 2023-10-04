@@ -138,7 +138,7 @@ void SLList<T>::insert(T info, int index) {
         pushForward(info);
         delete toInsert;
     }
-    else if (node == tail) { // append if appending
+    else if (node == tail || (node == head && tail == nullptr)) { // append if appending
         pushBack(info);
         delete toInsert;
     }
