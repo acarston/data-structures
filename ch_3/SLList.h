@@ -14,8 +14,9 @@ class SLList {
     public:
         SLList();
 
-        void out();
         unsigned int length();
+        void out();
+        void outReversed();
         int findFirst(T item);
 
         SLLNode<T>* iterate(int index = -1, bool headIfNeg = true);

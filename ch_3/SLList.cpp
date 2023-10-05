@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stack>
 
 #include "SLList.h"
 
@@ -8,6 +9,14 @@ SLList<T>::SLList() {
     tail = nullptr;
 };
 
+
+/* return the length of the list */
+template <typename T>
+unsigned int SLList<T>::length() {
+    int i = 0;
+    for (SLLNode<T>* node = head; node != nullptr; node = node->next, ++i);
+    return i;
+};
 
 /* print each list element */
 template <typename T>
@@ -20,12 +29,21 @@ void SLList<T>::out() {
     std::cout << "\n";
 };
 
-/* return the length of the list */
+/* print each list element in reverse */
 template <typename T>
-unsigned int SLList<T>::length() {
-    int i = 0;
-    for (SLLNode<T>* node = head; node != nullptr; node = node->next, ++i);
-    return i;
+void SLList<T>::outReversed() {
+    std::stack<T> stack;
+
+    int length = this->length();
+    SLLNode<T>* node = head;
+    for (int i = 0; i < length; ++i, node = node->next) {
+        stack.push(node->info);
+    }
+    for (int i = 0; i < length; ++i) {
+        std::cout << stack.top() + "\n";
+        stack.pop();
+    }
+    std::cout << "\n";
 };
 
 /* find the index of a node's info */

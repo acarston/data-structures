@@ -15,43 +15,45 @@ template <typename T>
 T GetInput(const std::string& prompt) {
     std::cout << prompt;
     T temp;
-    std:: cin >> temp;
+    std::cin >> temp;
     return temp;
 };
 
 void PrintAll(SLList<Flight>& list) {
     for (int i = 0; i < list.length(); ++i) {
-        Flight& flight = list.at(i);
+        Flight& flight = list.at(i); // define a reference to the current flight
         std::cout << "flight number " << flight.GetId() << ":\n";
         flight.PrintPassengers();
     }
 };
 
-void SetFlightIndex(SLList<Flight>& list, int id, int& index) { //BAD NAME?????????????????????????
+int GetOrCreateFlightIndex(SLList<Flight>& list, int id) { 
+    // give the list index of flight with flight number 'id'
     for (int i = 0; i < list.length(); ++i) {
         Flight flight = list.at(i);
         if (flight.GetId() == id) {
-            index = i; 
-            return;
+            return i;
         }
     }
 
+    // add a new flight to the list if above loop fails
     Flight flight(id);
     list.pushBack(flight);
-    SetFlightIndex(list, id, index);
+    return GetOrCreateFlightIndex(list, id);
 };
 
 void DisplaceLoki (SLList<Flight>& list) {
-    Flight& flight = list.at(1); // BETTER WAY TO GET FLIGHT ?????????????????????????????????????
+    // define a reference to flight 2515
+    Flight& flight = list.at(GetOrCreateFlightIndex(list, 2515));
 
     std::string flightNumStr = std::to_string(flight.GetId());
     std::string loki = "Loki the Mutt";
 
     int lokiIndex = flight.FindPassengerIndex(loki);
-    if (lokiIndex != -1) { 
+    if (lokiIndex != -1) { // above function returns -1 if not found
         std::cout << "found " + loki + " on flight " + flightNumStr + " at index " + std::to_string(lokiIndex) + "\n";
     }
-    else {
+    else { // will never execute
         std::cout << "could not find loki :((\n"; 
         ExitMessage(); 
         exit(0);
@@ -60,9 +62,8 @@ void DisplaceLoki (SLList<Flight>& list) {
     flight.RemovePassenger(loki);
     std::cout << loki + " removed from flight " + flightNumStr + "\n";
 
-    int flightIndex;
-    SetFlightIndex(list, 2750, flightIndex);
-
+    // add flight 2750 to the list and add loki to the flight
+    int flightIndex = GetOrCreateFlightIndex(list, 2750);
     list.at(flightIndex).AddPassenger(loki);
     std::cout << loki + " added to flight " + std::to_string(2750) + "\n";
 
@@ -76,11 +77,12 @@ void Driver() {
 
     SLList<Flight> flights;
     int flightNums[] = {2430, 2515};
-    int flightIndex;
     for (int i = 0; i < 2; ++i) {
-        SetFlightIndex(flights, flightNums[i], flightIndex);
+        // create a new flight and define a reference to it
+        int flightIndex = GetOrCreateFlightIndex(flights, flightNums[i]);
         Flight& flight = flights.at(flightIndex);
 
+        // determine how to loop through names
         int j = i == 0 ? 0 : 5;
         int end = i == 0 ? 5 : 8;
 
@@ -96,40 +98,60 @@ void Driver() {
     DisplaceLoki(flights);
 };
 
+void AddManyPassengers (Flight& flight) {
+    std::string in;
+    while (true) {
+        in = GetInput<std::string>("enter name (or [0] to exit): ");
+        if (in == "0") return;
+        else flight.AddPassenger(in);
+    }
+};
+
+/* manipulate a flight according to user input */
 void UserReservation(SLList<Flight>& list) {
-    int flightNum;
-    flightNum = GetInput<int>("enter a flight number: ");
+    int flightNum = GetInput<int>("enter a flight number: ");
     
-    if (flightNum == 0) {
+    // terminate program if the user is bad
+    if (flightNum == 0) { // implicitly checks for non-ints
         InputError();
         ExitMessage();
         exit(0);
     }
 
-    int flightIndex;
-    SetFlightIndex(list, flightNum, flightIndex);
+    int flightIndex = GetOrCreateFlightIndex(list, flightNum);
 
     while (true) {
-        int option = GetInput<int>("\n\t=== MENU ===\n1 - insert passenger(s) onto flight "
-            + std::to_string(flightNum) + "\n2 - remove passenger from flight " + std::to_string(flightNum) + "\n3 - list passengers on flight "
-            + std::to_string(flightNum) + "\n4 - list passengers alphabetically\n0 - exit flight " + std::to_string(flightNum) + "\n\n:");
+        std::string flightNumStr = std::to_string(flightNum);
+        char option = GetInput<char>("\n\t=== MENU ===\n1 - insert passenger(s) onto flight "
+            + flightNumStr + "\n2 - remove passenger from flight " + flightNumStr + "\n3 - list passengers on flight "
+            + flightNumStr + "\n4 - list passengers alphabetically\n5 - list passengers in reverse\n0 - exit flight " 
+            + flightNumStr + "\n\n:");
         std::cout << "\n";
         
         // define a reference to the current flight
         Flight& flight = list.at(flightIndex);
 
-        if (option == 0) return; // TODO make this a switch
-        if (option == 1) { 
-            std::string in;
-            while (true) {
-                in = GetInput<std::string>("enter name (or [0] to exit): ");
-                if (in == "0") break;
-                else flight.AddPassenger(in);
-            }
+        switch (option) {
+            case '0':
+                return;
+                break;
+            case '1':
+                AddManyPassengers(flight);
+                break;
+            case '2':
+                flight.RemovePassenger(GetInput<std::string>("enter name: "));
+                break;
+            case '3':
+            case '4': // 3 and 4 equivalent by order insertion
+                flight.PrintPassengers();
+                break;
+            case '5':
+                flight.PrintPassengersReversed();
+                break;
+            default:
+                InputError();
+                break;
         }
-        else if (option == 2) flight.RemovePassenger(GetInput<std::string>("enter name: "));
-        else if (option == 3 || option == 4) flight.PrintPassengers();
-        else InputError();
     }
 };
 
@@ -142,6 +164,7 @@ void UserInteract(SLList<Flight>& list) {
         switch (option) {
             case '0':
                 return;
+                break;
             case '1':
                 UserReservation(list);
                 break;
@@ -164,21 +187,4 @@ int main() {
 
     ExitMessage();
     return 0;
-
-
-    // SLList<int> list;
-    // list.insert(3);
-    // list.insert(1);
-    // list.insert(2, 0);
-
-    // list.removeFirst(3);
-    // list.removeAt(1);
-    // list.removeAt(-1);
-    // list.removeAt(8);
-    // list.removeAt(0);
-
-    // list.pushBack(1);
-    // list.pushBack(0);
-    // list.pushBack(2);
-    // list.pushForward(-1);
 };
