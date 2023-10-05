@@ -161,10 +161,10 @@ void SLList<T>::orderInsert(T info) {
         return;
     }
 
-    for (int i = 0; i < length; ++i) {
-        T compareAgainst = at(i);
-        if (info < compareAgainst) {
-            insert(info, i - 1); // insert before compareAgainst
+    SLLNode<T>* node = this->head;
+    for (int i = 0; i < length; ++i, node = node->next) {
+        if (info < node->info) {
+            insert(info, i - 1); // insert before node
             return;
         }
     }
