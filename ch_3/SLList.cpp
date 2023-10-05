@@ -76,6 +76,7 @@ SLLNode<T>* SLList<T>::iterate(int index, bool headIfNeg) {
     return node;
 };
 
+/* return a reference to a node's info */
 template <typename T>
 T& SLList<T>::at(int index) {
     return iterate(index)->info;
