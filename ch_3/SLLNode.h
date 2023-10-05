@@ -9,13 +9,12 @@ class SLLNode {
         // SLList can access info, next
         template<typename U> 
         friend class SLList;
-        // friend class Flight;
 
         SLLNode(T info, SLLNode* next = nullptr) {
             this->info = info;
             this->next = next;
         };
-        T& getInfo() { return this->info; }
+        T& getInfo() { return this->info; }; // return a reference to info
     private:
         T info;
         SLLNode* next;
