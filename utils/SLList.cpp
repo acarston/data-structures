@@ -2,6 +2,7 @@
 #include <stack>
 
 #include "SLList.h"
+#include "Stack.h"
 
 template <typename T>
 SLList<T>::SLList() {
@@ -32,7 +33,7 @@ void SLList<T>::out() {
 /* print each list element in reverse */
 template <typename T>
 void SLList<T>::outReversed() {
-    std::stack<T> stack;
+    Stack<T> stack;
 
     int length = this->length();
     SLLNode<T>* node = head;
