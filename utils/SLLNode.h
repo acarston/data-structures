@@ -15,7 +15,7 @@ class SLLNode {
         T& getInfo() { return this->info; }; // return a reference to info
     private:
         T info;
-        SLLNode* next;
+        SLLNode* next = nullptr;
 };
 
 #endif
