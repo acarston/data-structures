@@ -4,3 +4,10 @@ archive
 ch_3/dump.txt
 foo.txt
 test
+ch_4/test.cpp
+ch_4/test
+ch_4/Poly2Raster.cpp
+ch_4/Raster2Freq.cpp
+ch_4/Proj4Test_bad1.cpp
+ch_4/Proj4Test_bad2.cpp
+ch_4/Proj4Test_good.cpp
