@@ -56,6 +56,7 @@ void delimiter_matching(std::unordered_map<std::string, std::string>& delimiters
 
 int main(int argc, char* argv[]) {
     delimerr::check_arguments(argc, 2);
+    std::cout << "\n";
     
     // a hash map allows for delimiter versatility (e.g. switching languages) and avoids verbose conditionals
     std::unordered_map<std::string, std::string> delimiters = {{"(", ")"}, {"[", "]"}, {"{", "}"}, {"/*", "*/"}};

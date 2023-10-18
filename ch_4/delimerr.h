@@ -32,7 +32,7 @@ namespace delimerr {
 
     // choose and output an error message
     void what(const std::string& delimiter, bool unexpected) {
-        if (unexpected) std::cout << "unexpected token '" << delimiter << "'\n";
+        if (unexpected) std::cout << "unexpected token '" << delimiter << "'\n" << std::endl;
         else std::cout << "expected a '" << delimiter << "'" << std::endl;
     };
 
