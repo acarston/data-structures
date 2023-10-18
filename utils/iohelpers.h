@@ -1,3 +1,6 @@
+#ifndef IOHELPERS_H
+#define IOHELPERS_H
+
 #include <iostream>
 
 namespace iohelpers {
@@ -16,3 +19,5 @@ namespace iohelpers {
         return in;
     }
 };
+
+#endif
