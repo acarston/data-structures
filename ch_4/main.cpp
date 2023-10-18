@@ -13,7 +13,6 @@ void delimiter_matching(std::unordered_map<std::string, std::string>& delimiters
 
     while(std::getline(fin, line)) {
         lineNum ++;
-
         for (int i = 0; i < line.size(); ++i) {
             // assign 'current' to 2 characters if the delim is a long comment
             std::string current = ((i < line.size() - 1) && ((line[i] == '/' && line[i+1] == '*') || (line[i] == '*' && line[i+1] == '/')))
@@ -57,7 +56,7 @@ void delimiter_matching(std::unordered_map<std::string, std::string>& delimiters
 int main(int argc, char* argv[]) {
     delimerr::check_arguments(argc, 2);
     std::cout << "\n";
-    
+
     // a hash map allows for delimiter versatility (e.g. switching languages) and avoids verbose conditionals
     std::unordered_map<std::string, std::string> delimiters = {{"(", ")"}, {"[", "]"}, {"{", "}"}, {"/*", "*/"}};
     delimiter_matching(delimiters, argv[1]);
