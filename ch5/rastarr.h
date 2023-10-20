@@ -67,6 +67,7 @@ namespace rastarr {
         if (arr[row][col] != 't') return count;
 
         if (first) id++;
+        if (id > 76) id -= 76;
         arr[row][col] = id + '0';
 
         count++;
