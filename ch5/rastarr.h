@@ -63,22 +63,35 @@ namespace rastarr {
         }
     };
 
-    int get_stand(char**& arr, int row, int col, int& id, int count = 0, bool first = true) {
-        if (arr[row][col] != 't') return count;
+    void get_stand(char**& arr, int row, int col, int& id, bool first = true) {
+        if (arr[row][col] != 't') return;
 
         if (first) id++;
         if (id > 76) id -= 76;
         arr[row][col] = id + '0';
-
-        count++;
         
-        count = get_stand(arr, row - 1, col, id, count, false);
-        count = get_stand(arr, row + 1, col, id, count, false);
-        count = get_stand(arr, row, col - 1, id, count, false);
-        count = get_stand(arr, row, col + 1, id, count, false);
-
-        return count;
+        get_stand(arr, row - 1, col, id, false);
+        get_stand(arr, row + 1, col, id, false);
+        get_stand(arr, row, col - 1, id, false);
+        get_stand(arr, row, col + 1, id, false);
     };
+
+    // int get_stand(char**& arr, int row, int col, int& id, int count = 0, bool first = true) {
+    //     if (arr[row][col] != 't') return count;
+
+    //     if (first) id++;
+    //     if (id > 76) id -= 76;
+    //     arr[row][col] = id + '0';
+
+    //     count++;
+        
+    //     count = get_stand(arr, row - 1, col, id, count, false);
+    //     count = get_stand(arr, row + 1, col, id, count, false);
+    //     count = get_stand(arr, row, col - 1, id, count, false);
+    //     count = get_stand(arr, row, col + 1, id, count, false);
+
+    //     return count;
+    // };
 
     void print_stands(char**& arr, int rows, int cols) {
         std::cout << "\n";
@@ -86,8 +99,8 @@ namespace rastarr {
 
         for (int i = 1; i < rows - 1; ++i) {
             for (int j = 1; j < cols - 1; ++j) {
-                int count = get_stand(arr, i, j, id);
-                if (count > 0) std::cout << "stand " << arr[i][j] << " has " << count << " trees.\n";
+                if (arr[i][j] != 't') continue;
+                get_stand(arr, i, j, id);
             }
         }
 
