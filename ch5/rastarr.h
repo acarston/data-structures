@@ -67,14 +67,24 @@ namespace rastarr {
         if (arr[row][col] != 't') return;
 
         if (first) id++;
-        if (id > 76) id -= 76;
-        arr[row][col] = id + '0';
+        arr[row][col] = (id % 76) + '0';
         
         get_stand(arr, row - 1, col, id, false);
         get_stand(arr, row + 1, col, id, false);
         get_stand(arr, row, col - 1, id, false);
         get_stand(arr, row, col + 1, id, false);
     };
+
+    // void get_stand(char**& arr, int row, int col, int& id, bool first = true) {
+    //     if (arr[row][col] == 't') {
+    //         if (first) {id++;}
+    //         arr[row][col] = (id % 76) + '0';
+    //         get_stand(arr, row - 1, col, id, false);
+    //         get_stand(arr, row + 1, col, id, false);
+    //         get_stand(arr, row, col - 1, id, false);
+    //         get_stand(arr, row, col + 1, id, false);
+    //     }
+    // }
 
     // int get_stand(char**& arr, int row, int col, int& id, int count = 0, bool first = true) {
     //     if (arr[row][col] != 't') return count;
