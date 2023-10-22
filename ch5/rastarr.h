@@ -75,7 +75,7 @@ namespace rastarr {
     char** get_empty(const std::string& filePath, int& rows, int& cols) {
         std::fstream fin(filePath);
         if (!fin.is_open()) {
-            std::cout << "unable to open file" << std::endl;
+            std::cout << "FATAL: unable to open file" << std::endl;
             exit(0);
         }
 
@@ -105,7 +105,7 @@ namespace rastarr {
 
         std::fstream fin(filePath);
         if (!fin.is_open()) {
-            std::cout << "unable to open file" << std::endl;
+            std::cout << "FATAL: unable to open file" << std::endl;
             exit(0);
         }
         std::string line;
