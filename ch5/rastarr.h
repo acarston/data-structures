@@ -3,17 +3,6 @@
 
 // anonymous namespace for private functions
 namespace {
-    template <typename T> 
-    void print_array(T**& arr, int rows, int cols) {
-        for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < cols; ++j) {
-                std::cout << arr[i][j] << " ";
-            }
-            std::cout << "\n";
-        }
-        std::cout << std::endl;
-    };
-
     // dynamically allocate a 2D array
     template <typename T> 
     T** get_array(int rows, int cols) {
@@ -40,24 +29,48 @@ namespace {
         return arr;
     };
 
-    // give all cells within a stand a predetermined id
-    void mark_stand(char**& arrTracker, int**& arrInt, int row, int col, int& id) {
+    // give all cells within a stand a predetermined id in a matrix of ints 
+    // modifies the original array of chars due to pass by reference
+    void mark_stand(char**& arrTracker, int**& map, int row, int col, int& id) {
         // end call if the cell is not a tree
         if (arrTracker[row][col] == 'g') return;
 
         // mark visited cell as grass
         arrTracker[row][col] = 'g';
-        arrInt[row][col] = id;
+        map[row][col] = id;
         
         // look around the current cell
-        mark_stand(arrTracker, arrInt, row, col - 1, id);
-        mark_stand(arrTracker, arrInt, row + 1, col, id);
-        mark_stand(arrTracker, arrInt, row, col + 1, id);
-        mark_stand(arrTracker, arrInt, row - 1, col, id);
+        mark_stand(arrTracker, map, row, col - 1, id);
+        mark_stand(arrTracker, map, row + 1, col, id);
+        mark_stand(arrTracker, map, row, col + 1, id);
+        mark_stand(arrTracker, map, row - 1, col, id);
     };
 };
 
 namespace rastarr {
+    template <typename T> 
+    void print_matrix(T**& arr, int rows, int cols, int iStart = 0, int jStart = 0) {
+        for (int i = iStart; i < rows; ++i) {
+            for (int j = jStart; j < cols; ++j) {
+                std::cout << arr[i][j] << " ";
+            }
+            std::cout << "\n";
+        }
+        std::cout << std::endl;
+    };
+
+    template <typename T>
+    void print_matrix_parsed(T**& arr, int rows, int cols, T toParse) {
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
+                if (arr[i][j] == toParse) std::cout << arr[i][j] << " ";
+                else std::cout << "  ";
+            }
+            std::cout << "\n";
+        }
+        std::cout << std::endl;
+    };
+
     // get an array of the appropriate size based on a file
     char** get_empty(const std::string& filePath, int& rows, int& cols) {
         std::fstream fin(filePath);
@@ -124,13 +137,13 @@ namespace rastarr {
     }
 
     void output_map(int**& map, int rows, int cols) { 
-        print_array<int>(map, rows, cols); 
+        print_matrix<int>(map, rows - 1, cols - 1, 1, 1); 
     };
 
     void output_map(int**& map, int rows, int cols, const std::string& filePath) {
         std::ofstream fout(filePath);
-        for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < cols; ++j) {
+        for (int i = 1; i < rows - 1; ++i) {
+            for (int j = 1; j < cols - 1; ++j) {
                 fout << map[i][j] << " ";
             }
             fout << "\n";
