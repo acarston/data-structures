@@ -1,8 +1,10 @@
 #include <iostream>
 #include <fstream>
 
-namespace rastarr {
-    void print(char**& arr, int rows, int cols) {
+// anonymous namespace for private functions
+namespace {
+    template <typename T> 
+    void print_array(T**& arr, int rows, int cols) {
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < cols; ++j) {
                 std::cout << arr[i][j] << " ";
@@ -12,7 +14,52 @@ namespace rastarr {
         std::cout << std::endl;
     };
 
-    char** get(const std::string& filePath, int& rows, int& cols) {
+    // dynamically allocate a 2D array
+    template <typename T> 
+    T** get_array(int rows, int cols) {
+        T** arr = new T*[rows];
+        for (int i = 0; i < rows; ++i) {
+            arr[i] = new T[cols];
+        }
+        return arr;
+    };
+
+    // allocate and populate all elements with a value
+    template <typename T> 
+    T** get_array(int rows, int cols, T defaultVal) {
+        T** arr = new T*[rows];
+        for (int i = 0; i < rows; ++i) {
+            arr[i] = new T[cols];
+        }
+
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
+                arr[i][j] = defaultVal;
+            }
+        }
+        return arr;
+    };
+
+    // give all cells within a stand a predetermined id
+    void mark_stand(char**& arrTracker, int**& arrInt, int row, int col, int& id) {
+        // end call if the cell is not a tree
+        if (arrTracker[row][col] == 'g') return;
+
+        // mark visited cell as grass
+        arrTracker[row][col] = 'g';
+        arrInt[row][col] = id;
+        
+        // look around the current cell
+        mark_stand(arrTracker, arrInt, row, col - 1, id);
+        mark_stand(arrTracker, arrInt, row + 1, col, id);
+        mark_stand(arrTracker, arrInt, row, col + 1, id);
+        mark_stand(arrTracker, arrInt, row - 1, col, id);
+    };
+};
+
+namespace rastarr {
+    // get an array of the appropriate size based on a file
+    char** get_empty(const std::string& filePath, int& rows, int& cols) {
         std::fstream fin(filePath);
         if (!fin.is_open()) {
             std::cout << "unable to open file" << std::endl;
@@ -22,21 +69,18 @@ namespace rastarr {
         std::string arrSizeInfo;
         std::getline(fin, arrSizeInfo);
 
+        // retrieve array dimensions
         int first = arrSizeInfo.find("=");
         int middle = arrSizeInfo.find(",");
         int last = arrSizeInfo.find("=", middle);
-        rows = std::stoi(arrSizeInfo.substr(first+1, middle-first)) + 2;
-        cols = std::stoi(arrSizeInfo.substr(last+1)) + 2;
+        rows = std::stoi(arrSizeInfo.substr(first + 1, middle-first)) + 2;
+        cols = std::stoi(arrSizeInfo.substr(last + 1)) + 2;
 
-        char** arr = new char*[rows];
-        for (int i = 0; i < rows; ++i) {
-            arr[i] = new char[cols];
-        }
-
-        return arr;
+        return get_array<char>(rows, cols);
     };
 
     void populate(char**& arr, const std::string& filePath, int rows, int cols) {
+        // add a grassland border
         for (int i = 0; i < cols; ++i) {
             arr[0][i] = 'g';
             arr[rows-1][i] = 'g';
@@ -63,86 +107,31 @@ namespace rastarr {
         }
     };
 
-    void get_stand(char**& arr, int row, int col, int& id, bool first = true) {
-        if (arr[row][col] != 't') return;
-
-        if (first) id++;
-        arr[row][col] = (id % 76) + '0';
-        
-        get_stand(arr, row - 1, col, id, false);
-        get_stand(arr, row + 1, col, id, false);
-        get_stand(arr, row, col - 1, id, false);
-        get_stand(arr, row, col + 1, id, false);
-    };
-
-    // void get_stand(char**& arr, int row, int col, int& id, bool first = true) {
-    //     if (arr[row][col] == 't') {
-    //         if (first) {id++;}
-    //         arr[row][col] = (id % 76) + '0';
-    //         get_stand(arr, row - 1, col, id, false);
-    //         get_stand(arr, row + 1, col, id, false);
-    //         get_stand(arr, row, col - 1, id, false);
-    //         get_stand(arr, row, col + 1, id, false);
-    //     }
-    // }
-
-    // int get_stand(char**& arr, int row, int col, int& id, int count = 0, bool first = true) {
-    //     if (arr[row][col] != 't') return count;
-
-    //     if (first) id++;
-    //     if (id > 76) id -= 76;
-    //     arr[row][col] = id + '0';
-
-    //     count++;
-        
-    //     count = get_stand(arr, row - 1, col, id, count, false);
-    //     count = get_stand(arr, row + 1, col, id, count, false);
-    //     count = get_stand(arr, row, col - 1, id, count, false);
-    //     count = get_stand(arr, row, col + 1, id, count, false);
-
-    //     return count;
-    // };
-
-    void print_stands(char**& arr, int rows, int cols) {
-        std::cout << "\n";
+    int** get_map(char**& arr, int rows, int cols) {
+        int** map = get_array<int>(rows, cols, 0);
         int id = 0;
 
         for (int i = 1; i < rows - 1; ++i) {
             for (int j = 1; j < cols - 1; ++j) {
-                if (arr[i][j] != 't') continue;
-                get_stand(arr, i, j, id);
+                if (arr[i][j] == 't') {
+                    id++;
+                    mark_stand(arr, map, i, j, id);
+                }
             }
         }
 
-        for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < cols; ++j) {
-                if (arr[i][j] == 'g') arr[i][j] = '0';
-            }
-        }  
+        return map;
+    }
 
-        std::cout << "\n";
-        print(arr, rows, cols);
+    void output_map(int**& map, int rows, int cols) { 
+        print_array<int>(map, rows, cols); 
     };
 
-    void print_stands(char**& arr, int rows, int cols, const std::string& filePath) {
-        int id = 0;
-
-        for (int i = 1; i < rows - 1; ++i) {
-            for (int j = 1; j < cols - 1; ++j) {
-                get_stand(arr, i, j, id);
-            }
-        }
-
-        for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < cols; ++j) {
-                if (arr[i][j] == 'g') arr[i][j] = '0';
-            }
-        }  
-
+    void output_map(int**& map, int rows, int cols, const std::string& filePath) {
         std::ofstream fout(filePath);
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < cols; ++j) {
-                fout << arr[i][j] << " ";
+                fout << map[i][j] << " ";
             }
             fout << "\n";
         }
