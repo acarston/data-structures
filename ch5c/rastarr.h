@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <vector>
 
 // anonymous namespace for private functions
 namespace {
@@ -32,27 +33,30 @@ namespace {
 
     // give all cells within a stand a predetermined id in a matrix of ints 
     // modifies the original array of chars due to pass by reference
-    void mark_stand(char**& arrTracker, int**& map, int row, int col, int& id) {
-        // end call if the cell is grass, burn
-        if (arrTracker[row][col] != 't') return;
+    int mark_stand(char**& arrTracker, int**& map, int row, int col, int id, int count = 0, char tree = 't') {
+        // end call if cell is grass, burn
+        if (arrTracker[row][col] != tree) return count;
 
         // mark visited cell as grass
         arrTracker[row][col] = 'g';
         map[row][col] = id;
         
+        count++;
         // look around the current cell
-        mark_stand(arrTracker, map, row, col - 1, id);
-        mark_stand(arrTracker, map, row + 1, col, id);
-        mark_stand(arrTracker, map, row, col + 1, id);
-        mark_stand(arrTracker, map, row - 1, col, id);
+        count = mark_stand(arrTracker, map, row, col - 1, id, count, tree);
+        count =       mark_stand(arrTracker, map, row + 1, col, id, count, tree);
+        count =       mark_stand(arrTracker, map, row, col + 1, id, count, tree);
+        count =       mark_stand(arrTracker, map, row - 1, col, id, count, tree);
+
+        return count;
     };
 
     void set_surrounding(int**& map, int rows, int cols, int*& surrounding, int row, int col) {
         int current = map[row][col];
 
-        surrounding[0] = row + 1 > rows ? current : map[row+1][col]; 
+        surrounding[0] = row + 1 >= rows ? current : map[row+1][col]; 
         surrounding[1] = row - 1 < 0 ? current : map[row-1][col]; 
-        surrounding[2] = col + 1 > cols ? current : map[row][col+1]; 
+        surrounding[2] = col + 1 >= cols ? current : map[row][col+1]; 
         surrounding[3] = col - 1 < 0 ? current : map[row][col-1];
     };
 
@@ -64,50 +68,6 @@ namespace {
             }
         }
     };
-
-    void burn(int**& map, int rows, int cols, int numStands) {
-        // dynamic allocation because only the pointer is necessary
-        // deleted automatically at end of function call
-        int* surrounding = new int[4];
-        bool* isBurned = new bool[numStands];
-        std::fill_n(isBurned, numStands, true);
-
-        for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < cols; ++j) {
-                set_surrounding(map, rows, cols, surrounding, i, j);
-                set_burned(map, isBurned, surrounding, map[i][j]);
-            }
-        }
-
-        for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < cols; ++j) {
-                int& id = map[i][j];
-                if (isBurned[id]) id = -1;
-            }
-        }
-    };
-
-    // TODO modify map to set burns to -1
-    // void burn(int**& map, int rows, int cols, int numStands) { // TODO get numStands from id
-    //     Border** borderMap = get_array<Border>(rows, cols);
-    //     for (int i = 1; i < rows - 1; ++i) {
-    //         for (int j = 1; j < cols - 1; ++j) {
-    //             int current = map[i][j];
-    //             if (current == 0 || current == -1) continue;
-    //             borderMap[i][j].info = current;
-
-    //             int surrounding[] = {map[i][j+1], map[i][j-1], map[i-1][j], map[i+1][j]}; // TODO make into its own function
-    //             for (int k = 0; k < 4; ++k) {
-    //                 if (surrounding[k] != current) {
-                        
-    //                 } 
-    //             }
-
-    //             if (right == current && left == current && top == current && bottom == current) continue;
-    //             borderMap[i][j].isBorder = true;
-    //         }
-    //     }
-    // };
 };
 
 namespace rastarr {
@@ -183,6 +143,21 @@ namespace rastarr {
         }
     };
 
+    template <typename T>
+    T** trim(T**& arr, int& rows, int& cols) {
+        rows -= 2;
+        cols -= 2;
+        T** map = get_array<T>(rows, cols);
+
+        for(int i = 0; i < rows; ++i) {
+            for(int j = 0; j < cols; ++j) {
+                map[i][j] = arr[i + 1][j + 1];
+            }
+        }
+
+        return map;
+    };
+
     int** get_map(char**& arr, int rows, int cols, int& id) {
         int** map = get_array<int>(rows, cols, 0);
         id = 0;
@@ -200,18 +175,71 @@ namespace rastarr {
         }
 
         return map;
-    }
-
-    void output_map(int**& map, int rows, int cols, int numStands) { 
-        burn(map, rows - 1, cols - 1, numStands);
-        print_matrix<int>(map, rows - 1, cols - 1, 1, 1); 
     };
 
-    // TODO add burn function
-    void output_map(int**& map, int rows, int cols, const std::string& filePath) {
-        std::ofstream fout(filePath);
+    char** get_map(int**& arr, int rows, int cols) {
+        char** map = get_array<char>(rows, cols, 'g');
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
+                if (arr[i][j] > 0) map[i][j] = 't';
+                if (arr[i][j] < 0) map[i][j] = 'b';
+            }
+        }
+        return map;
+    };
+
+    void burn(int**& map, int rows, int cols, int numStands) {
+        // dynamic allocation because only the pointer is necessary
+        // deleted automatically at end of function call
+        int* surrounding = new int[4];
+        bool* isBurned = new bool[numStands];
+        std::fill_n(isBurned, numStands, true);
+
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
+                set_surrounding(map, rows, cols, surrounding, i, j);
+                set_burned(map, isBurned, surrounding, map[i][j]);
+            }
+        }
+
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
+                int& id = map[i][j];
+                if (isBurned[id]) id = -1;
+            }
+        }
+    };
+
+    void remove_shadows(char**& arr, char**& arrTracker, int rows, int cols) {
+        int** map = get_array<int>(rows, cols, 0);
+        std::vector<int> counts;
+        int id = 0;
+
         for (int i = 1; i < rows - 1; ++i) {
             for (int j = 1; j < cols - 1; ++j) {
+                if (arrTracker[i][j] == 'b') {
+                    id++;
+                    counts.push_back(mark_stand(arrTracker, map, i, j, id, 0, 'b')); // arr vs arrTracker different????
+                }
+            }
+        }
+
+        print_matrix(map, rows, cols);
+
+        for (int i = 1; i < rows - 1; ++i) {
+            for (int j = 0; j < cols - 1; ++j) {
+                if (map[i][j] > 0 && counts[map[i][j]-1] < 5) {
+                    arr[i][j] = 'g';
+                }
+            }
+        }
+    };
+
+    template <typename T>
+    void output_map(T**& map, int rows, int cols, const std::string& filePath) {
+        std::ofstream fout(filePath);
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
                 fout << map[i][j] << " ";
             }
             fout << "\n";
