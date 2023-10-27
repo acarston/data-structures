@@ -5,6 +5,9 @@
 #include <fstream>
 #include <iostream>
 
+// A forest map represented by chars provided in the input file.
+// Includes functionality to identify individual groups of tree
+// chars and output them as a matrix of ints.
 class TreeMap {
     public:
         TreeMap(const std::string& filePath);
@@ -22,8 +25,8 @@ class TreeMap {
         
         template <typename T> T** get_array(int rows, int cols);
         template <typename T> T** get_array(int rows, int cols, T defaultVal);
-        void set_map_size();
-        void populate_map();
+        void set_treemap_size();
+        void populate_treemap();
 
         template <typename T> void print_matrix(T**& arr, int rows, int cols);
 

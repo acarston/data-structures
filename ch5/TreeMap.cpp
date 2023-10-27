@@ -1,11 +1,14 @@
 #include "TreeMap.h"
 
+// use the filepath to create a tree map
 TreeMap::TreeMap(const std::string& filePath) {
     this->filePath = filePath;
-    set_map_size();
-    populate_map();
+    set_treemap_size();
+    populate_treemap();
 };
 
+// explicitly create the numbered stand map
+// call only when the tree map is no longer in use
 void TreeMap::build_stands() {
     set_intmap();
     trim_intmap();
@@ -41,6 +44,7 @@ void TreeMap::output_intmap(const std::string& outPath) {
 };
 
 
+// dynamically allocate a 2D array
 template <typename T> 
 T** TreeMap::get_array(int rows, int cols) {
     T** arr = new T*[rows];
@@ -50,6 +54,7 @@ T** TreeMap::get_array(int rows, int cols) {
     return arr;
 };
 
+// allocate and populate all elements with a value
 template <typename T> 
 T** TreeMap::get_array(int rows, int cols, T defaultVal) {
     T** arr = new T*[rows];
@@ -65,7 +70,7 @@ T** TreeMap::get_array(int rows, int cols, T defaultVal) {
     return arr;
 };
 
-void TreeMap::set_map_size() {
+void TreeMap::set_treemap_size() {
     std::fstream fin(filePath);
     if (!fin.is_open()) {
         std::cout << "FATAL: unable to open file" << std::endl;
@@ -85,7 +90,7 @@ void TreeMap::set_map_size() {
     treeMap = get_array<char>(mapRows, mapCols);
 };
 
-void TreeMap::populate_map() {
+void TreeMap::populate_treemap() {
     // add a grassland border
     for (int i = 0; i < mapCols; ++i) {
         treeMap[0][i] = 'g';
@@ -104,6 +109,7 @@ void TreeMap::populate_map() {
     std::string line;
     std::getline(fin, line);
 
+    // copy file chars into the tree map
     for (int i = 1; i < mapRows - 1; ++i) {
         std::getline(fin, line);
         int k = 0;
@@ -127,12 +133,12 @@ void TreeMap::print_matrix(T**& arr, int rows, int cols) {
 
 
 // give all cells within a stand a predetermined id in a matrix of ints 
-// modifies the original array of chars due to pass by reference
+// modifies the original tree map when placing 'visited' markers
 void TreeMap::mark_stand(int row, int col, int& id) {
     // end call if the cell is not a tree
     if (treeMap[row][col] == 'g') return;
 
-    // mark visited cell as grass
+    // mark visited cells with grass, id
     treeMap[row][col] = 'g';
     intMap[row][col] = id;
     
@@ -145,8 +151,9 @@ void TreeMap::mark_stand(int row, int col, int& id) {
 
 void TreeMap::set_intmap() {
     intMap = get_array<int>(mapRows, mapCols, 0);
-    int id = 0;
 
+    // give each isolated stand a unique id
+    int id = 0;    
     for (int i = 1; i < mapRows - 1; ++i) {
         for (int j = 1; j < mapCols - 1; ++j) {
             if (treeMap[i][j] == 't') {
@@ -157,6 +164,7 @@ void TreeMap::set_intmap() {
     }
 };
 
+// remove the grassland border
 void TreeMap::trim_intmap() {
     mapRows -= 2;
     mapCols -= 2;
