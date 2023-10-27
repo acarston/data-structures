@@ -224,8 +224,6 @@ namespace rastarr {
             }
         }
 
-        print_matrix(map, rows, cols);
-
         for (int i = 1; i < rows - 1; ++i) {
             for (int j = 0; j < cols - 1; ++j) {
                 if (map[i][j] > 0 && counts[map[i][j]-1] < 5) {

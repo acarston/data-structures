@@ -1,4 +1,4 @@
-#include "rastarr.h"
+#include "TreeMap.h"
 #include "../utils/iohelpers.h"
 
 void check_args(int argc) {
@@ -12,29 +12,29 @@ void check_args(int argc) {
     }
 };
 
-void user_interact(char**& arr, int rows, int cols, int argc) {
+void user_interact(int argc, char* argv[]) {
+    TreeMap treeMap(argv[1]);
+
     char in = iohelpers::get_input<char>("enable verbose outputs? (not recommended for large files) [y/n]: ");
-    if (in != 'y') return;
+    if (in == 'y') {
+        std::cout << "\nreading from file...\ninput matrix:\n";
+        treeMap.print_treemap();
+        std::cout << "parsed matrix:\n";
+        treeMap.print_treemap_parsed();
+    }
 
-    std::cout << "\nreading from file...\ninput matrix:\n";
-    rastarr::print_matrix(arr, rows, cols);
-    std::cout << "parsed matrix:\n";
-    rastarr::print_matrix_parsed(arr, rows, cols, 't');
-
-    if (argc == 2) std::cout << "output matrix:\n";
-    else std::cout << "outputting to file...";
+    treeMap.build_stands();
+    if (argc == 2) {
+        std::cout << "output matrix:\n";
+        treeMap.print_intmap();
+    }
+    else {
+        std::cout << "outputting to file...";
+        treeMap.output_intmap(argv[2]);
+    }
 };
 
 int main(int argc, char* argv[]) {
     check_args(argc);
-
-    int rows, cols;
-    char** arr = rastarr::get_empty(argv[1], rows, cols); 
-    rastarr::populate(arr, argv[1], rows, cols);
-
-    user_interact(arr, rows, cols, argc);
-
-    int** map = rastarr::get_map(arr, rows, cols);
-    if (argc == 2) rastarr::output_map(map, rows, cols);
-    else rastarr::output_map(map, rows, cols, argv[2]);
+    user_interact(argc, argv);
 };

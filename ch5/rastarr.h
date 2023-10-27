@@ -49,9 +49,9 @@ namespace {
 
 namespace rastarr {
     template <typename T> 
-    void print_matrix(T**& arr, int rows, int cols, int iStart = 0, int jStart = 0) {
-        for (int i = iStart; i < rows; ++i) {
-            for (int j = jStart; j < cols; ++j) {
+    void print_matrix(T**& arr, int rows, int cols) {
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
                 std::cout << arr[i][j] << " ";
             }
             std::cout << "\n";
@@ -134,16 +134,27 @@ namespace rastarr {
         }
 
         return map;
-    }
+    };
 
-    void output_map(int**& map, int rows, int cols) { 
-        print_matrix<int>(map, rows - 1, cols - 1, 1, 1); 
+    template <typename T>
+    T** trim(T**& arr, int& rows, int& cols) {
+        rows -= 2;
+        cols -= 2;
+        T** map = get_array<T>(rows, cols);
+
+        for(int i = 0; i < rows; ++i) {
+            for(int j = 0; j < cols; ++j) {
+                map[i][j] = arr[i + 1][j + 1];
+            }
+        }
+
+        return map;
     };
 
     void output_map(int**& map, int rows, int cols, const std::string& filePath) {
         std::ofstream fout(filePath);
-        for (int i = 1; i < rows - 1; ++i) {
-            for (int j = 1; j < cols - 1; ++j) {
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
                 fout << map[i][j] << " ";
             }
             fout << "\n";

@@ -25,6 +25,7 @@ void user_interact(char**& arr, int rows, int cols, int argc) {
     else std::cout << "outputting to file...";
 };
 
+// namespace? delete dynamic allocation?
 int main(int argc, char* argv[]) {
     check_args(argc);
 
