@@ -1,4 +1,4 @@
-#include "rastarr.h"
+#include "TreeMap.h"
 #include "../utils/iohelpers.h"
 
 void check_args(int argc) {
@@ -12,42 +12,34 @@ void check_args(int argc) {
     }
 };
 
-void user_interact(char**& arr, int rows, int cols, int argc) {
+void user_interact(int argc, char* argv[]) {
+    TreeMap treeMap(argv[1]);
+    treeMap.remove_shadows();
+
     char in = iohelpers::get_input<char>("enable verbose outputs? (not recommended for large files) [y/n]: ");
-    if (in != 'y') return;
+    if (in == 'y') {
+        std::cout << "\nreading from file...\ninput matrix (shadows removed):\n";
+        treeMap.print_treemap();
+        std::cout << "parsed matrix:\n";
+        treeMap.print_treemap_parsed();
+    }
 
-    std::cout << "\nreading from file...\ninput matrix (shadows removed):\n";
-    rastarr::print_matrix(arr, rows, cols);
-    std::cout << "parsed matrix:\n";
-    rastarr::print_matrix_parsed(arr, rows, cols, 't');
+    int numStands = 0;
+    treeMap.set_intmap(numStands);
+    treeMap.burn(numStands);
 
-    if (argc == 2) std::cout << "output matrix:\n";
-    else std::cout << "outputting to file...";
+    // treeMap.build_stands();
+    if (argc == 2) {
+        std::cout << "output matrix:\n";
+        treeMap.print_intmap();
+    }
+    else {
+        std::cout << "outputting to file...";
+        treeMap.output_intmap(argv[2]);
+    }
 };
 
-// namespace? delete dynamic allocation?
 int main(int argc, char* argv[]) {
     check_args(argc);
-
-    // create the original tree map
-    int rows, cols;
-    char** map = rastarr::get_empty(argv[1], rows, cols); 
-    char** mapTracker = rastarr::get_empty(argv[1], rows, cols);
-    rastarr::populate(map, argv[1], rows, cols);
-    rastarr::populate(mapTracker, argv[1], rows, cols);
-    rastarr::remove_shadows(map, mapTracker, rows, cols);
-
-    user_interact(map, rows, cols, argc);
-
-    // identify the stands
-    int numStands = 0;
-    int** stands = rastarr::get_map(map, rows, cols, numStands);
-
-    // create the new tree map
-    stands = rastarr::trim<int>(stands, rows, cols);
-    rastarr::burn(stands, rows, cols, numStands);
-    char** newMap = rastarr::get_map(stands, rows, cols);
-
-    if (argc == 2) rastarr::print_matrix<char>(newMap, rows, cols);
-    else rastarr::output_map<char>(newMap, rows, cols, argv[2]);
+    user_interact(argc, argv);
 };
