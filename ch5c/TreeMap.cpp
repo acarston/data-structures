@@ -81,6 +81,7 @@ void TreeMap::burn(int numStands) {
 
     for (int i = 0; i < mapRows; ++i) {
         for (int j = 0; j < mapCols; ++j) {
+            if (intMap[i][j] == 0 || intMap[i][j] == -1) continue;
             set_surrounding(surrounding, i, j);
             set_burned(isBurned, surrounding, intMap[i][j]);
         }
@@ -88,6 +89,7 @@ void TreeMap::burn(int numStands) {
 
     for (int i = 0; i < mapRows; ++i) {
         for (int j = 0; j < mapCols; ++j) {
+            if (intMap[i][j] == 0 || intMap[i][j] == -1) continue;
             int& id = intMap[i][j];
             if (isBurned[id]) id = -1;
         }
@@ -214,6 +216,9 @@ void TreeMap::set_intmap(int& id) {
             if (treeMap[i][j] == 't') {
                 id++;
                 mark_stand(treeMap, intMap, i, j, id);
+            }
+            if (treeMap[i][j] == 'b') {
+                intMap[i][j] = -1;
             }
         }
     }
