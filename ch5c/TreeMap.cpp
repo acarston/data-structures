@@ -11,7 +11,7 @@ TreeMap::TreeMap(const std::string& filePath) {
 void TreeMap::set_intmap(int& id) {
     intMap = get_array<int>(mapRows, mapCols, 0);
 
-    // give each isolated stand a unique id
+    // give each isolated stand, burn a unique id
     id = 0;    
     for (int i = 1; i < mapRows - 1; ++i) {
         for (int j = 1; j < mapCols - 1; ++j) {
@@ -57,41 +57,53 @@ void TreeMap::output_treemap(const std::string& outPath) {
 };
 
 
+// change small burn stands to grass
 void TreeMap::remove_shadows() {
+    // create a copy of the current treemap
+    // avoids modifying the original in mark_stand calls
     TreeMap treeMapTracker(filePath);
     char** tracker = treeMapTracker.get_treemap();
 
     int** burnMap = get_array<int>(mapRows, mapCols, 0);
-    std::vector<int> counts;
+    std::vector<int> standSizes;
     int id = 0;
 
+    // give each isolated burn stand a unique id
     for (int i = 1; i < mapRows - 1; ++i) {
         for (int j = 1; j < mapCols - 1; ++j) {
             if (tracker[i][j] == 'b') {
                 id++;
-                counts.push_back(mark_stand(tracker, burnMap, i, j, id, 0, 'b')); // arr vs arrTracker different????
+                // note the size of each burn stand
+                standSizes.push_back(mark_stand(tracker, burnMap, i, j, id, 0, 'b'));
             }
         }
     }
 
+    // re-mark burn stands <= 4 cells
     for (int i = 1; i < mapRows - 1; ++i) {
         for (int j = 0; j < mapCols - 1; ++j) {
-            if (burnMap[i][j] > 0 && counts[burnMap[i][j]-1] < 5) {
+            if (burnMap[i][j] > 0 && standSizes[burnMap[i][j]-1] < 5) {
                 treeMap[i][j] = 'g';
             }
         }
     }
 };
 
+// replace burned tree stands with burn chars
+// condition: there is no grass in the burn island
+// condition: the stand is surrounded by burn chars
 void TreeMap::burn(int numStands) {
+    // consider only the original, borderless map
+    // appropriately modifies mapRows, mapCols
     trim_intmap();
 
-    // dynamic allocation because only the pointer is necessary
-    // deleted automatically at end of function call
+    // allocate dynamically as only the pointer is necessary
+    // end of function call automatically handles deletion
     int* surrounding = new int[4];
     bool* isBurned = new bool[numStands];
     std::fill_n(isBurned, numStands, true);
 
+    // determine if the stand is burned
     for (int i = 0; i < mapRows; ++i) {
         for (int j = 0; j < mapCols; ++j) {
             if (intMap[i][j] == 0 || intMap[i][j] == -1) continue;
@@ -100,6 +112,7 @@ void TreeMap::burn(int numStands) {
         }
     }
 
+    // replace burned stand cells with a burn id
     for (int i = 0; i < mapRows; ++i) {
         for (int j = 0; j < mapCols; ++j) {
             if (intMap[i][j] == 0 || intMap[i][j] == -1) continue;
@@ -108,6 +121,7 @@ void TreeMap::burn(int numStands) {
         }
     }
 
+    // replace burned stand cells with the new char
     populate_treemap(-1);
 };
 
@@ -187,6 +201,7 @@ void TreeMap::populate_treemap() {
     }
 };
 
+// update the treemap to reflect the intmap
 void TreeMap::populate_treemap(int burnNum) {
     for (int i = 0; i < mapRows; ++i) {
         for (int j = 0; j < mapCols; ++j) {
@@ -245,17 +260,22 @@ void TreeMap::trim_intmap() {
     intMap = map;
 };
 
+// peek the surrounding cells
 void TreeMap::set_surrounding(int*& surrounding, int row, int col) {
     int current = intMap[row][col];
 
+    // handle index out-of-bounds cases
     surrounding[0] = row + 1 >= mapRows ? current : intMap[row+1][col]; 
     surrounding[1] = row - 1 < 0 ? current : intMap[row-1][col]; 
     surrounding[2] = col + 1 >= mapCols ? current : intMap[row][col+1]; 
     surrounding[3] = col - 1 < 0 ? current : intMap[row][col-1];
 };
 
+// determine if a cell in a stand violates the burn conditions
 void TreeMap::set_burned(bool*& isBurned, int*& surrounding, int id) {
     for (int i = 0; i < 4; ++i) {
+        // flag if the cell touches grass, indicating either
+        // a hole in the burn border, a burn island containing grass
         if (surrounding[i] == 0) {
             isBurned[id] = false;
             return;
