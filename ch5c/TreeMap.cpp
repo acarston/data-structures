@@ -7,12 +7,24 @@ TreeMap::TreeMap(const std::string& filePath) {
     populate_treemap();
 };
 
-// explicitly create the numbered stand map
-// call only when the tree map is no longer in use
-// void TreeMap::build_stands() {
-//     set_intmap();
-//     trim_intmap();
-// };
+
+void TreeMap::set_intmap(int& id) {
+    intMap = get_array<int>(mapRows, mapCols, 0);
+
+    // give each isolated stand a unique id
+    id = 0;    
+    for (int i = 1; i < mapRows - 1; ++i) {
+        for (int j = 1; j < mapCols - 1; ++j) {
+            if (treeMap[i][j] == 't') {
+                id++;
+                mark_stand(treeMap, intMap, i, j, id);
+            }
+            if (treeMap[i][j] == 'b') {
+                intMap[i][j] = -1;
+            }
+        }
+    }
+};
 
 
 void TreeMap::print_treemap() {
@@ -34,15 +46,16 @@ void TreeMap::print_intmap() {
     print_matrix<int>(intMap, mapRows, mapCols);
 };
 
-void TreeMap::output_intmap(const std::string& outPath) {
+void TreeMap::output_treemap(const std::string& outPath) {
     std::ofstream fout(outPath);
     for (int i = 0; i < mapRows; ++i) {
         for (int j = 0; j < mapCols; ++j) {
-            fout << intMap[i][j] << " ";
+            fout << treeMap[i][j] << " ";
         }
         fout << "\n";
     }
 };
+
 
 void TreeMap::remove_shadows() {
     TreeMap treeMapTracker(filePath);
@@ -94,6 +107,8 @@ void TreeMap::burn(int numStands) {
             if (isBurned[id]) id = -1;
         }
     }
+
+    populate_treemap(-1);
 };
 
 
@@ -172,6 +187,15 @@ void TreeMap::populate_treemap() {
     }
 };
 
+void TreeMap::populate_treemap(int burnNum) {
+    for (int i = 0; i < mapRows; ++i) {
+        for (int j = 0; j < mapCols; ++j) {
+            if (intMap[i][j] > 0) treeMap[i][j] = 't';
+            if (intMap[i][j] == burnNum) treeMap[i][j] = 'b';
+        }
+    }
+};
+
 
 template <typename T> 
 void TreeMap::print_matrix(T**& arr, int rows, int cols) {
@@ -206,23 +230,6 @@ int TreeMap::mark_stand(char**& arrTracker, int**& map, int row, int col, int id
     return count;
 };
 
-void TreeMap::set_intmap(int& id) {
-    intMap = get_array<int>(mapRows, mapCols, 0);
-
-    // give each isolated stand a unique id
-    id = 0;    
-    for (int i = 1; i < mapRows - 1; ++i) {
-        for (int j = 1; j < mapCols - 1; ++j) {
-            if (treeMap[i][j] == 't') {
-                id++;
-                mark_stand(treeMap, intMap, i, j, id);
-            }
-            if (treeMap[i][j] == 'b') {
-                intMap[i][j] = -1;
-            }
-        }
-    }
-};
 
 // remove the grassland border
 void TreeMap::trim_intmap() {

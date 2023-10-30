@@ -28,14 +28,13 @@ void user_interact(int argc, char* argv[]) {
     treeMap.set_intmap(numStands);
     treeMap.burn(numStands);
 
-    // treeMap.build_stands();
     if (argc == 2) {
         std::cout << "output matrix:\n";
-        treeMap.print_intmap();
+        treeMap.print_treemap();
     }
     else {
         std::cout << "outputting to file...";
-        treeMap.output_intmap(argv[2]);
+        treeMap.output_treemap(argv[2]);
     }
 };
 
