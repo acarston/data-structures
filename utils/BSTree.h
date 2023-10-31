@@ -61,7 +61,7 @@ class BSTree {
                     p = p->left;
                 }
                 else {
-                    if (on_duplicate != nullptr) on_duplicate(p->info, val); // please delete valWrapper 🙂
+                    if (on_duplicate != nullptr) on_duplicate(p->info, val);
                     break;
                 }
             }
