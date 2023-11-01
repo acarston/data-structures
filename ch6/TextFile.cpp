@@ -10,6 +10,14 @@ void TextFile::on_duplicate(WordInfo* current, WordInfo* incoming) {
     incoming = nullptr;
 }
 
+void TextFile::visit(WordInfo* info) {
+    std::cout << info->word << ": ";
+    for (auto it = info->lines.begin(); it != info->lines.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << "\n";
+}
+
 void TextFile::remove_special_chars(std::string& word) {
     for (int i = 0; i < NUM_SPECIAL_CHARS; ++i) {
         if (word.find(SPECIAL_CHARS[i]) != -1) {
@@ -25,8 +33,6 @@ void TextFile::parse_into_tree() {
         std::cout << "FATAL: unable to open file" << std::endl;
         exit(0);
     }
-
-    BSTree<WordInfo*> tree;
 
     std::string line;
     while(std::getline(fin, line)) {
@@ -49,4 +55,8 @@ void TextFile::parse_into_tree() {
             tree.insert(wordInfo, &get_word, &on_duplicate);
         }
     }
+}
+
+void TextFile::print_words() {
+    tree.traverse_inorder(&visit);
 }

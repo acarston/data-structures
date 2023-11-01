@@ -43,10 +43,10 @@ class BSTree {
         };
         
         template <typename U>
-        void insert(T val, U& (*get_member)(T node), void (*on_duplicate)(T current, T incoming) = nullptr) {
+        void insert(T val, U& (*get_member)(T info), void (*on_duplicate)(T current, T incoming) = nullptr) {
             Node<T>* p = root;
             while (true) {
-                if (get_member(val) > get_member(p->info)) { // get_member returns word.word
+                if (get_member(val) > get_member(p->info)) {
                     if (p->right == nullptr) {
                         p->right = new Node<T>(val);
                         break;
@@ -63,6 +63,33 @@ class BSTree {
                 else {
                     if (on_duplicate != nullptr) on_duplicate(p->info, val);
                     break;
+                }
+            }
+        };
+
+        void traverse_inorder(void (*visit)(T info)) {
+            Node<T>* cur = root;
+            while (cur != nullptr) {
+                if (cur->left == nullptr) {
+                    visit(cur->info);
+                    cur = cur->right;
+                }
+                else {
+                    Node<T>* p = cur->left;
+                    while (p->right != nullptr && p->right != cur) {
+                        if (p->right == nullptr) {
+                            p->right = cur;
+                            cur = cur->left;
+                            break;
+                        }
+                        if (p->right == cur) {
+                            p->right = nullptr;
+                            visit(cur->info);
+                            cur = cur->right;
+                            break;
+                        }
+                        p = p->right;
+                    }
                 }
             }
         };
