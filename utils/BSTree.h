@@ -15,10 +15,13 @@ class BSTree {
     public:
         BSTree() {};
         BSTree(T rootVal) { root = new Node<T>(rootVal); };
-        void set_root(T rootVal) { root = new Node<T>(rootVal); };
 
-        // requires root to be set lol. Tim does not like
         void insert(T val, void (*on_duplicate)(Node<T>* node) = nullptr) {
+            if (root == nullptr) {
+                set_root(val);
+                return;
+            }
+
             Node<T>* p = root;
             while (true) {
                 if (val > p->info) {
@@ -44,6 +47,11 @@ class BSTree {
         
         template <typename U>
         void insert(T val, U& (*get_member)(T info), void (*on_duplicate)(T current, T incoming) = nullptr) {
+            if (root == nullptr) {
+                set_root(val);
+                return;
+            }
+
             Node<T>* p = root;
             while (true) {
                 if (get_member(val) > get_member(p->info)) {
@@ -67,21 +75,28 @@ class BSTree {
             }
         };
 
+        // Morris inorder traversal algorithm. Adapted from 
+        // https://takeuforward.org/data-structure/morris-inorder-traversal-of-a-binary-tree/
         void traverse_inorder(void (*visit)(T info)) {
             Node<T>* cur = root;
             while (cur != nullptr) {
+                // visit, move to the right if no left child
                 if (cur->left == nullptr) {
                     visit(cur->info);
                     cur = cur->right;
                 }
                 else {
-                    Node<T>* p = cur->left;
+                    // look for the rightmost subtree node
+                    Node<T>* p = cur->left; 
                     while (true) {
+                        // make current the right child of this node
+                        // point current to the new 'root'
                         if (p->right == nullptr) {
                             p->right = cur;
                             cur = cur->left;
                             break;
                         }
+                        // visit, move to the right
                         if (p->right == cur) {
                             p->right = nullptr;
                             visit(cur->info);
@@ -96,6 +111,8 @@ class BSTree {
 
     private:
         Node<T>* root = nullptr;
+
+        void set_root(T rootVal) { root = new Node<T>(rootVal); };
 };
 
 #endif
