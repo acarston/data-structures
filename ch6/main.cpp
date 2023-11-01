@@ -1,10 +1,8 @@
 #include "TextFile.h"
+#include "iohelpers.h"
 
 int main(int argc, char* argv[]) {
-	if (argc != 2) {
-		std::cout << "cry" << std::endl;
-		exit(-1);
-	}
+	iohelpers::check_args(argc, 2, 2);
 
 	TextFile f(argv[1]);
 	f.parse_into_tree();
