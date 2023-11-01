@@ -2,6 +2,7 @@
 #define IOHELPERS_H
 
 #include <iostream>
+#include <string>
 
 namespace iohelpers {
     template <typename T>
@@ -18,6 +19,17 @@ namespace iohelpers {
         std::getline(std::cin, in);
         return in;
     }
+
+    void check_args(int argc, int lowerBound, int upperBound) {
+        if (argc < lowerBound) {
+            std::cout << "FATAL: too few arguments";
+            exit(-1);
+        }
+        else if (argc > upperBound) {
+            std::cout << "FATAL: too many arguments";
+            exit(-1);
+        }
+    };
 };
 
 #endif
