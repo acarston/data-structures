@@ -7,7 +7,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "../utils/BSTree.h"
+#include "BSTree.h"
 
 class TextFile {
 	private:
@@ -24,8 +24,8 @@ class TextFile {
 		BSTree<WordInfo*> tree;
 		std::string filePath;
 		int lineNum = 0;
-		const static int NUM_SPECIAL_CHARS = 8;
-		const std::string SPECIAL_CHARS[NUM_SPECIAL_CHARS] = { "\"", ";", ",", ".", "?", "!", ":", "\n" };
+		const static int NUM_SPECIAL_CHARS = 12;
+		const std::string SPECIAL_CHARS[NUM_SPECIAL_CHARS] = {"\"", ";", ",", ".", "?", "!", ":", "\n", "(", ")", "[", "]"};
 		
 		static std::string& get_word(WordInfo* info);
 		static void on_duplicate(WordInfo* current, WordInfo* incoming);

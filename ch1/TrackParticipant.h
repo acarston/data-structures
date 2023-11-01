@@ -12,5 +12,5 @@ class TrackParticipant: public EventParticipant {
         std::string time;
 };
 
-#include "TrackParticipant.cpp"
+//#include "TrackParticipant.cpp"
 #endif

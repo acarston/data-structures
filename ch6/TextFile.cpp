@@ -5,7 +5,7 @@ std::string& TextFile::get_word(WordInfo* info) {
 }
 
 void TextFile::on_duplicate(WordInfo* current, WordInfo* incoming) {
-    current->verses.push_back(incoming->verses.front());
+    current->lines.push_back(incoming->lines.front());
     delete incoming;
     incoming = nullptr;
 }

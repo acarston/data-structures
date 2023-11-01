@@ -76,7 +76,7 @@ class BSTree {
                 }
                 else {
                     Node<T>* p = cur->left;
-                    while (p->right != nullptr && p->right != cur) {
+                    while (true) {
                         if (p->right == nullptr) {
                             p->right = cur;
                             cur = cur->left;

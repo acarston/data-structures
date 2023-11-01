@@ -27,5 +27,5 @@ class EventParticipant {
         int place, points;
 };
 
-#include "EventParticipant.cpp"
+//#include "EventParticipant.cpp"
 #endif
