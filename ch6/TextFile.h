@@ -28,12 +28,14 @@ class TextFile {
 		const static int NUM_SPECIAL_CHARS = 12;
 		const std::string SPECIAL_CHARS[NUM_SPECIAL_CHARS] = {"\"", ";", ",", ".", "?", "!", ":", "\n", "(", ")", "[", "]"};
 		
-		static std::string& get_word(WordInfo* info);
-		static void on_duplicate(WordInfo* current, WordInfo* incoming);
+		static void to_lower(std::string& str);
+		bool is_number(const std::string& str);
+
+		static int compare(WordInfo*& current, WordInfo*& incoming);
+		static void on_duplicate(WordInfo*& current, WordInfo*& incoming);
 		static void visit(WordInfo* info);
 
 		void remove_special_chars(std::string& word);
-		bool is_number(const std::string& s);
 		void parse_verses();
 
 	public:

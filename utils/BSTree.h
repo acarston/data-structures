@@ -48,11 +48,8 @@ class BSTree {
         
         // insert with custom comparison values
         template <typename U>
-        void insert(T val, U& (*get_member)(T info), void (*on_duplicate)(T current, T incoming) = nullptr) {
-            if (root == nullptr) {
-                set_root(val);
-                return;
-            }
+        void insert(T val, U& (*get_member)(T& info), void (*on_duplicate)(T& current, T& incoming) = nullptr) {
+            if (set_root(val)) return;
 
             Node<T>* p = root;
             while (true) {
@@ -72,6 +69,33 @@ class BSTree {
                 }
                 else {
                     if (on_duplicate != nullptr) on_duplicate(p->info, val);
+                    break;
+                }
+            }
+        };
+
+        // insert with custom compare function
+        void insert(T val, int (*compare)(T& current, T& incoming), void (*on_duplicate)(T& current, T& incoming)) {
+            if (set_root(val)) return;
+
+            Node<T>* p = root;
+            while (true) {
+                if (compare(p->info, val) > 0) {
+                    if (p->right == nullptr) {
+                        p->right = new Node<T>(val);
+                        break;
+                    }
+                    p = p->right;
+                }
+                else if (compare(p->info, val) < 0) {
+                    if (p->left == nullptr) {
+                        p->left = new Node<T>(val);
+                        break;
+                    }
+                    p = p->left;
+                }
+                else {
+                    on_duplicate(p->info, val);
                     break;
                 }
             }
@@ -114,7 +138,13 @@ class BSTree {
     private:
         Node<T>* root = nullptr;
 
-        void set_root(T rootVal) { root = new Node<T>(rootVal); };
+        bool set_root(T& rootVal) { 
+            if (root == nullptr) {
+                root = new Node<T>(rootVal);
+                return true;
+            }
+            return false;
+        };
 };
 
 #endif
