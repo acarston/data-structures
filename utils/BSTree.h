@@ -16,7 +16,7 @@ class BSTree {
         BSTree() {};
         BSTree(T rootVal) { root = new Node<T>(rootVal); };
 
-        void insert(T val, void (*on_duplicate)(Node<T>* node) = nullptr) {
+        void insert(T val, void (*on_duplicate)(T current, T incoming) = nullptr) {
             if (root == nullptr) {
                 set_root(val);
                 return;
@@ -39,12 +39,14 @@ class BSTree {
                     p = p->left;
                 }
                 else {
+                    // skip duplicates if no handling is passed in
                     if (on_duplicate == nullptr) break;
                     else on_duplicate(p);
                 }
             }
         };
         
+        // insert with custom comparison values
         template <typename U>
         void insert(T val, U& (*get_member)(T info), void (*on_duplicate)(T current, T incoming) = nullptr) {
             if (root == nullptr) {

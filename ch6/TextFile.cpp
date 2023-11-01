@@ -4,6 +4,9 @@ std::string& TextFile::get_word(WordInfo* info) {
     return info->word;
 }
 
+// add the incoming line number to a node already in the tree
+// upon creation in parse_into_tree, WordInfo has exactly 1 element in its lines list
+// so attempting to insert should yank this element and delete the created WordInfo
 void TextFile::on_duplicate(WordInfo* current, WordInfo* incoming) {
     current->lines.push_back(incoming->lines.front());
     delete incoming;
@@ -35,6 +38,7 @@ bool TextFile::is_number(const std::string& str) {
     return !str.empty() && it == str.end();
 }
 
+// separate verses into lines in a text file
 void TextFile::parse_verses() {
     std::ofstream fout(PARSED_FILE_PATH);
     std::fstream fin(filePath);
@@ -50,12 +54,13 @@ void TextFile::parse_verses() {
         
         while (iss >> word) {
             if (is_number(word)) fout << "\n";
-            fout << word << " ";
+            else fout << word << " ";
         }
     }
 }
 
 
+// add each word in the parsed file to the tree
 void TextFile::parse_into_tree() {
     parse_verses();
 
@@ -68,8 +73,6 @@ void TextFile::parse_into_tree() {
         std::string word;
         WordInfo* wordInfo;
 
-        // ignore the first word (a verse number)
-        iss >> word;
         while (iss >> word) {
             remove_special_chars(word);
             wordInfo = new WordInfo(word, lineNum);
@@ -78,6 +81,7 @@ void TextFile::parse_into_tree() {
     }
 }
 
+// output the words alphabetically
 void TextFile::print_words() {
     tree.traverse_inorder(&visit);
     std::cout << std::endl;
