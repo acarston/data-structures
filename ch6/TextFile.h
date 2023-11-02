@@ -33,7 +33,7 @@ class TextFile {
 
 		static int compare(WordInfo*& current, WordInfo*& incoming);
 		static void on_duplicate(WordInfo*& current, WordInfo*& incoming);
-		static void visit(WordInfo* info);
+		static void visit(WordInfo*& info);
 
 		void remove_special_chars(std::string& word);
 		void parse_verses();

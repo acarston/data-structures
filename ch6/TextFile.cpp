@@ -35,7 +35,7 @@ void TextFile::on_duplicate(WordInfo*& current, WordInfo*& incoming) {
 }
 
 // specify the output upon traversal visit
-void TextFile::visit(WordInfo* info) {
+void TextFile::visit(WordInfo*& info) {
     std::cout << info->word << ": ";
     for (auto it = info->lines.begin(); it != info->lines.end(); ++it) {
         std::cout << *it << " ";
