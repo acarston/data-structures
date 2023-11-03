@@ -34,6 +34,10 @@ class BSTree {
 			else return node->height;
 		};
 
+		int set_height(Node<T>* node) {
+			return node->height = 1 + std::max(get_height(node->right), get_height(node->left));
+		};
+
 		int get_balfactor(Node<T>* node) {
 			return get_height(node->right) - get_height(node->left);
 		};
@@ -41,14 +45,26 @@ class BSTree {
 		// should return a node
 		Node<T>* rotate_left(Node<T>* p, Node<T>* ch) {
 			std::cout << "rotate_left\n";
+
 			p->right = ch->left;
 			ch->left = p;
+
+			set_height(p);
+			set_height(ch);
+
 			return ch;
-			// TODO: change the balance factors (or the heights?)
 		};
 
-		void rotate_right(Node<T>* p, Node<T>* ch) {
+		Node<T>* rotate_right(Node<T>* p, Node<T>* ch) {
 			std::cout << "rotate_right\n";
+
+			p->left = ch->right;
+			ch->right = p;
+
+			set_height(p);
+			set_height(ch);
+
+			return ch;
 		};
 
 		void rotate_leftright(Node<T>* p, Node<T>* ch) {
@@ -99,7 +115,7 @@ class BSTree {
 			while (true) {
 				// update the heights in the path
 				Node<T>* cur = path.top();
-				cur->height = 1 + std::max(get_height(cur->right), get_height(cur->left));
+				set_height(cur);
 				path.pop();
 				
 				// if cur is root
@@ -108,22 +124,24 @@ class BSTree {
 				Node<T>* par = path.top();
 				int parBalFactor = get_balfactor(par);
 				int curBalFactor = get_balfactor(cur);
-				Node<T>* newPar;
 
-				// TODO: test this snippet
 				path.pop();
 				Node<T>* gr = path.empty() ? nullptr : path.top();
 				path.push(par);
-
+				
+				Node<T>* newPar;
 				if (parBalFactor > 1) {
 					if (curBalFactor > 0) newPar = rotate_left(par, cur);
 					else rotate_rightleft(par, cur);
 				}
 				else if (parBalFactor < 1) {
-					if (curBalFactor < 0) rotate_right(par, cur);
+					if (curBalFactor < 0) newPar = rotate_right(par, cur);
 					else rotate_leftright(par, cur);
 				}
+				else continue;
 
+				// if we've performed a rotation, we should pop off the next in path
+				// (now somewhere deeper in the tree), right?
 				if (gr == nullptr) {
 					root = newPar;
 				}
