@@ -19,7 +19,6 @@ template <typename T>
 class BSTree {
 	private:
 		Node<T>* root = nullptr;
-		int numNodes = 0;
 
 		bool set_root(T& rootVal) { 
 			if (root == nullptr) {
@@ -67,12 +66,18 @@ class BSTree {
 			return ch;
 		};
 
-		void rotate_leftright(Node<T>* p, Node<T>* ch) {
+		Node<T>* rotate_leftright(Node<T>* p, Node<T>* ch) {
 			std::cout << "rotate_leftright\n";
+
+			p->left = rotate_left(ch, ch->right);
+			return rotate_right(p, p->left);
 		};
 
-		void rotate_rightleft(Node<T>* p, Node<T>* ch) {
+		Node<T>* rotate_rightleft(Node<T>* p, Node<T>* ch) {
 			std::cout << "rotate_rightleft\n";
+
+			p->right = rotate_right(ch, ch->left);
+			return rotate_left(p, p->right);
 		};
 
 	public:
@@ -128,20 +133,23 @@ class BSTree {
 				path.pop();
 				Node<T>* gr = path.empty() ? nullptr : path.top();
 				path.push(par);
-				
+
 				Node<T>* newPar;
 				if (parBalFactor > 1) {
 					if (curBalFactor > 0) newPar = rotate_left(par, cur);
-					else rotate_rightleft(par, cur);
+					else newPar = rotate_rightleft(par, cur);
 				}
 				else if (parBalFactor < 1) {
 					if (curBalFactor < 0) newPar = rotate_right(par, cur);
-					else rotate_leftright(par, cur);
+					else newPar = rotate_leftright(par, cur);
 				}
 				else continue;
 
 				// if we've performed a rotation, we should pop off the next in path
 				// (now somewhere deeper in the tree), right?
+				// path.pop();
+				// if (path.empty()) break;
+
 				if (gr == nullptr) {
 					root = newPar;
 				}
