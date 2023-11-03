@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <stack>
+#include <iostream> // temporary
 
 template <typename T>
 struct Node {
@@ -37,12 +38,33 @@ class BSTree {
 			return get_height(node->right) - get_height(node->left);
 		};
 
+		// should return a node
+		Node<T>* rotate_left(Node<T>* p, Node<T>* ch) {
+			std::cout << "rotate_left\n";
+			p->right = ch->left;
+			ch->left = p;
+			return ch;
+			// TODO: change the balance factors (or the heights?)
+		};
+
+		void rotate_right(Node<T>* p, Node<T>* ch) {
+			std::cout << "rotate_right\n";
+		};
+
+		void rotate_leftright(Node<T>* p, Node<T>* ch) {
+			std::cout << "rotate_leftright\n";
+		};
+
+		void rotate_rightleft(Node<T>* p, Node<T>* ch) {
+			std::cout << "rotate_rightleft\n";
+		};
+
 	public:
 		BSTree() {};
 		BSTree(T rootVal) { root = new Node<T>(rootVal); };
 
 		// make an insertion with AVL self-balancing
-		// implementation is original; everything is managed by a stack
+		// implementation is semi-original; everything is managed by a stack
 		// which keeps track of the path taken by the new insert
 		void avl_insert(T val) {
 			if (set_root(val)) return;
@@ -86,13 +108,28 @@ class BSTree {
 				Node<T>* par = path.top();
 				int parBalFactor = get_balfactor(par);
 				int curBalFactor = get_balfactor(cur);
+				Node<T>* newPar;
+
+				// TODO: test this snippet
+				path.pop();
+				Node<T>* gr = path.empty() ? nullptr : path.top();
+				path.push(par);
+
 				if (parBalFactor > 1) {
-					if (curBalFactor > 0) rotate_left(par, cur)
-					else rotate_rightleft(par, cur)
+					if (curBalFactor > 0) newPar = rotate_left(par, cur);
+					else rotate_rightleft(par, cur);
 				}
 				else if (parBalFactor < 1) {
 					if (curBalFactor < 0) rotate_right(par, cur);
 					else rotate_leftright(par, cur);
+				}
+
+				if (gr == nullptr) {
+					root = newPar;
+				}
+				else {
+					if (gr->right == par) gr->right = newPar;
+					else gr->left = newPar;
 				}
 			}
 		};
