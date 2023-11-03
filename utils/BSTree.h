@@ -80,43 +80,7 @@ class BSTree {
 			return rotate_left(p, p->right);
 		};
 
-	public:
-		BSTree() {};
-		BSTree(T rootVal) { root = new Node<T>(rootVal); };
-
-		// make an insertion with AVL self-balancing
-		// implementation is semi-original; everything is managed by a stack
-		// which keeps track of the path taken by the new insert
-		void avl_insert(T val) {
-			if (set_root(val)) return;
-
-			std::stack<Node<T>*> path;
-			Node<T>* p = root;
-			path.push(p);
-			while (true) {
-				if (val > p->info) {
-					if (p->right == nullptr) {
-						p->right = new Node<T>(val);
-						// update heights, balance factor only if the tree has been skewed
-						if (p->left == nullptr) break;
-						else return;
-					}
-					p = p->right;
-				}
-				else if (val < p->info) {
-					if (p->left == nullptr) {
-						p->left = new Node<T>(val);
-						if (p->right == nullptr) break;
-						else return;
-					}
-					p = p->left;
-				}
-				else {
-					return;
-				}
-				path.push(p);
-			}
-
+		void balance(std::stack<Node<T>*>& path) {
 			while (true) {
 				// update the heights in the path
 				Node<T>* cur = path.top();
@@ -158,6 +122,87 @@ class BSTree {
 					else gr->left = newPar;
 				}
 			}
+		};
+
+	public:
+		BSTree() {};
+		BSTree(T rootVal) { root = new Node<T>(rootVal); };
+
+		// make an insertion with AVL self-balancing
+		// implementation is semi-original; everything is managed by a stack
+		// which keeps track of the path taken by the new insert
+		void avl_insert(T val) {
+			if (set_root(val)) return;
+
+			std::stack<Node<T>*> path;
+			Node<T>* p = root;
+			path.push(p);
+			while (true) {
+				if (val > p->info) {
+					if (p->right == nullptr) {
+						p->right = new Node<T>(val);
+						// update heights, balance factor only if the tree has been skewed
+						if (p->left == nullptr) break;
+						else return;
+					}
+					p = p->right;
+				}
+				else if (val < p->info) {
+					if (p->left == nullptr) {
+						p->left = new Node<T>(val);
+						if (p->right == nullptr) break;
+						else return;
+					}
+					p = p->left;
+				}
+				else {
+					return;
+				}
+				path.push(p);
+			}
+
+			balance(path);
+			// while (true) {
+			// 	// update the heights in the path
+			// 	Node<T>* cur = path.top();
+			// 	set_height(cur);
+			// 	path.pop();
+				
+			// 	// if cur is root
+			// 	if (path.empty()) break;
+
+			// 	Node<T>* par = path.top();
+			// 	int parBalFactor = get_balfactor(par);
+			// 	int curBalFactor = get_balfactor(cur);
+
+			// 	path.pop();
+			// 	Node<T>* gr = path.empty() ? nullptr : path.top();
+			// 	path.push(par);
+
+			// 	Node<T>* newPar;
+			// 	if (parBalFactor > 1) {
+			// 		if (curBalFactor > 0) newPar = rotate_left(par, cur);
+			// 		else newPar = rotate_rightleft(par, cur);
+			// 	}
+			// 	else if (parBalFactor < 1) {
+			// 		if (curBalFactor < 0) newPar = rotate_right(par, cur);
+			// 		else newPar = rotate_leftright(par, cur);
+			// 	}
+			// 	else continue;
+
+			// 	// if we've performed a rotation, we should pop off the next in path
+			// 	// (now somewhere deeper in the tree), right?
+			// 	// path.pop();
+			// 	// if (path.empty()) break;
+
+			// 	if (gr == nullptr) {
+			// 		root = newPar;
+			// 	}
+			// 	else {
+			// 		if (gr->right == par) gr->right = newPar;
+			// 		else gr->left = newPar;
+			// 	}
+			// }
 		};
 
 		void insert(T val, void (*on_duplicate)(T& current, T& incoming) = nullptr) {
