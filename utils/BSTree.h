@@ -2,27 +2,103 @@
 #define BSTREE_H
 
 #include <cmath>
+#include <stack>
 
 template <typename T>
 struct Node {
 	T info;
 	Node* left = nullptr;
 	Node* right = nullptr;
+	int height = 1;
 
 	Node(T info): info(info) {};
 };
 
 template <typename T>
 class BSTree {
+	private:
+		Node<T>* root = nullptr;
+		int numNodes = 0;
+
+		bool set_root(T& rootVal) { 
+			if (root == nullptr) {
+				root = new Node<T>(rootVal);
+				return true;
+			}
+			return false;
+		};
+
+		int get_height(Node<T>* node) {
+			if (node == nullptr) return 0;
+			else return node->height;
+		};
+
+		int get_balfactor(Node<T>* node) {
+			return get_height(node->right) - get_height(node->left);
+		};
+
 	public:
 		BSTree() {};
 		BSTree(T rootVal) { root = new Node<T>(rootVal); };
 
-		void insert(T val, void (*on_duplicate)(T& current, T& incoming) = nullptr) {
-			if (root == nullptr) {
-				set_root(val);
-				return;
+		// make an insertion with AVL self-balancing
+		// implementation is original; everything is managed by a stack
+		// which keeps track of the path taken by the new insert
+		void avl_insert(T val) {
+			if (set_root(val)) return;
+
+			std::stack<Node<T>*> path;
+			Node<T>* p = root;
+			path.push(p);
+			while (true) {
+				if (val > p->info) {
+					if (p->right == nullptr) {
+						p->right = new Node<T>(val);
+						// update heights, balance factor only if the tree has been skewed
+						if (p->left == nullptr) break;
+						else return;
+					}
+					p = p->right;
+				}
+				else if (val < p->info) {
+					if (p->left == nullptr) {
+						p->left = new Node<T>(val);
+						if (p->right == nullptr) break;
+						else return;
+					}
+					p = p->left;
+				}
+				else {
+					return;
+				}
+				path.push(p);
 			}
+
+			while (true) {
+				// update the heights in the path
+				Node<T>* cur = path.top();
+				cur->height = 1 + std::max(get_height(cur->right), get_height(cur->left));
+				path.pop();
+				
+				// if cur is root
+				if (path.empty()) break;
+
+				Node<T>* par = path.top();
+				int parBalFactor = get_balfactor(par);
+				int curBalFactor = get_balfactor(cur);
+				if (parBalFactor > 1) {
+					if (curBalFactor > 0) rotate_left(par, cur)
+					else rotate_rightleft(par, cur)
+				}
+				else if (parBalFactor < 1) {
+					if (curBalFactor < 0) rotate_right(par, cur);
+					else rotate_leftright(par, cur);
+				}
+			}
+		};
+
+		void insert(T val, void (*on_duplicate)(T& current, T& incoming) = nullptr) {
+			if (set_root(val)) return;
 
 			Node<T>* p = root;
 			while (true) {
@@ -103,11 +179,6 @@ class BSTree {
 			}
 		};
 
-		void balance_dsw() {
-			create_backbone();
-			create_perfect_tree();
-		};
-
 		// Morris inorder traversal algorithm. Adapted from 
 		// https://takeuforward.org/data-structure/morris-inorder-traversal-of-a-binary-tree/
 		void traverse_inorder(void (*visit)(T& info)) {
@@ -139,66 +210,6 @@ class BSTree {
 						}
 						p = p->right;
 					}
-				}
-			}
-		};
-
-	private:
-		Node<T>* root = nullptr;
-		int numNodes = 0;
-
-		bool set_root(T& rootVal) { 
-			if (root == nullptr) {
-				root = new Node<T>(rootVal);
-				return true;
-			}
-			return false;
-		};
-
-
-		void rotate_left(Node<T>*& gr, Node<T>*& par, Node<T>* ch) {
-			par->right = ch->left;
-			ch->left = par;
-			if (par != root) gr->right = ch;
-			else root = gr = ch;
-		};
-
-		void rotate_right(Node<T>*& gr, Node<T>*& par) {
-			Node<T>* ch = par->left;
-			if (par != root) gr->right = ch;
-			else root = gr = ch;
-			par->left = ch->right;
-			ch->right = par;
-		};
-
-		void create_backbone() {
-			Node<T>* gr = root, * par = root;
-			while (par != nullptr) {
-				if (par->left != nullptr) {
-					rotate_right(gr, par);
-					par = gr;
-				}
-				else {
-					gr = par;
-					par = par->right;
-				}
-			}
-		};
-
-		void create_perfect_tree() {
-			Node<T>* gr = root, * par = root;
-			int m = pow(2, std::log2(numNodes + 1)) - 1;
-			for (int i = 0; i < numNodes - m; ++i) {
-				rotate_left(gr, par, par->right);
-				gr = par;
-				par = par->right;
-			}
-			for (m = m / 2; m > 0; m /= 2) {
-				gr = par = root;
-				for (int i = 0; i < m; ++i) {
-					rotate_left(gr, par, par->right);
-					gr = par;
-					par = par->right;
 				}
 			}
 		};
