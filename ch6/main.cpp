@@ -1,5 +1,5 @@
 #include "TextFile.h"
-#include "iohelpers.h"
+#include "../utils/iohelpers.h"
 
 int main(int argc, char* argv[]) {
 	iohelpers::check_args(argc, 2, 2);

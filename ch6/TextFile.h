@@ -7,7 +7,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "BSTree.h"
+#include "../utils/BSTree.h"
 
 class TextFile {
 	private:

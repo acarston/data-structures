@@ -137,7 +137,7 @@ class BSTree {
 		// make an insertion with AVL self-balancing
 		// implementation is original; everything is managed by a stack
 		// which keeps track of the path taken by the new insert
-		void avl_insert(T val) {
+		void insert(T val, void (*on_duplicate)(T& current, T& incoming) = nullptr) {
 			if (set_root(val)) return;
 
 			std::stack<Node<T>*> path;
@@ -147,8 +147,8 @@ class BSTree {
 				if (val > p->info) {
 					if (p->right == nullptr) {
 						p->right = new Node<T>(val);
-						// update heights, balance factor only if the tree has been skewed
 						if (p->left == nullptr) break;
+						// balance only if the tree has been skewed
 						else return;
 					}
 					p = p->right;
@@ -162,6 +162,8 @@ class BSTree {
 					p = p->left;
 				}
 				else {
+					// skip duplicates if no handling is passed in
+					if (on_duplicate != nullptr) on_duplicate(p->info, val);
 					return;
 				}
 				path.push(p);
@@ -170,86 +172,73 @@ class BSTree {
 			balance(path);
 		};
 
-		void insert(T val, void (*on_duplicate)(T& current, T& incoming) = nullptr) {
-			if (set_root(val)) return;
-
-			Node<T>* p = root;
-			while (true) {
-				if (val > p->info) {
-					if (p->right == nullptr) {
-						p->right = new Node<T>(val);
-						break;
-					}
-					p = p->right;
-				}
-				else if (val < p->info) {
-					if (p->left == nullptr) {
-						p->left = new Node<T>(val);
-						break;
-					}
-					p = p->left;
-				}
-				else {
-					// skip duplicates if no handling is passed in
-					if (on_duplicate != nullptr) on_duplicate(p->info, val);
-					break;
-				}
-			}
-		};
-		
 		// insert with custom comparison values
 		template <typename U>
 		void insert(T val, U& (*get_member)(T& info), void (*on_duplicate)(T& current, T& incoming) = nullptr) {
 			if (set_root(val)) return;
 
+			std::stack<Node<T>*> path;
 			Node<T>* p = root;
+			path.push(p);
 			while (true) {
 				if (get_member(val) > get_member(p->info)) {
 					if (p->right == nullptr) {
 						p->right = new Node<T>(val);
-						break;
+						if (p->left == nullptr) break;
+						else return;
 					}
 					p = p->right;
 				}
 				else if (get_member(val) < get_member(p->info)) {
 					if (p->left == nullptr) {
 						p->left = new Node<T>(val);
-						break;
+						if (p->right == nullptr) break;
+						else return;
 					}
 					p = p->left;
 				}
 				else {
 					if (on_duplicate != nullptr) on_duplicate(p->info, val);
-					break;
+					return;
 				}
+				path.push(p);
 			}
+
+			balance(path);
 		};
 
 		// insert with custom compare function
 		void insert(T val, int (*compare)(T& current, T& incoming), void (*on_duplicate)(T& current, T& incoming)) {
 			if (set_root(val)) return;
 
+			std::stack<Node<T>*> path;
 			Node<T>* p = root;
+			path.push(p);
 			while (true) {
 				if (compare(p->info, val) > 0) {
 					if (p->right == nullptr) {
 						p->right = new Node<T>(val);
-						break;
+						if (p->left == nullptr) break;
+						else return;
 					}
 					p = p->right;
 				}
 				else if (compare(p->info, val) < 0) {
 					if (p->left == nullptr) {
 						p->left = new Node<T>(val);
-						break;
+						if (p->right == nullptr) break;
+						else return;
 					}
 					p = p->left;
 				}
 				else {
 					on_duplicate(p->info, val);
-					break;
+					return;
 				}
+				path.push(p);
 			}
+
+			balance(path);
 		};
 
 		// Morris inorder traversal algorithm. Adapted from 
