@@ -108,7 +108,7 @@ class BSTree {
 					if (curBalFactor > 0) newPar = rotate_left(par, cur);
 					else newPar = rotate_rightleft(par, cur);
 				}
-				else if (parBalFactor < 1) {
+				else if (parBalFactor < -1) {
 					if (curBalFactor < 0) newPar = rotate_right(par, cur);
 					else newPar = rotate_leftright(par, cur);
 				}
