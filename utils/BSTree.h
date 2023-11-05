@@ -45,8 +45,6 @@ class BSTree {
 		};
 
 		Node<T>* rotate_left(Node<T>* p, Node<T>* ch) {
-			std::cout << "rotate_left\n";
-
 			p->right = ch->left;
 			ch->left = p;
 
@@ -57,8 +55,6 @@ class BSTree {
 		};
 
 		Node<T>* rotate_right(Node<T>* p, Node<T>* ch) {
-			std::cout << "rotate_right\n";
-
 			p->left = ch->right;
 			ch->right = p;
 
@@ -69,15 +65,11 @@ class BSTree {
 		};
 
 		Node<T>* rotate_leftright(Node<T>* p, Node<T>* ch) {
-			std::cout << "rotate_leftright\n";
-
 			p->left = rotate_left(ch, ch->right);
 			return rotate_right(p, p->left);
 		};
 
 		Node<T>* rotate_rightleft(Node<T>* p, Node<T>* ch) {
-			std::cout << "rotate_rightleft\n";
-
 			p->right = rotate_right(ch, ch->left);
 			return rotate_left(p, p->right);
 		};
