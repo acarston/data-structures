@@ -33,15 +33,17 @@ class BSTree {
 			else return node->height;
 		};
 
-		int set_height(Node<T>* node) {
-			return node->height = 1 + std::max(get_height(node->right), get_height(node->left));
+		// calculate a subtree height
+		// defined as the largest height of its subtrees plus 1
+		void set_height(Node<T>* node) {
+			node->height = 1 + std::max(get_height(node->right), get_height(node->left));
 		};
 
+		// calculate the balance factor based on node subtree heights
 		int get_balfactor(Node<T>* node) {
 			return get_height(node->right) - get_height(node->left);
 		};
 
-		// should return a node
 		Node<T>* rotate_left(Node<T>* p, Node<T>* ch) {
 			std::cout << "rotate_left\n";
 
@@ -80,6 +82,7 @@ class BSTree {
 			return rotate_left(p, p->right);
 		};
 
+		// perform rotations along the insert path
 		void balance(std::stack<Node<T>*>& path) {
 			while (true) {
 				// update the heights in the path
@@ -94,10 +97,12 @@ class BSTree {
 				int parBalFactor = get_balfactor(par);
 				int curBalFactor = get_balfactor(cur);
 
+				// get the grandfather without modifying the stack
 				path.pop();
 				Node<T>* gr = path.empty() ? nullptr : path.top();
 				path.push(par);
 
+				// perform a rotation according to balance factors
 				Node<T>* newPar;
 				if (parBalFactor > 1) {
 					if (curBalFactor > 0) newPar = rotate_left(par, cur);
@@ -109,18 +114,19 @@ class BSTree {
 				}
 				else continue;
 
-				// if we've performed a rotation, we should pop off the next in path
-				// (now somewhere deeper in the tree), right?
-				// path.pop();
-				// if (path.empty()) break;
-
+				// make grandfather point to the new subtree root
 				if (gr == nullptr) {
+					// the new subtree root was the tree root
 					root = newPar;
 				}
 				else {
 					if (gr->right == par) gr->right = newPar;
 					else gr->left = newPar;
-				}
+				}				
+				
+				// remove the old parent from the stack
+				path.pop();
+				if (path.empty()) break;
 			}
 		};
 
@@ -129,7 +135,7 @@ class BSTree {
 		BSTree(T rootVal) { root = new Node<T>(rootVal); };
 
 		// make an insertion with AVL self-balancing
-		// implementation is semi-original; everything is managed by a stack
+		// implementation is original; everything is managed by a stack
 		// which keeps track of the path taken by the new insert
 		void avl_insert(T val) {
 			if (set_root(val)) return;
@@ -162,47 +168,6 @@ class BSTree {
 			}
 
 			balance(path);
-			// while (true) {
-			// 	// update the heights in the path
-			// 	Node<T>* cur = path.top();
-			// 	set_height(cur);
-			// 	path.pop();
-				
-			// 	// if cur is root
-			// 	if (path.empty()) break;
-
-			// 	Node<T>* par = path.top();
-			// 	int parBalFactor = get_balfactor(par);
-			// 	int curBalFactor = get_balfactor(cur);
-
-			// 	path.pop();
-			// 	Node<T>* gr = path.empty() ? nullptr : path.top();
-			// 	path.push(par);
-
-			// 	Node<T>* newPar;
-			// 	if (parBalFactor > 1) {
-			// 		if (curBalFactor > 0) newPar = rotate_left(par, cur);
-			// 		else newPar = rotate_rightleft(par, cur);
-			// 	}
-			// 	else if (parBalFactor < 1) {
-			// 		if (curBalFactor < 0) newPar = rotate_right(par, cur);
-			// 		else newPar = rotate_leftright(par, cur);
-			// 	}
-			// 	else continue;
-
-			// 	// if we've performed a rotation, we should pop off the next in path
-			// 	// (now somewhere deeper in the tree), right?
-			// 	// path.pop();
-			// 	// if (path.empty()) break;
-
-			// 	if (gr == nullptr) {
-			// 		root = newPar;
-			// 	}
-			// 	else {
-			// 		if (gr->right == par) gr->right = newPar;
-			// 		else gr->left = newPar;
-			// 	}
-			// }
 		};
 
 		void insert(T val, void (*on_duplicate)(T& current, T& incoming) = nullptr) {
