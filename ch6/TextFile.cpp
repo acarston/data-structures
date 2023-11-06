@@ -35,12 +35,20 @@ void TextFile::on_duplicate(WordInfo*& current, WordInfo*& incoming) {
 }
 
 // specify the output upon traversal visit
-void TextFile::visit(WordInfo*& info) {
+void TextFile::to_console(WordInfo*& info) {
     std::cout << info->word << ": ";
     for (auto it = info->lines.begin(); it != info->lines.end(); ++it) {
         std::cout << *it << " ";
     }
     std::cout << "\n";
+}
+
+void TextFile::to_file(WordInfo*& info, std::ofstream& fout) {
+    fout << info->word + ": ";
+    for (auto it = info->lines.begin(); it != info->lines.end(); ++it) {
+        fout << *it << " ";
+    }
+    fout << "\n";
 }
 
 
@@ -108,6 +116,10 @@ void TextFile::parse_into_tree() {
 
 // output the words alphabetically
 void TextFile::print_words() {
-    tree.traverse_inorder(&visit);
+    tree.traverse_inorder(&to_console);
     std::cout << std::endl;
+}
+
+void TextFile::print_words(const std::string& filePath) {
+    tree.traverse_inorder(&to_file, filePath);
 }

@@ -267,6 +267,35 @@ class BSTree {
 				}
 			}
 		};
+
+		// traverse and visit with an output file
+		void traverse_inorder(void (*visit)(T& info, std::ofstream& f), const std::string& filePath) {
+			Node<T>* cur = root;
+			std::ofstream fout(filePath);
+			while (cur != nullptr) {
+				if (cur->left == nullptr) {
+					visit(cur->info, fout);
+					cur = cur->right;
+				}
+				else {
+					Node<T>* p = cur->left; 
+					while (true) {
+						if (p->right == nullptr) {
+							p->right = cur;
+							cur = cur->left;
+							break;
+						}
+						if (p->right == cur) {
+							p->right = nullptr;
+							visit(cur->info, fout);
+							cur = cur->right;
+							break;
+						}
+						p = p->right;
+					}
+				}
+			}
+		};
 };
 
 #endif

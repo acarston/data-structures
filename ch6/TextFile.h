@@ -32,7 +32,8 @@ class TextFile {
 
 		static int compare(WordInfo*& current, WordInfo*& incoming);
 		static void on_duplicate(WordInfo*& current, WordInfo*& incoming);
-		static void visit(WordInfo*& info);
+		static void to_console(WordInfo*& info);
+		static void to_file(WordInfo*& info, std::ofstream& fout);
 
 		void remove_special_chars(std::string& word);
 		void parse_verses();
@@ -42,6 +43,7 @@ class TextFile {
 
 		void parse_into_tree();
 		void print_words();
+		void print_words(const std::string& filePath);
 };
 
 #endif
