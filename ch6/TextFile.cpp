@@ -60,7 +60,7 @@ void TextFile::remove_special_chars(std::string& word) {
     }
 }
 
-// separate verses into lines in a text file
+// separate verses into text file lines
 void TextFile::parse_verses() {
     std::ofstream fout(PARSED_FILE_PATH);
     std::fstream fin(filePath);
@@ -88,6 +88,9 @@ void TextFile::parse_into_tree() {
 
     std::fstream fin(PARSED_FILE_PATH);
     std::string line;
+    // the first line is always blank
+    int lineNum = -1;
+
     while(std::getline(fin, line)) {
         lineNum++;
 

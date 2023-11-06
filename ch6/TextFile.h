@@ -24,7 +24,6 @@ class TextFile {
 		BSTree<WordInfo*> tree;
 		std::string filePath;
 		const std::string PARSED_FILE_PATH = "./hGjFn2aukPbsrTf37JZHL5.txt";
-		int lineNum = 0;
 		const static int NUM_SPECIAL_CHARS = 12;
 		const std::string SPECIAL_CHARS[NUM_SPECIAL_CHARS] = {"\"", ";", ",", ".", "?", "!", ":", "\n", "(", ")", "[", "]"};
 		

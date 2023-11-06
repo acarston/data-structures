@@ -3,21 +3,20 @@
 
 #include <cmath>
 #include <stack>
-#include <iostream> // temporary
-
-template <typename T>
-struct Node {
-	T info;
-	Node* left = nullptr;
-	Node* right = nullptr;
-	int height = 1;
-
-	Node(T info): info(info) {};
-};
 
 template <typename T>
 class BSTree {
 	private:
+		template <typename U>
+		struct Node {
+			U info;
+			Node* left = nullptr;
+			Node* right = nullptr;
+			int height = 1;
+
+			Node(U info): info(info) {};
+		};
+
 		Node<T>* root = nullptr;
 
 		bool set_root(T& rootVal) { 
@@ -77,8 +76,8 @@ class BSTree {
 		// perform rotations along the insert path
 		void balance(std::stack<Node<T>*>& path) {
 			while (true) {
-				// update the heights in the path
 				Node<T>* cur = path.top();
+				// update subtree heights along the path
 				set_height(cur);
 				path.pop();
 				
@@ -89,7 +88,7 @@ class BSTree {
 				int parBalFactor = get_balfactor(par);
 				int curBalFactor = get_balfactor(cur);
 
-				// get the grandfather without modifying the stack
+				// get the grandparent without modifying the stack
 				path.pop();
 				Node<T>* gr = path.empty() ? nullptr : path.top();
 				path.push(par);
@@ -106,7 +105,7 @@ class BSTree {
 				}
 				else continue;
 
-				// make grandfather point to the new subtree root
+				// make grandparent point to the new subtree root
 				if (gr == nullptr) {
 					// the new subtree root was the tree root
 					root = newPar;
@@ -199,7 +198,8 @@ class BSTree {
 			balance(path);
 		};
 
-		// insert with custom compare function
+		// insert with custom comparison function
+		// requires duplicate handling
 		void insert(T val, int (*compare)(T& current, T& incoming), void (*on_duplicate)(T& current, T& incoming)) {
 			if (set_root(val)) return;
 
@@ -233,7 +233,7 @@ class BSTree {
 			balance(path);
 		};
 
-		// Morris inorder traversal algorithm. Adapted from 
+		// Morris inorder traversal algorithm. adapted from 
 		// https://takeuforward.org/data-structure/morris-inorder-traversal-of-a-binary-tree/
 		void traverse_inorder(void (*visit)(T& info)) {
 			Node<T>* cur = root;
