@@ -123,3 +123,9 @@ void TextFile::print_words() {
 void TextFile::print_words(const std::string& filePath) {
     tree.traverse_inorder(&to_file, filePath);
 }
+
+void TextFile::print_input() {
+    std::fstream fin(filePath);    
+    std::string line;
+    while (std::getline(fin, line)) std::cout << line << "\n";
+}

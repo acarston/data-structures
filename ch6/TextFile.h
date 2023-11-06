@@ -44,6 +44,7 @@ class TextFile {
 		void parse_into_tree();
 		void print_words();
 		void print_words(const std::string& filePath);
+		void print_input();
 };
 
 #endif

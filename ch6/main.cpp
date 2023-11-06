@@ -3,7 +3,9 @@
 
 void user_interact(int argc, TextFile& f, char* argv[]) {
 	if (argc == 2) {
-		std::cout << "outputting to console...\n\n";
+		std::cout << "input file:\n\n";
+		f.print_input();
+		std::cout << "\noutputting to console...\n\n";
 		f.print_words();
 	}
 	else if (argc == 3) {

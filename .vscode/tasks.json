@@ -8,8 +8,8 @@
                 // "-Wall",
                 // "-Wl,--stack,1777216",
                 // "-Wl,--stack,400000000",
-                "-fdiagnostics-color=always",
-                "-g",
+                // "-fdiagnostics-color=always",
+                // "-g",
                 "${fileDirname}/*.cpp",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
