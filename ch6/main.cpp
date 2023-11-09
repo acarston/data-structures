@@ -1,7 +1,7 @@
 #include "TextFile.h"
 #include "../utils/iohelpers.h"
 
-void user_interact(const int argc, TextFile& f, const char* argv[]) {
+void user_interact(const int argc,  const char* argv[], TextFile& f) {
 	if (argc == 2) {
 		std::cout << "input file:\n\n";
 		f.print_input();
@@ -19,7 +19,5 @@ int main(int argc, const char* argv[]) {
 
 	TextFile f(argv[1]);
 	f.parse_into_tree();
-	user_interact(argc, f, argv);
-
-	return 0;
+	user_interact(argc, argv, f);
 };
