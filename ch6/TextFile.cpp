@@ -7,7 +7,7 @@ void TextFile::to_lower(std::string& str) {
 }
 
 // sourced from https://stackoverflow.com/questions/4654636/
-bool TextFile::is_number(const std::string& str) {
+bool TextFile::is_number(const std::string& str) const {
     std::string::const_iterator it = str.begin();
     while (it != str.end() && std::isdigit(*it)) ++it;
     return !str.empty() && it == str.end();
@@ -15,6 +15,7 @@ bool TextFile::is_number(const std::string& str) {
 
 
 int TextFile::compare(WordInfo*& current, WordInfo*& incoming) {
+    // make copies for comparison
     std::string currentWord = current->word;
     std::string incomingWord = incoming->word;
     to_lower(currentWord);
@@ -52,12 +53,13 @@ void TextFile::to_file(WordInfo*& info, std::ofstream& fout) {
 }
 
 
-void TextFile::remove_special_chars(std::string& word) {
+void TextFile::remove_special_chars(std::string& word) const {
     std::size_t charIndex;
     for (int i = 0; i < NUM_SPECIAL_CHARS; ++i) {
         charIndex = word.find(SPECIAL_CHARS[i]);
         if (charIndex != -1) {
             word.replace(charIndex, 1, "");
+            --i;
         }
     }
 
@@ -69,7 +71,7 @@ void TextFile::remove_special_chars(std::string& word) {
 }
 
 // separate verses into text file lines
-void TextFile::parse_verses() {
+void TextFile::parse_verses() const {
     std::ofstream fout(PARSED_FILE_PATH);
     std::fstream fin(filePath);
     if (!fin.is_open()) {
@@ -112,6 +114,9 @@ void TextFile::parse_into_tree() {
             tree.insert(wordInfo, &compare, &on_duplicate);
         }
     }
+
+	fin.close();
+	std::filesystem::remove(PARSED_FILE_PATH);
 }
 
 // output the words alphabetically
@@ -124,7 +129,7 @@ void TextFile::print_words(const std::string& filePath) {
     tree.traverse_inorder(&to_file, filePath);
 }
 
-void TextFile::print_input() {
+void TextFile::print_input() const {
     std::fstream fin(filePath);    
     std::string line;
     while (std::getline(fin, line)) std::cout << line << "\n";

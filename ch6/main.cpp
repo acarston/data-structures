@@ -1,7 +1,7 @@
 #include "TextFile.h"
 #include "../utils/iohelpers.h"
 
-void user_interact(int argc, TextFile& f, char* argv[]) {
+void user_interact(const int argc, TextFile& f, const char* argv[]) {
 	if (argc == 2) {
 		std::cout << "input file:\n\n";
 		f.print_input();
@@ -14,7 +14,7 @@ void user_interact(int argc, TextFile& f, char* argv[]) {
 	}
 };
 
-int main(int argc, char* argv[]) {
+int main(int argc, const char* argv[]) {
 	iohelpers::check_args(argc, 2, 3);
 
 	TextFile f(argv[1]);
