@@ -23,8 +23,8 @@ class TextFile {
 
 		BSTree<WordInfo*> tree;
 		std::string filePath;
-		const static int NUM_SPECIAL_CHARS = 14;
-		const char SPECIAL_CHARS[NUM_SPECIAL_CHARS] = {'\"', '\'', ';', ',', '.', '?', '!', ':', '\n', '(', ')', '[', ']', '-'};
+		const static int NUM_SPECIAL_CHARS = 15;
+		const char SPECIAL_CHARS[NUM_SPECIAL_CHARS] = {',', '.', '\"', '\'', '?', ';', ':', '!', '-', '(', ')', '[', ']', '\n', ' '};
 		
 		static void to_lower(std::string& str);
 		bool is_number(const std::string& str) const;

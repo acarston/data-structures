@@ -61,8 +61,8 @@ void TextFile::remove_special_chars(std::string& word) const {
         charIndex = (word[word.size() - 1] == SPECIAL_CHARS[i]) ? word.size() - 1 : charIndex;
         if (charIndex != -1) {
             word.replace(charIndex, 1, "");
-            // handle multiple of the same special char
-            --i;
+            // restart
+            i = -1;
         }
     }
 }
