@@ -25,8 +25,9 @@ class TextFile {
 		BSTree<WordInfo*> tree;
 		std::string filePath;
 		const std::string PARSED_FILE_PATH = "./hGjFn2aukPbsrTf37JZHL5.txt";
-		const static int NUM_SPECIAL_CHARS = 12;
-		const std::string SPECIAL_CHARS[NUM_SPECIAL_CHARS] = {"\"", ";", ",", ".", "?", "!", ":", "\n", "(", ")", "[", "]"};
+		const static int NUM_SPECIAL_CHARS = 14;
+		// const std::string SPECIAL_CHARS[NUM_SPECIAL_CHARS] = {"\"", ";", ",", ".", "?", "!", ":", "\n", "(", ")", "[", "]", "-"};
+		const char SPECIAL_CHARS[NUM_SPECIAL_CHARS] = {'\"', '\'', ';', ',', '.', '?', '!', ':', '\n', '(', ')', '[', ']', '-'};
 		
 		static void to_lower(std::string& str);
 		bool is_number(const std::string& str) const;
@@ -37,6 +38,7 @@ class TextFile {
 		static void to_file(WordInfo*& info, std::ofstream& fout);
 
 		void remove_special_chars(std::string& word) const;
+		void remove_hyphen(std::string& word) const;
 		void parse_verses() const;
 
 	public:

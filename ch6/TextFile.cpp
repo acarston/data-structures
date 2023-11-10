@@ -54,20 +54,23 @@ void TextFile::to_file(WordInfo*& info, std::ofstream& fout) {
 
 
 void TextFile::remove_special_chars(std::string& word) const {
-    std::size_t charIndex;
+    int charIndex;
     for (int i = 0; i < NUM_SPECIAL_CHARS; ++i) {
-        charIndex = word.find(SPECIAL_CHARS[i]);
+        charIndex = (word[0] == SPECIAL_CHARS[i]) ? 0 : -1;
+        charIndex = (word[word.size() - 1] == SPECIAL_CHARS[i]) ? word.size() - 1 : charIndex;
         if (charIndex != -1) {
             word.replace(charIndex, 1, "");
             --i;
         }
     }
+}
 
-    // remove quotes while preserving singular possessives
-    charIndex = word.find("'");
-    if (charIndex == 0 || charIndex == word.size() - 1) {
-        word.replace(charIndex, 1, "");
-    }
+// split hyphenated word into 2 separate words
+// works for en and em dashes after remove_special_chars call
+// must be called during parsing 
+void TextFile::remove_hyphen(std::string& word) const {
+    auto hyphenIndex = word.find("-");
+    if (hyphenIndex != -1) word.replace(hyphenIndex, 1, " ");
 }
 
 // separate verses into text file lines
@@ -85,8 +88,9 @@ void TextFile::parse_verses() const {
         std::string word;
         
         while (iss >> word) {
-            if (is_number(word)) fout << "\n";
-            else fout << word << " ";
+            if (is_number(word)) { fout << "\n"; continue; }
+            remove_hyphen(word);
+            fout << word << " ";
         }
     }
 }
