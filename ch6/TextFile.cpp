@@ -56,32 +56,42 @@ void TextFile::to_file(WordInfo*& info, std::ofstream& fout) {
 void TextFile::remove_special_chars(std::string& word) const {
     int charIndex;
     for (int i = 0; i < NUM_SPECIAL_CHARS; ++i) {
+        // determine if start, end is a special char
         charIndex = (word[0] == SPECIAL_CHARS[i]) ? 0 : -1;
         charIndex = (word[word.size() - 1] == SPECIAL_CHARS[i]) ? word.size() - 1 : charIndex;
         if (charIndex != -1) {
             word.replace(charIndex, 1, "");
+            // handle multiple of the same special char
             --i;
         }
     }
 }
 
-// split hyphenated word into 2 separate words
-// works for en and em dashes after remove_special_chars call
-// must be called during parsing 
-void TextFile::remove_hyphen(std::string& word) const {
-    auto hyphenIndex = word.find("-");
-    if (hyphenIndex != -1) word.replace(hyphenIndex, 1, " ");
-}
-
 void TextFile::insert_word(std::string& word, int& lineNum) {
-    if (is_number(word)) { lineNum = std::stoi(word); return; }
-    remove_special_chars(word);
-    WordInfo* wordInfo = new WordInfo(word, lineNum);
-    tree.insert(wordInfo, &compare, &on_duplicate);
+    // update the current verse
+    if (is_number(word)) { 
+        lineNum = std::stoi(word); 
+        return; 
+    }
+
+    auto hyphenIndex = word.find("-");
+    if (hyphenIndex != -1 && hyphenIndex != 0 && hyphenIndex != word.size() - 1) {
+        // split hyphenated words into 2 separate words
+        // also works for en and em dashes 
+        std::string word1 = word.substr(0, hyphenIndex);
+        std::string word2 = word.substr(hyphenIndex, word.size() - hyphenIndex);
+        insert_word(word1, lineNum);
+        insert_word(word2, lineNum);
+    }
+    else {
+        remove_special_chars(word);
+        WordInfo* wordInfo = new WordInfo(word, lineNum);
+        tree.insert(wordInfo, &compare, &on_duplicate);
+    }
 }
 
 
-// add each word in the parsed file to the tree
+// add each word in the file to the tree
 void TextFile::parse_into_tree() {
     std::fstream fin(filePath);
     if (!fin.is_open()) {
@@ -94,7 +104,6 @@ void TextFile::parse_into_tree() {
     while(std::getline(fin, line)) {
         std::istringstream iss(line);
         std::string word;
-
         while (iss >> word) insert_word(word, lineNum);
     }
 }

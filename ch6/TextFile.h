@@ -6,7 +6,6 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <filesystem>
 
 #include "../utils/BSTree.h"
 
@@ -24,9 +23,7 @@ class TextFile {
 
 		BSTree<WordInfo*> tree;
 		std::string filePath;
-		const std::string PARSED_FILE_PATH = "./hGjFn2aukPbsrTf37JZHL5.txt";
 		const static int NUM_SPECIAL_CHARS = 14;
-		// const std::string SPECIAL_CHARS[NUM_SPECIAL_CHARS] = {"\"", ";", ",", ".", "?", "!", ":", "\n", "(", ")", "[", "]", "-"};
 		const char SPECIAL_CHARS[NUM_SPECIAL_CHARS] = {'\"', '\'', ';', ',', '.', '?', '!', ':', '\n', '(', ')', '[', ']', '-'};
 		
 		static void to_lower(std::string& str);
@@ -38,7 +35,6 @@ class TextFile {
 		static void to_file(WordInfo*& info, std::ofstream& fout);
 
 		void remove_special_chars(std::string& word) const;
-		void remove_hyphen(std::string& word) const;
 		void insert_word(std::string& word, int& lineNum);
 
 	public:
