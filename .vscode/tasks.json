@@ -7,7 +7,7 @@
             "args": [
                 // "-Wall",
                 // "-Wl,--stack,1777216",
-                "-Wl,--stack,400000000",
+                // "-Wl,--stack,400000000",
                 "-fdiagnostics-color=always",
                 "-g",
                 "${fileDirname}/*.cpp",
