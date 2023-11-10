@@ -39,7 +39,7 @@ class TextFile {
 
 		void remove_special_chars(std::string& word) const;
 		void remove_hyphen(std::string& word) const;
-		void parse_verses() const;
+		void insert_word(std::string& word, int& lineNum);
 
 	public:
 		TextFile(const std::string& filePath): filePath(filePath) {};

@@ -73,54 +73,30 @@ void TextFile::remove_hyphen(std::string& word) const {
     if (hyphenIndex != -1) word.replace(hyphenIndex, 1, " ");
 }
 
-// separate verses into text file lines
-void TextFile::parse_verses() const {
-    std::ofstream fout(PARSED_FILE_PATH);
-    std::fstream fin(filePath);
-    if (!fin.is_open()) {
-        std::cout << "FATAL: unable to open file" << std::endl;
-        exit(-1);
-    }
-    
-    std::string line;
-    while (std::getline(fin, line)) {
-        std::istringstream iss(line);
-        std::string word;
-        
-        while (iss >> word) {
-            if (is_number(word)) { fout << "\n"; continue; }
-            remove_hyphen(word);
-            fout << word << " ";
-        }
-    }
+void TextFile::insert_word(std::string& word, int& lineNum) {
+    if (is_number(word)) { lineNum = std::stoi(word); return; }
+    remove_special_chars(word);
+    WordInfo* wordInfo = new WordInfo(word, lineNum);
+    tree.insert(wordInfo, &compare, &on_duplicate);
 }
 
 
 // add each word in the parsed file to the tree
 void TextFile::parse_into_tree() {
-    parse_verses();
-
-    std::fstream fin(PARSED_FILE_PATH);
-    std::string line;
-    // the first line is always blank
-    int lineNum = -1;
-
-    while(std::getline(fin, line)) {
-        lineNum++;
-
-        std::istringstream iss(line);
-        std::string word;
-        WordInfo* wordInfo;
-
-        while (iss >> word) {
-            remove_special_chars(word);
-            wordInfo = new WordInfo(word, lineNum);
-            tree.insert(wordInfo, &compare, &on_duplicate);
-        }
+    std::fstream fin(filePath);
+    if (!fin.is_open()) {
+        std::cout << "FATAL: unable to open file" << std::endl;
+        exit(-1);
     }
 
-	fin.close();
-	std::filesystem::remove(PARSED_FILE_PATH);
+    std::string line;
+    int lineNum = 0;
+    while(std::getline(fin, line)) {
+        std::istringstream iss(line);
+        std::string word;
+
+        while (iss >> word) insert_word(word, lineNum);
+    }
 }
 
 // output the words alphabetically
