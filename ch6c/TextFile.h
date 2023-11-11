@@ -1,11 +1,10 @@
 #ifndef TEXTFILE_H
 #define TEXTFILE_H
 
-#include <string>
 #include <list>
-#include <fstream>
 #include <iostream>
 #include <sstream>
+#include <unordered_set>
 
 #include "../utils/BSTree.h"
 
@@ -24,7 +23,9 @@ class TextFile {
 		BSTree<WordInfo*> tree;
 		std::string filePath;
 		const static int NUM_SPECIAL_CHARS = 15;
-		const char SPECIAL_CHARS[NUM_SPECIAL_CHARS] = {',', '.', '\"', '\'', '?', ';', ':', '!', '-', '(', ')', '[', ']', '\n', ' '};
+		// const char SPECIAL_CHARS[NUM_SPECIAL_CHARS] = {',', '.', '\"', '\'', '?', ';', ':', '!', '-', '(', ')', '[', ']', '\n', ' '};
+		const std::unordered_set<char> SPECIAL_CHARS{',', '.', '\"', '\'', '?', ';', ':', '!', '-', '(', ')', '[', ']', '\n'};
+		const std::unordered_set<std::string> THROW_WORDS{"the"};
 		
 		static void to_lower(std::string& str);
 		bool is_number(const std::string& str) const;

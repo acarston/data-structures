@@ -3,6 +3,8 @@
 
 #include <cmath>
 #include <stack>
+#include <string>
+#include <fstream>
 
 template <typename T>
 class BSTree {

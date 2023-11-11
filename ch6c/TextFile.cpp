@@ -54,17 +54,13 @@ void TextFile::to_file(WordInfo*& info, std::ofstream& fout) {
 
 
 void TextFile::remove_special_chars(std::string& word) const {
-    int charIndex;
-    for (int i = 0; i < NUM_SPECIAL_CHARS; ++i) {
+    int charIndex = -1;
+    do {
         // determine if start, end is a special char
-        charIndex = (word[0] == SPECIAL_CHARS[i]) ? 0 : -1;
-        charIndex = (word[word.size() - 1] == SPECIAL_CHARS[i]) ? word.size() - 1 : charIndex;
-        if (charIndex != -1) {
-            word.replace(charIndex, 1, "");
-            // restart
-            i = -1;
-        }
-    }
+        charIndex = (SPECIAL_CHARS.find(word[0]) != SPECIAL_CHARS.end()) ? 0 : -1;
+        charIndex = (SPECIAL_CHARS.find(word[word.size() - 1]) != SPECIAL_CHARS.end()) ? word.size() - 1 : charIndex;
+        if (charIndex != -1) word.replace(charIndex, 1, "");
+    } while (charIndex != -1);
 }
 
 void TextFile::insert_word(std::string& word, int& lineNum) {
