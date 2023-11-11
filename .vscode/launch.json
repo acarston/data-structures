@@ -5,7 +5,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
-            "args": ["./test.txt"],
+            "args": ["./John4.txt"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

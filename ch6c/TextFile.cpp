@@ -48,13 +48,11 @@ void TextFile::to_file(WordInfo*& info, std::ofstream& fout) {
 
 
 void TextFile::remove_special_chars(std::string& word) const {
-    int charIndex = -1;
-    do {
-        // determine if start, end is a special char
-        charIndex = (SPECIAL_CHARS.find(word[0]) != SPECIAL_CHARS.end()) ? 0 : -1;
-        charIndex = (SPECIAL_CHARS.find(word[word.size() - 1]) != SPECIAL_CHARS.end()) ? word.size() - 1 : charIndex;
-        if (charIndex != -1) word.replace(charIndex, 1, "");
-    } while (charIndex != -1);
+    while (true) {
+        if (SPECIAL_CHARS.find(word[0]) != SPECIAL_CHARS.end()) word.replace(0, 1, "");
+        else if (SPECIAL_CHARS.find(word[word.size() - 1]) != SPECIAL_CHARS.end()) word.replace(word.size() - 1, 1, "");
+        else break;
+    }
 }
 
 void TextFile::insert_word(std::string& word, int& lineNum) {
@@ -66,7 +64,9 @@ void TextFile::insert_word(std::string& word, int& lineNum) {
     
     to_lower(word);
     remove_special_chars(word);
+
     if (THROW_WORDS.find(word) != THROW_WORDS.end()) return;
+
     WordInfo* wordInfo = new WordInfo(word, lineNum);
     tree.insert(wordInfo, &compare, &on_duplicate);
 }
