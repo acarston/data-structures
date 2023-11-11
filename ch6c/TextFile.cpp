@@ -63,8 +63,6 @@ void TextFile::insert_word(std::string& word, int& lineNum) {
         lineNum = std::stoi(word); 
         return; 
     }
-
-    if (THROW_WORDS.find(word) != THROW_WORDS.end()) return;
     
     auto hyphenIndex = word.find("-");
     if (hyphenIndex != -1 && hyphenIndex != 0 && hyphenIndex != word.size() - 1) {
@@ -78,6 +76,7 @@ void TextFile::insert_word(std::string& word, int& lineNum) {
     else {
         to_lower(word);
         remove_special_chars(word);
+        if (THROW_WORDS.find(word) != THROW_WORDS.end()) return;
         WordInfo* wordInfo = new WordInfo(word, lineNum);
         tree.insert(wordInfo, &compare, &on_duplicate);
     }

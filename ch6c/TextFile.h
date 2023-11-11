@@ -24,7 +24,10 @@ class TextFile {
 		std::string filePath;
 		const static int NUM_SPECIAL_CHARS = 15;
 		const std::unordered_set<char> SPECIAL_CHARS{',', '.', '\"', '\'', '?', ';', ':', '!', '-', '(', ')', '[', ']', '\n'};
-		const std::unordered_set<std::string> THROW_WORDS{"the", "be", "to", "of", "and", "a", "in", "that", "have", "i", "it", "for", "not", "on", "with", "he", "as"};
+		const std::unordered_set<std::string> THROW_WORDS{"the", "be", "to", "of", "and", "a", "in", "that", "have", "i", "it", 
+			"for", "not", "on", "with", "he", "as", "you", "do", "at", "this", "but", "his", "by", "from", "they", "we", "say", 
+			"her", "she", "or", "an", "will", "my", "all", "would", "there", "their", "what", "so", "if", "about", "who", "get", 
+			"which", "go", "me", "when", "make", "just", "him", "into", "your"};
 		
 		static void to_lower(std::string& str);
 		bool is_number(const std::string& str) const;
