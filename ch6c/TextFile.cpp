@@ -64,22 +64,11 @@ void TextFile::insert_word(std::string& word, int& lineNum) {
         return; 
     }
     
-    auto hyphenIndex = word.find("-");
-    if (hyphenIndex != -1 && hyphenIndex != 0 && hyphenIndex != word.size() - 1) {
-        // split hyphenated words into 2 separate words
-        // also works for en and em dashes 
-        std::string word1 = word.substr(0, hyphenIndex);
-        std::string word2 = word.substr(hyphenIndex, word.size() - hyphenIndex);
-        insert_word(word1, lineNum);
-        insert_word(word2, lineNum);
-    }
-    else {
-        to_lower(word);
-        remove_special_chars(word);
-        if (THROW_WORDS.find(word) != THROW_WORDS.end()) return;
-        WordInfo* wordInfo = new WordInfo(word, lineNum);
-        tree.insert(wordInfo, &compare, &on_duplicate);
-    }
+    to_lower(word);
+    remove_special_chars(word);
+    if (THROW_WORDS.find(word) != THROW_WORDS.end()) return;
+    WordInfo* wordInfo = new WordInfo(word, lineNum);
+    tree.insert(wordInfo, &compare, &on_duplicate);
 }
 
 
@@ -93,7 +82,7 @@ void TextFile::parse_into_tree() {
 
     std::string line;
     int lineNum = 0;
-    while(std::getline(fin, line)) {
+    while(std::getline(fin, line, '-')) {
         std::istringstream iss(line);
         std::string word;
         while (iss >> word) insert_word(word, lineNum);
