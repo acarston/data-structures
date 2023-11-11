@@ -78,6 +78,7 @@
         "xutility": "cpp",
         "chrono": "cpp",
         "filesystem": "cpp",
-        "forward_list": "cpp"
+        "forward_list": "cpp",
+        "unordered_set": "cpp"
     }
 }

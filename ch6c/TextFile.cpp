@@ -15,14 +15,8 @@ bool TextFile::is_number(const std::string& str) const {
 
 
 int TextFile::compare(WordInfo*& current, WordInfo*& incoming) {
-    // make copies for comparison
-    std::string currentWord = current->word;
-    std::string incomingWord = incoming->word;
-    to_lower(currentWord);
-    to_lower(incomingWord);
-
-    if (incomingWord > currentWord) return 1;
-    else if (incomingWord < currentWord) return -1;
+    if (incoming->word > current->word) return 1;
+    else if (incoming->word < current->word) return -1;
     else return 0;
 }
 
@@ -70,6 +64,8 @@ void TextFile::insert_word(std::string& word, int& lineNum) {
         return; 
     }
 
+    if (THROW_WORDS.find(word) != THROW_WORDS.end()) return;
+    
     auto hyphenIndex = word.find("-");
     if (hyphenIndex != -1 && hyphenIndex != 0 && hyphenIndex != word.size() - 1) {
         // split hyphenated words into 2 separate words
@@ -80,6 +76,7 @@ void TextFile::insert_word(std::string& word, int& lineNum) {
         insert_word(word2, lineNum);
     }
     else {
+        to_lower(word);
         remove_special_chars(word);
         WordInfo* wordInfo = new WordInfo(word, lineNum);
         tree.insert(wordInfo, &compare, &on_duplicate);
