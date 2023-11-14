@@ -1,5 +1,5 @@
 #include "TextFile.h"
-#include "../utils/iohelpers.h"
+#include "../../utils/iohelpers.h"
 
 void user_interact(const int argc,  const char* argv[], TextFile& f) {
 	if (argc == 2) {

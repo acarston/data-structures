@@ -6,7 +6,7 @@
 #include <sstream>
 #include <unordered_set>
 
-#include "../utils/BSTree.h"
+#include "../../utils/BSTree.h"
 
 class TextFile {
 	private:
