@@ -49,4 +49,10 @@ class TextFile {
 		void print_input() const;
 };
 
+extern "C" {
+	TextFile* CTextFile(const std::string& filePath) { return new TextFile(filePath); };
+	void c_parse_into_tree(TextFile* textFile) { textFile->parse_into_tree(); };
+	void c_print_words(TextFile* textFile, const std::string& filePath) { textFile->print_words(filePath); };
+};
+
 #endif
