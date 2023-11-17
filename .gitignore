@@ -23,7 +23,16 @@ ch6/main.exe
 ch6/John3 (1).txt
 /.vs
 /*/x64
+/*/*/x64
 /x64
 /ch6/verses
 ch6c/*.txt
 ch6c/*.exe
+ch6c/.vs
+/*/*.sln
+/*/*.vcxproj
+/*/*.vcxproj.*
+/*/*.vs
+/*/*/*.sln
+/*/*/*.vcxproj
+/*/*/*.vcxproj.*

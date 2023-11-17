@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj", "{FEA2767D-32B7-4C4B-9DDB-89A49EA66372}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TextFile", "TextFile\TextFile.vcxproj", "{21B6E067-7D69-493F-9B60-9AB9475C6903}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,14 +81,14 @@ Global
 		{751A5132-35A6-48E6-911A-18B06EAA1AE4}.Release|x64.Build.0 = Release|x64
 		{751A5132-35A6-48E6-911A-18B06EAA1AE4}.Release|x86.ActiveCfg = Release|Win32
 		{751A5132-35A6-48E6-911A-18B06EAA1AE4}.Release|x86.Build.0 = Release|Win32
-		{FEA2767D-32B7-4C4B-9DDB-89A49EA66372}.Debug|x64.ActiveCfg = Debug|x64
-		{FEA2767D-32B7-4C4B-9DDB-89A49EA66372}.Debug|x64.Build.0 = Debug|x64
-		{FEA2767D-32B7-4C4B-9DDB-89A49EA66372}.Debug|x86.ActiveCfg = Debug|Win32
-		{FEA2767D-32B7-4C4B-9DDB-89A49EA66372}.Debug|x86.Build.0 = Debug|Win32
-		{FEA2767D-32B7-4C4B-9DDB-89A49EA66372}.Release|x64.ActiveCfg = Release|x64
-		{FEA2767D-32B7-4C4B-9DDB-89A49EA66372}.Release|x64.Build.0 = Release|x64
-		{FEA2767D-32B7-4C4B-9DDB-89A49EA66372}.Release|x86.ActiveCfg = Release|Win32
-		{FEA2767D-32B7-4C4B-9DDB-89A49EA66372}.Release|x86.Build.0 = Release|Win32
+		{21B6E067-7D69-493F-9B60-9AB9475C6903}.Debug|x64.ActiveCfg = Debug|x64
+		{21B6E067-7D69-493F-9B60-9AB9475C6903}.Debug|x64.Build.0 = Debug|x64
+		{21B6E067-7D69-493F-9B60-9AB9475C6903}.Debug|x86.ActiveCfg = Debug|Win32
+		{21B6E067-7D69-493F-9B60-9AB9475C6903}.Debug|x86.Build.0 = Debug|Win32
+		{21B6E067-7D69-493F-9B60-9AB9475C6903}.Release|x64.ActiveCfg = Release|x64
+		{21B6E067-7D69-493F-9B60-9AB9475C6903}.Release|x64.Build.0 = Release|x64
+		{21B6E067-7D69-493F-9B60-9AB9475C6903}.Release|x86.ActiveCfg = Release|Win32
+		{21B6E067-7D69-493F-9B60-9AB9475C6903}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,8 +98,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		utils\utils.vcxitems*{1268f3a7-7b34-4b9e-8011-dae845d7ff5c}*SharedItemsImports = 4
+		utils\utils.vcxitems*{21b6e067-7d69-493f-9b60-9ab9475c6903}*SharedItemsImports = 4
 		utils\utils.vcxitems*{32d64146-e38a-4798-96f4-639d81f82ca4}*SharedItemsImports = 9
 		utils\utils.vcxitems*{d6fb4446-2c07-48c8-bae9-f5275e2ace2d}*SharedItemsImports = 4
-		utils\utils.vcxitems*{fea2767d-32b7-4c4b-9ddb-89a49ea66372}*SharedItemsImports = 4
 	EndGlobalSection
 EndGlobal
