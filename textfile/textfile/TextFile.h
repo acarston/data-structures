@@ -27,7 +27,7 @@ private:
 	};
 
 	BSTree<WordInfo*> tree;
-	std::string filePath;
+	std::string in;
 	const static int NUM_SPECIAL_CHARS = 15;
 	const std::unordered_set<char> SPECIAL_CHARS{ ',', '.', '\"', '\'', '?', ';', ':', '!', '-', '(', ')', '[', ']', '\n' };
 	const std::unordered_set<std::string> THROW_WORDS{ "the", "be", "to", "of", "and", "a", "in", "that", "have", "i", "it",
@@ -47,8 +47,9 @@ private:
 	void insert_word(std::string& word, int& lineNum);
 
 public:
-	TextFile(const std::string& filePath) : filePath(filePath) {};
+	TextFile(const std::string& in) : in(in) {};
 
+	void set_input(const std::string& in);
 	void parse_into_tree();
 	void print_words();
 	void print_words(const std::string& filePath);
@@ -60,6 +61,11 @@ extern "C" {
 		std::wstring ws(cstr);
 		std::string str(ws.begin(), ws.end());
 		return new TextFile(str);
+	};
+	TEXTFILE_API void c_set_input(TextFile* textFile, const wchar_t* cstr) {
+		std::wstring ws(cstr);
+		std::string str(ws.begin(), ws.end());
+		textFile->set_input(str);
 	};
 	TEXTFILE_API void c_print_words(TextFile* textFile, const wchar_t* filePath) {
 		std::wstring ws(filePath);

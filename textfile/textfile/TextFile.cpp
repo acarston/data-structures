@@ -73,21 +73,16 @@ void TextFile::insert_word(std::string& word, int& lineNum) {
 }
 
 
+void TextFile::set_input(const std::string& in) {
+    this->in = in;
+}
+
 // add each word in the file to the tree
 void TextFile::parse_into_tree() {
-    std::fstream fin(filePath);
-    if (!fin.is_open()) {
-        std::cout << "FATAL: unable to open file" << std::endl;
-        exit(-1);
-    }
-
-    std::string line;
+    std::istringstream iss(this->in);
     int lineNum = 0;
-    while (std::getline(fin, line, '-')) {
-        std::istringstream iss(line);
-        std::string word;
-        while (iss >> word) insert_word(word, lineNum);
-    }
+    std::string word;
+    while (iss >> word) insert_word(word, lineNum);
 }
 
 // output the words alphabetically
@@ -101,7 +96,5 @@ void TextFile::print_words(const std::string& filePath) {
 }
 
 void TextFile::print_input() const {
-    std::fstream fin(filePath);
-    std::string line;
-    while (std::getline(fin, line)) std::cout << line << "\n";
+    std::cout << in << std::endl;
 }
