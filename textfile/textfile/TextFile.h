@@ -56,10 +56,10 @@ public:
 };
 
 extern "C" {
-	TEXTFILE_API TextFile* CTextFile(const wchar_t* filePath) {
-		std::wstring ws(filePath);
-		std::string filePathStr(ws.begin(), ws.end());
-		return new TextFile(filePathStr);
+	TEXTFILE_API TextFile* CTextFile(const wchar_t* cstr) {
+		std::wstring ws(cstr);
+		std::string str(ws.begin(), ws.end());
+		return new TextFile(str);
 	};
 	TEXTFILE_API void c_print_words(TextFile* textFile, const wchar_t* filePath) {
 		std::wstring ws(filePath);
