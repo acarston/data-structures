@@ -27,14 +27,15 @@ class WordData:
         self.data = sorted(self.data, key=lambda pair: pair[2], reverse=True)
         self.__set_data_lists()
 
-    def plot_words(self) -> None:
-        fig, ax = plt.subplots()
+    def plot_words(self, title: str, filePath: str) -> None:
+        fig, ax = plt.subplots(figsize=(8, 5))
 
         ax.bar(self.words, self.counts)
-        ax.set_xlabel('Words', labelpad=20, fontsize='xx-large')
-        ax.set_ylabel('Occurences', labelpad=20, fontsize='xx-large')
+        ax.set_xlabel('Words')
+        ax.set_xticks(range(len(self.words)), labels=self.words, rotation='vertical')
+        ax.set_ylabel('Occurences')
         loc = plticker.MultipleLocator(base=1)
         ax.yaxis.set_major_locator(loc)
-        ax.set_title('Word Frequencies by Alphabetical Order', fontsize='xx-large')
+        ax.set_title(title)
 
-        plt.show()
+        plt.savefig(filePath, dpi=600, bbox_inches='tight')

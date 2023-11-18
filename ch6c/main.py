@@ -37,9 +37,9 @@ def main():
 
     textfile.print_words('./data/words.csv')
     word_data = WordData('./data/words.csv')
-    word_data.plot_words()
+    word_data.plot_words('Word Frequencies by Alphabetical Order', './data/words_alpha.png')
     word_data.sort_by_count()
-    word_data.plot_words()
+    word_data.plot_words('Word Frequencies by Number of Occurences', './data/words_count.png')
 
     with open('./data/out.csv') as csvfile:
         reader = csv.reader(csvfile)
