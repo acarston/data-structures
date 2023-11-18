@@ -25,7 +25,9 @@ int TextFile::compare(WordInfo*& current, WordInfo*& incoming) {
 // upon creation in parse_into_tree, WordInfo has exactly 1 element in its lines list
 // so attempting to insert should yank this element and delete the created WordInfo
 void TextFile::on_duplicate(WordInfo*& current, WordInfo*& incoming) {
-    current->lines.push_back(incoming->lines.front());
+    if (incoming->lines.front() != current->lines.back()) {
+        current->lines.push_back(incoming->lines.front());
+    }
     delete incoming;
     incoming = nullptr;
 }
@@ -56,19 +58,19 @@ void TextFile::remove_special_chars(std::string& word) const {
     }
 }
 
-void TextFile::insert_word(std::string& word, int& lineNum) {
+void TextFile::insert_word(std::string& word) {
     // update the current verse
-    if (is_number(word)) {
-        lineNum = std::stoi(word);
-        return;
-    }
+    //if (is_number(word)) {
+    //    lineNum = std::stoi(word);
+    //    return;
+    //}
 
     to_lower(word);
     remove_special_chars(word);
 
     if (THROW_WORDS.find(word) != THROW_WORDS.end()) return;
 
-    WordInfo* wordInfo = new WordInfo(word, lineNum);
+    WordInfo* wordInfo = new WordInfo(word, this->iteration);
     tree.insert(wordInfo, &compare, &on_duplicate);
 }
 
@@ -80,9 +82,10 @@ void TextFile::set_input(const std::string& in) {
 // add each word in the file to the tree
 void TextFile::parse_into_tree() {
     std::istringstream iss(this->in);
-    int lineNum = 0;
+    // int lineNum = 0;
     std::string word;
-    while (iss >> word) insert_word(word, lineNum);
+    while (iss >> word) insert_word(word);
+    this->iteration++;
 }
 
 // output the words alphabetically

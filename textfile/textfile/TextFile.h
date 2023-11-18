@@ -19,15 +19,18 @@ private:
 	struct WordInfo {
 		std::string word;
 		std::list<int> lines;
+		// int iteration = 0;
 
-		WordInfo(std::string word, int line) {
+		WordInfo(std::string word, int iteration) {
 			this->word = word;
-			lines.push_back(line);
+			lines.push_back(iteration);
+			// this->iteration = iteration;
 		};
 	};
 
 	BSTree<WordInfo*> tree;
 	std::string in;
+	int iteration = 0;
 	const static int NUM_SPECIAL_CHARS = 15;
 	const std::unordered_set<char> SPECIAL_CHARS{ ',', '.', '\"', '\'', '?', ';', ':', '!', '-', '(', ')', '[', ']', '\n' };
 	const std::unordered_set<std::string> THROW_WORDS{ "the", "be", "to", "of", "and", "a", "in", "that", "have", "i", "it",
@@ -44,7 +47,7 @@ private:
 	static void to_file(WordInfo*& info, std::ofstream& fout);
 
 	void remove_special_chars(std::string& word) const;
-	void insert_word(std::string& word, int& lineNum);
+	void insert_word(std::string& word);
 
 public:
 	TextFile(const std::string& in) : in(in) {};
