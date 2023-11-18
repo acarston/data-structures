@@ -33,3 +33,5 @@ ch6/John3 (1).txt
 *.sln
 /ch6c/venv
 __pycache__/
+ch6c/data/sentiment.json
+ch6c/data/words.json

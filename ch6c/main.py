@@ -2,20 +2,40 @@ import os
 import csv
 import json
 from textfile_wrapper import TextFile
-from typing import Any
+from nltk.sentiment import SentimentIntensityAnalyzer
+from numpy import mean
 
 def main():
     os.chdir(os.path.dirname(__file__))
-
-    textFile = TextFile()
+    
+    sia = SentimentIntensityAnalyzer()
+    sia_info: list[dict[str, str | float]] = []
+    textfile = TextFile()
     with open('./data/foo.csv') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
-            textFile.set_input(row[1], row[0])
-            textFile.parse_into_tree()
-        textFile.print_words('./data/out.csv')
-    
-    #json dumping by Timothy Zink
+            ps = sia.polarity_scores(row[1])
+            sia_info.append({
+                'name': row[0],
+                'neg': ps['neg'],
+                'neu': ps['neu'],
+                'pos': ps['pos']
+            })
+
+            textfile.set_input(row[1], row[0])
+            textfile.parse_into_tree()
+        
+    json.dump({
+        'people': sia_info,
+        'averages': {
+            'neg': mean([block['neg'] for block in sia_info]),
+            'neu': mean([block['neu'] for block in sia_info]),
+            'pos': mean([block['pos'] for block in sia_info])
+        }
+    }, open('./data/sentiment.json', 'w'))
+
+    #json dumping by TimothyZink
+    textfile.print_words('./data/out.csv')
     with open('./data/out.csv') as csvfile:
         reader = csv.reader(csvfile)
         data: list[dict[str, str | list[str] | int]] = [{
@@ -24,7 +44,9 @@ def main():
             "count": row[2]
         } for row in reader]
 
-        json.dump(data, open("./data/data.json", "w"))
+        json.dump(data, open("./data/words.json", "w"))
+    
+    
 
 if __name__ == "__main__":
     main()
