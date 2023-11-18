@@ -35,3 +35,4 @@ ch6/John3 (1).txt
 __pycache__/
 ch6c/data/sentiment.json
 ch6c/data/words.json
+ch6c/data/words.csv
