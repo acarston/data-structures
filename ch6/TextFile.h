@@ -10,7 +10,7 @@
 #include "../utils/BSTree.h"
 
 class TextFile {
-	private:
+	public:
 		struct WordInfo {
 			std::string word;
 			std::list<int> lines;
@@ -20,7 +20,7 @@ class TextFile {
 				lines.push_back(line);
 			};
 		};
-
+	private:
 		BSTree<WordInfo*> tree;
 		std::string filePath;
 		const static int NUM_SPECIAL_CHARS = 15;
@@ -44,6 +44,7 @@ class TextFile {
 		void print_words();
 		void print_words(const std::string& filePath);
 		void print_input() const;
+		void PrintStructure(void (*func)(WordInfo*, int, int, std::vector<int>*)) { tree.PrintStructure(func);}
 };
 
 #endif

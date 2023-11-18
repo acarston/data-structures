@@ -6,6 +6,8 @@
 #include <string>
 #include <fstream>
 
+#include <vector>
+
 template <typename T>
 class BSTree {
 	private:
@@ -18,6 +20,8 @@ class BSTree {
 
 			Node(U info): info(info) {};
 		};
+
+		#pragma region AVL
 
 		Node<T>* root = nullptr;
 
@@ -123,9 +127,33 @@ class BSTree {
 			}
 		};
 
+		#pragma endregion
+
 	public:
 		BSTree() {};
 		BSTree(T rootVal) { root = new Node<T>(rootVal); };
+
+		// Author: Timothy Zink
+		void PrintStructure(void (*func) (T, int, int, std::vector<int>*)) {
+			VisitNode(root, 0, func, 0, new std::vector<int>());
+		}
+		void VisitNode(Node<T>* node, int depth, void (*func)(T, int, int, std::vector<int>*), int position, std::vector<int>* also) {
+			if (node->left != nullptr) {
+				std::vector<int>* c = new std::vector<int>(*also);
+				if (position != 1 && position != 0) {
+					c->push_back(depth);
+				}
+				VisitNode(node->left, depth + 1, func, 1, c);
+			}
+			func(node->info, depth, position, also);
+			if (node->right != nullptr) {
+				std::vector<int>* c = new std::vector<int>(*also);
+				if (position != -1 && position != 0) {
+					c->push_back(depth);
+				}
+				VisitNode(node->right, depth + 1, func, -1, c);
+			}
+		}
 
 		// make an insertion with AVL self-balancing
 		// implementation is original; everything is managed by a stack
