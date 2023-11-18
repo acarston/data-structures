@@ -18,19 +18,17 @@ class TextFile {
 private:
 	struct WordInfo {
 		std::string word;
-		std::list<int> lines;
-		// int iteration = 0;
+		std::list<std::string> people;
 
-		WordInfo(std::string word, int iteration) {
+		WordInfo(std::string word, std::string person) {
 			this->word = word;
-			lines.push_back(iteration);
-			// this->iteration = iteration;
+			people.push_back(person);
 		};
 	};
 
 	BSTree<WordInfo*> tree;
 	std::string in = "";
-	int iteration = 0;
+	std::string person = "";
 	const static int NUM_SPECIAL_CHARS = 15;
 	const std::unordered_set<char> SPECIAL_CHARS{ ',', '.', '\"', '\'', '?', ';', ':', '!', '-', '(', ')', '[', ']', '\n' };
 	const std::unordered_set<std::string> THROW_WORDS{ "the", "be", "to", "of", "and", "a", "in", "that", "have", "i", "it",
@@ -53,7 +51,7 @@ public:
 	TextFile() {};
 	TextFile(const std::string& in) : in(in) {};
 
-	void set_input(const std::string& in);
+	void set_input(const std::string& in, const std::string& person);
 	void parse_into_tree();
 	void print_words();
 	void print_words(const std::string& filePath);
@@ -69,10 +67,12 @@ extern "C" {
 		std::string str(ws.begin(), ws.end());
 		return new TextFile(str);
 	};
-	TEXTFILE_API void c_set_input(TextFile* textFile, const wchar_t* cstr) {
-		std::wstring ws(cstr);
-		std::string str(ws.begin(), ws.end());
-		textFile->set_input(str);
+	TEXTFILE_API void c_set_input(TextFile* textFile, const wchar_t* in, const wchar_t* person) {
+		std::wstring wInStr(in);
+		std::string inStr(wInStr.begin(), wInStr.end());
+		std::wstring wPersonStr(person);
+		std::string personStr(wPersonStr.begin(), wPersonStr.end());
+		textFile->set_input(inStr, personStr);
 	};
 	TEXTFILE_API void c_print_words(TextFile* textFile, const wchar_t* filePath) {
 		std::wstring ws(filePath);

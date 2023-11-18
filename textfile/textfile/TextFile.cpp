@@ -25,9 +25,7 @@ int TextFile::compare(WordInfo*& current, WordInfo*& incoming) {
 // upon creation in parse_into_tree, WordInfo has exactly 1 element in its lines list
 // so attempting to insert should yank this element and delete the created WordInfo
 void TextFile::on_duplicate(WordInfo*& current, WordInfo*& incoming) {
-    if (incoming->lines.front() != current->lines.back()) {
-        current->lines.push_back(incoming->lines.front());
-    }
+    if (incoming->people.front() != current->people.back()) current->people.push_back(incoming->people.front());
     delete incoming;
     incoming = nullptr;
 }
@@ -35,7 +33,7 @@ void TextFile::on_duplicate(WordInfo*& current, WordInfo*& incoming) {
 // specify the output upon traversal visit
 void TextFile::to_console(WordInfo*& info) {
     std::cout << info->word << ": ";
-    for (auto it = info->lines.begin(); it != info->lines.end(); ++it) {
+    for (auto it = info->people.begin(); it != info->people.end(); ++it) {
         std::cout << *it << " ";
     }
     std::cout << "\n";
@@ -43,7 +41,7 @@ void TextFile::to_console(WordInfo*& info) {
 
 void TextFile::to_file(WordInfo*& info, std::ofstream& fout) {
     fout << info->word + ": ";
-    for (auto it = info->lines.begin(); it != info->lines.end(); ++it) {
+    for (auto it = info->people.begin(); it != info->people.end(); ++it) {
         fout << *it << " ";
     }
     fout << "\n";
@@ -59,33 +57,26 @@ void TextFile::remove_special_chars(std::string& word) const {
 }
 
 void TextFile::insert_word(std::string& word) {
-    // update the current verse
-    //if (is_number(word)) {
-    //    lineNum = std::stoi(word);
-    //    return;
-    //}
-
     to_lower(word);
     remove_special_chars(word);
 
     if (THROW_WORDS.find(word) != THROW_WORDS.end()) return;
 
-    WordInfo* wordInfo = new WordInfo(word, this->iteration);
+    WordInfo* wordInfo = new WordInfo(word, this->person);
     tree.insert(wordInfo, &compare, &on_duplicate);
 }
 
 
-void TextFile::set_input(const std::string& in) {
+void TextFile::set_input(const std::string& in, const std::string& person) {
     this->in = in;
+    this->person = person;
 }
 
 // add each word in the file to the tree
 void TextFile::parse_into_tree() {
     std::istringstream iss(this->in);
-    // int lineNum = 0;
     std::string word;
     while (iss >> word) insert_word(word);
-    this->iteration++;
 }
 
 // output the words alphabetically
