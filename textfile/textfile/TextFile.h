@@ -19,6 +19,7 @@ private:
 	struct WordInfo {
 		std::string word;
 		std::list<std::string> people;
+		int count = 0;
 
 		WordInfo(std::string word, std::string person) {
 			this->word = word;

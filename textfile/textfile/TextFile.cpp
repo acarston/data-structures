@@ -32,7 +32,8 @@ void TextFile::on_duplicate(WordInfo*& current, WordInfo*& incoming) {
 
 // specify the output upon traversal visit
 void TextFile::to_console(WordInfo*& info) {
-    std::cout << info->word << ": ";
+    info->count = info->people.size();
+    std::cout << info->word << "(" << info->count << "): ";
     for (auto it = info->people.begin(); it != info->people.end(); ++it) {
         std::cout << *it << " ";
     }
@@ -40,10 +41,16 @@ void TextFile::to_console(WordInfo*& info) {
 }
 
 void TextFile::to_file(WordInfo*& info, std::ofstream& fout) {
-    fout << info->word + ": ";
-    for (auto it = info->people.begin(); it != info->people.end(); ++it) {
-        fout << *it << " ";
+    info->count = info->people.size();
+    fout << info->word + ",";
+
+    auto it = info->people.begin();
+    if (it != info->people.end()) fout << *it;
+    for (it++; it != info->people.end(); ++it) {
+        fout << ";" << *it;
     }
+
+    fout << "," << info->count;
     fout << "\n";
 }
 
