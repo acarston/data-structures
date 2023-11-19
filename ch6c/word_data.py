@@ -28,7 +28,7 @@ class WordData:
         self.data = sorted(self.data, key=lambda pair: pair[2], reverse=True)
         self.__set_data_lists()
 
-    def plot_words(self, title: str, filePath: str) -> None:
+    def plot_words(self, title: str, out_path: str) -> None:
         fig, ax = plt.subplots(figsize=(8, 5))
 
         ax.bar(self.words, self.counts)
@@ -39,7 +39,7 @@ class WordData:
         ax.yaxis.set_major_locator(loc)
         ax.set_title(title)
 
-        plt.savefig(filePath, dpi=600, bbox_inches='tight')
+        plt.savefig(out_path, dpi=600, bbox_inches='tight')
     
     def dump(self, out_path: str):
         jdata: list[dict[str, str | list[str] | int]] = [{
