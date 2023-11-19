@@ -1,7 +1,6 @@
 import ctypes
 
-# lib = ctypes.CDLL('./textfile.dll')
-lib = ctypes.CDLL('C:/Users/amcar/source/repos/data_structures/textfile/x64/Release/textfile.dll')
+lib = ctypes.CDLL('./ch6c/textfile.dll')
 
 class TextFile:
     def __init__(self) -> None:

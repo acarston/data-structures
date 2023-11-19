@@ -17,26 +17,30 @@ def format_csv(form_path, out_path: str) -> None:
 
 def main():
     os.chdir(os.path.dirname(__file__))
-    FORM_PATH = './data/foo.csv'
-    WORDS_PATH = './data/words.csv'
-    WORDS_ALPHA_JSON = './data/words_alpha.json'
-    WORDS_COUNT_JSON = './data/words_count.json'
-    SENTIMENT_INFO_JSON = './data/sentiment_info.json'
-    SENTIMENT_SUMMARY_JSON = './data/sentiment_summary.json'
+    DATA_DIR = './data/'
+    FORM_PATH = f'{DATA_DIR}foo.csv'
+    WORDS_PATH = f'{DATA_DIR}words.csv'
+    WORDS_ALPHA_JSON = f'{DATA_DIR}words_alpha.json'
+    WORDS_COUNT_JSON = f'{DATA_DIR}words_count.json'
+    WORDS_ALPHA_PNG = f'{DATA_DIR}words_alpha.png'
+    WORDS_COUNT_PNG = f'{DATA_DIR}words_count.png'
+    SENTIMENT_INFO_JSON = f'{DATA_DIR}sentiment_info.json'
+    SENTIMENT_SUMMARY_JSON = f'{DATA_DIR}sentiment_summary.json'
+    SENTIMENT_SUMMARY_PNG = f'{DATA_DIR}sentiment_summary.png'
 
     format_csv(FORM_PATH, WORDS_PATH)
 
     word_data = WordData(WORDS_PATH)
     word_data.dump(WORDS_ALPHA_JSON)
-    word_data.plot_words('Word Frequencies by Alphabetical Order', './data/words_alpha.png')
+    word_data.plot_words('Word Frequencies by Alphabetical Order', WORDS_ALPHA_PNG)
     word_data.sort_by_count()
     word_data.dump(WORDS_COUNT_JSON)
-    word_data.plot_words('Word Frequencies by Number of Occurences', './data/words_count.png')
+    word_data.plot_words('Word Frequencies by Number of Occurences', WORDS_COUNT_PNG)
 
     siaInfo = SiaData(FORM_PATH)
     siaInfo.dump_info(SENTIMENT_INFO_JSON)
     siaInfo.dump_summary(SENTIMENT_SUMMARY_JSON)
-    siaInfo.plot_summary('./data/sentiment_summary.png')
+    siaInfo.plot_summary(SENTIMENT_SUMMARY_PNG)
 
 if __name__ == "__main__":
     main()
