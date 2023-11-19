@@ -1,5 +1,6 @@
 import csv
 import sys
+import json
 import matplotlib.pyplot as plt
 import matplotlib.ticker as plticker
 
@@ -39,3 +40,11 @@ class WordData:
         ax.set_title(title)
 
         plt.savefig(filePath, dpi=600, bbox_inches='tight')
+    
+    def dump(self, out_path: str):
+        jdata: list[dict[str, str | list[str] | int]] = [{
+            'word': self.words[i], 
+            'people': self.names[i],
+            'count': self.counts[i]
+        } for i in range(len(self.data))]
+        json.dump(jdata, open(out_path, 'w'))

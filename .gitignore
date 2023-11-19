@@ -32,6 +32,7 @@ ch6/John3 (1).txt
 *.vs
 *.sln
 *.png
+*.json
 /ch6c/venv
 __pycache__/
 ch6c/data/sentiment.json
