@@ -12,6 +12,7 @@ class SiaData:
         self.__set_sentiment_info()
         self.__set_sentiment_summary()
 
+    # store sentiment analysis scores for each response
     def __set_sentiment_info(self) -> None:
         sia = SentimentIntensityAnalyzer()
         self.sia_info: list[dict[str, str | float]] = []
@@ -27,8 +28,11 @@ class SiaData:
                     'compound': ps['compound']
                 })
     
+    # categorize reponses into pos, neu, neg based on compound score
     def __set_sentiment_summary(self) -> None:
+        # set thresholds arbitrarily
         BIAS = 0.4
+        # count negative, neutral, positive responses
         self.summary: list[int] = [0, 0, 0]
         for block in self.sia_info:
             com: float = block['compound']

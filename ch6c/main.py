@@ -4,6 +4,10 @@ from textfile_wrapper import TextFile
 from word_data import WordData
 from sia_data import SiaData
 
+# uncomment for first run
+# import nltk
+# nltk.download('vader_lexicon')
+
 # translate raw form data to WordData format
 def format_csv(form_path, out_path: str) -> None:
     textfile = TextFile()
@@ -17,6 +21,8 @@ def format_csv(form_path, out_path: str) -> None:
 
 def main():
     os.chdir(os.path.dirname(__file__))
+
+    # configure input and output files
     DATA_DIR = './data/'
     FORM_PATH = f'{DATA_DIR}foo.csv'
     WORDS_PATH = f'{DATA_DIR}words.csv'
@@ -30,6 +36,7 @@ def main():
 
     format_csv(FORM_PATH, WORDS_PATH)
 
+    # comment out as needed
     word_data = WordData(WORDS_PATH)
     word_data.dump(WORDS_ALPHA_JSON)
     word_data.plot_words('Word Frequencies by Alphabetical Order', WORDS_ALPHA_PNG)

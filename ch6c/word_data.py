@@ -8,6 +8,7 @@ class WordData:
     def __init__(self, csv_filepath) -> None:
         try:
             with open(csv_filepath) as csvfile:
+                # load the data for future handling
                 reader = csv.reader(csvfile)
                 self.data: list[tuple[str, list[str], int]] = [(row[0], row[1].split(";"), int(row[2])) for row in reader]
                 self.__set_data_lists()
@@ -24,6 +25,7 @@ class WordData:
         self.names: list[list[str]] = [pair[1] for pair in self.data]
         self.counts: list[int] = [pair[2] for pair in self.data]
 
+    # reorganize by number of occurences; irreversable
     def sort_by_count(self) -> None:
         self.data = sorted(self.data, key=lambda pair: pair[2], reverse=True)
         self.__set_data_lists()
