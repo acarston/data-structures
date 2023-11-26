@@ -10,6 +10,7 @@ int* get_input(std::ifstream& fin, int& count) {
         ++count;
     }
 
+    // copy the list to an array
     int* input = new int[count];
     int i = 0;
     for (auto it = nums.begin(); it != nums.end(); ++it, ++i) input[i] = *it;
@@ -19,6 +20,10 @@ int* get_input(std::ifstream& fin, int& count) {
 void sort(std::ifstream& fin, bool ascending) {
     int count = 0;
     int* input = get_input(fin, count);
+
+    std::cout << "INPUT:\n";
+    for (int i = 0; i < count; ++i) std::cout << input[i] << " ";
+    std::cout << "\n\nOUTPUT:\n";
 
     Heap<int> heap(input, count, ascending);
     heap.sort();
