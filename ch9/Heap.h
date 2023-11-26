@@ -26,16 +26,19 @@ class Heap {
             if (recursive) move_down(iLarger, size);
         }
 
-        void heapify() { for (int i = this->size / 2 - 1; i >= 0; --i) move_down(i, this->size, false); }
+        void heapify() { for (int i = this->size / 2 - 1; i >= 0; --i) move_down(i, this->size, true); }
 
     public:
         Heap(T* heap, const int size, const bool ascending = true) : heap(heap), size(size), ascending(ascending) {};
 
         void sort() {
             heapify();
+            output();
             for (int size = this->size - 1; size > 0; --size) {
                 std::swap(heap[0], heap[size]);
+                output();
                 move_down(0, size);
+                output();
             }
         }
 
@@ -43,4 +46,6 @@ class Heap {
             for (int i = 0; i < this->size; ++i) std::cout << heap[i] << " ";
             std::cout << std::endl;
         }
+
+        void output(std::ofstream& fout) const { for (int i = 0; i < this->size; ++i) fout << heap[i] << "\n"; }
 };

@@ -5,7 +5,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
-            "args": ["./John4.txt"],
+            "args": ["./ch9nums1.dat", "-a"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
