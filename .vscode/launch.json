@@ -5,7 +5,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
-            "args": ["./ch9nums1.dat", "-a"],
+            "args": ["./ch9nums1.dat", "-d"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

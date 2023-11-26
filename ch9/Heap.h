@@ -13,7 +13,7 @@ class Heap {
             else return !condition;
         }
     
-        void move_down(const int i, const int size, const bool recursive = true) {
+        void move_down(const int i, const int size) {
             const int I_LEFT = 2 * i + 1;
             const int I_RIGHT = 2 * i + 2;
             if (I_LEFT >= size) return;
@@ -23,22 +23,19 @@ class Heap {
 
             if (reverse(heap[i] > heap[iLarger])) return;
             std::swap(heap[i], heap[iLarger]);
-            if (recursive) move_down(iLarger, size);
+            move_down(iLarger, size);
         }
 
-        void heapify() { for (int i = this->size / 2 - 1; i >= 0; --i) move_down(i, this->size, true); }
+        void heapify() { for (int i = this->size / 2 - 1; i >= 0; --i) move_down(i, this->size); }
 
     public:
         Heap(T* heap, const int size, const bool ascending = true) : heap(heap), size(size), ascending(ascending) {};
 
         void sort() {
             heapify();
-            output();
             for (int size = this->size - 1; size > 0; --size) {
                 std::swap(heap[0], heap[size]);
-                output();
                 move_down(0, size);
-                output();
             }
         }
 
