@@ -1,11 +1,9 @@
-#include <fstream>
 #include <string>
 #include <list>
 #include "Heap.h"
 
-void sort(std::ifstream& fin, bool ascending) {
+int* get_input(std::ifstream& fin, int& count) {
     std::string line;
-    int count = 0;
     std::list<int> nums;
     while (std::getline(fin, line)) {
         nums.push_back(std::stoi(line));
@@ -15,6 +13,12 @@ void sort(std::ifstream& fin, bool ascending) {
     int* input = new int[count];
     int i = 0;
     for (auto it = nums.begin(); it != nums.end(); ++it, ++i) input[i] = *it;
+    return input;
+}
+
+void sort(std::ifstream& fin, bool ascending) {
+    int count = 0;
+    int* input = get_input(fin, count);
 
     Heap<int> heap(input, count, ascending);
     heap.sort();
@@ -25,17 +29,8 @@ void sort(std::ifstream& fin, bool ascending) {
 }
 
 void sort(std::ifstream& fin, bool ascending, std::ofstream& fout) {
-    std::string line;
     int count = 0;
-    std::list<int> nums;
-    while (std::getline(fin, line)) {
-        nums.push_back(std::stoi(line));
-        ++count;
-    }
-
-    int* input = new int[count];
-    int i = 0;
-    for (auto it = nums.begin(); it != nums.end(); ++it, ++i) input[i] = *it;
+    int* input = get_input(fin, count);
 
     Heap<int> heap(input, count, ascending);
     heap.sort();
@@ -68,7 +63,7 @@ void user_interact(int argc, char** argv) {
     std::string* flag = nullptr;
     int i = 0;
     for (; i < argc - 2; ++i) {
-        std::string cur = argv[i+2];
+        std::string cur = argv[i + 2];
         if (cur == "-a" || cur == "-d") {
             flag = &cur;
             hasFlag = true;
@@ -83,7 +78,7 @@ void user_interact(int argc, char** argv) {
     // this is cursed and I refuse to change it.
     bool ascending = (*flag == "-a") ? true : false;
     if (argc == 3) return sort(fin, ascending);
-    std::ofstream fout(argv[!i+2]);
+    std::ofstream fout(argv[!i + 2]);
     sort(fin, ascending, fout);
 }
 
