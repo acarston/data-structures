@@ -23,6 +23,7 @@ void sort(std::ifstream& fin, bool ascending) {
     Heap<int> heap(input, count, ascending);
     heap.sort();
     heap.output();
+    std::cout << std::endl;
 
     delete[] input;
     input = nullptr;

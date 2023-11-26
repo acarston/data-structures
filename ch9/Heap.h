@@ -40,10 +40,6 @@ class Heap {
             }
         }
 
-        void output() const {
-            for (int i = 0; i < this->size; ++i) std::cout << heap[i] << " ";
-            std::cout << std::endl;
-        }
-
+        void output() const { for (int i = 0; i < this->size; ++i) std::cout << heap[i] << " "; }
         void output(std::ofstream& fout) const { for (int i = 0; i < this->size; ++i) fout << heap[i] << "\n"; }
 };
