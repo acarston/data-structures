@@ -19,7 +19,8 @@ private:
 	struct WordInfo {
 		std::string word;
 		std::list<std::string> people;
-		int count = 0;
+		int numPeople = 0;
+		int count = 1;
 
 		WordInfo(std::string word, std::string person) {
 			this->word = word;
@@ -31,7 +32,7 @@ private:
 	std::string in = "";
 	std::string person = "";
 	const static int NUM_SPECIAL_CHARS = 15;
-	const std::unordered_set<char> SPECIAL_CHARS{ ',', '.', '\"', '\'', '?', ';', ':', '!', '-', '(', ')', '[', ']', '\n' };
+	const std::unordered_set<char> SPECIAL_CHARS{ ',', '.', '\"', '\'', '?', ';', ':', '!', '-', '(', ')', '[', ']', '\n', ' ' };
 	const std::unordered_set<std::string> THROW_WORDS{ "the", "be", "to", "of", "and", "a", "in", "that", "have", "i", "it",
 		"for", "not", "on", "with", "he", "as", "you", "do", "at", "this", "but", "his", "by", "from", "they", "we", "say",
 		"her", "she", "or", "an", "will", "my", "all", "would", "there", "their", "what", "so", "if", "about", "who", "get",
