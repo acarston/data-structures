@@ -69,6 +69,15 @@ void TextFile::insert_word(std::string& word) {
     to_lower(word);
     remove_special_chars(word);
 
+    for (int i = 0; i < word.size(); ++i) {
+        if (SPLIT_CHARS.find(word[i]) != SPLIT_CHARS.end()) {
+            std::string word1 = word.substr(0, i);
+            std::string word2 = word.substr(i + 1, word.size());
+            insert_word(word1);
+            insert_word(word2);
+        }
+    }
+
     if (is_number(word)) return;
     if (THROW_WORDS.find(word) != THROW_WORDS.end()) return;
 
