@@ -57,6 +57,10 @@ void TextFile::to_file(WordInfo*& info, std::ofstream& fout) {
 }
 
 
+bool TextFile::has_punctuation(const std::string& word) const {
+    return PUNCTUATION.find(word[word.size() - 1]) != PUNCTUATION.end();
+}
+
 void TextFile::remove_special_chars(std::string& word) const {
     while (true) {
         if (SPECIAL_CHARS.find(word[0]) != SPECIAL_CHARS.end()) word.replace(0, 1, "");
@@ -89,17 +93,47 @@ void TextFile::insert_word(std::string& word) {
     tree.insert(wordInfo, &compare, &on_duplicate);
 }
 
+void TextFile::insert_word(std::string& word1, std::string& word2) {
+    if (has_punctuation(word1)) return;
+
+    remove_special_chars(word1);
+    remove_special_chars(word2);
+
+    to_lower(word1);
+    to_lower(word2);
+
+    if (THROW_PHRASES.find(word1) != THROW_PHRASES.end() || word1.size() < 1) return;
+    if (THROW_PHRASES.find(word2) != THROW_PHRASES.end() || word2.size() < 1) return;
+
+    std::string phrase = "\"" + word1 + " " + word2 + "\"";
+    WordInfo* wordInfo = new WordInfo(phrase, this->person);
+    tree.insert(wordInfo, &compare, &on_duplicate);
+}
+
 
 void TextFile::set_input(const std::string& in, const std::string& person) {
     this->in = in;
     this->person = person;
 }
 
-// add each word in the file to the tree
-void TextFile::parse_into_tree() {
+// add each word or phrase in the file to the tree
+void TextFile::parse_into_tree(bool phrases) {
     std::istringstream iss(this->in);
-    std::string word;
-    while (iss >> word) insert_word(word);
+
+    if (phrases) {
+        std::string word;
+        std::string nextWord;
+
+        iss >> word;
+        while (iss >> nextWord) {
+            insert_word(word, nextWord);
+            word = nextWord;
+        }
+    }
+    else {
+        std::string word;
+        while (iss >> word) insert_word(word);
+    }
 }
 
 // output the words alphabetically
