@@ -1,13 +1,13 @@
 #include "Utils.h"
 
-/* swap array elements */
+// swap array elements
 void Utils::swap(EventParticipant*& par1, EventParticipant*& par2) {
     EventParticipant* temp = par1;
     par1 = par2;
     par2 = temp;
-};
+}
 
-/* make comparison between array elements according to sort type */
+// make comparison between array elements according to sort type
 bool Utils::shouldSwap(std::string in, EventParticipant* par1, EventParticipant* par2) {
     auto result1 = par1->getResult();
     auto result2 = par2->getResult();
@@ -36,9 +36,9 @@ bool Utils::shouldSwap(std::string in, EventParticipant* par1, EventParticipant*
     }
 
     return false;
-};
+}
 
-/* change array order via bubble sort */
+// change array order via bubble sort
 void Utils::sort(int numParticipants, EventParticipant**& participants, std::string sortType) {
     bool loop = true;
     while (loop) {
@@ -50,9 +50,9 @@ void Utils::sort(int numParticipants, EventParticipant**& participants, std::str
             }
         }
     }
-};
+}
 
-/* set place and points values based on current order */
+// set place and points values based on current order
 void Utils::awardPlacesPoints(int numParticipants, EventParticipant**& participants, std::string sortType) {
     for (int i = 1, j = 10; i < numParticipants + 1; ++i, j -= 2) {    // points (j) follow this arithmetic rule (except 6th)
         auto participant = *(participants + i - 1);
@@ -70,10 +70,10 @@ void Utils::awardPlacesPoints(int numParticipants, EventParticipant**& participa
     }
 }
 
-/* return user input from prompt */
+// return user input from prompt
 std::string Utils::getStrIn(std::string prompt) {
     std::cout << prompt;
     std::string temp;
     std::cin >> temp;
     return temp;
-};
+}
