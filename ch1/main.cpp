@@ -6,7 +6,7 @@
 #include "TrackParticipant.h"
 #include "Utils.h"
 
-/* input participants & return array of EventParticipant pointers */
+// input participants & return array of EventParticipant pointers
 EventParticipant** inputEvents(bool isTrack, int& it) {
     // initialize array of base class pointers to avoid multiple arrays
     static EventParticipant* participants[100];
@@ -33,7 +33,7 @@ EventParticipant** inputEvents(bool isTrack, int& it) {
         }
     }
     return participants;
-};
+}
 
 void displayOutput(int numParticipants, EventParticipant** participants, bool isTrack) {
     std::cout << "\n" << std::left << std::setw(24) << "NAME" << std::setw(24) << "TEAM" << std::setw(12) << "GENDER" << std::setw(12) << "AGE"; 
@@ -46,9 +46,9 @@ void displayOutput(int numParticipants, EventParticipant** participants, bool is
         std::cout << std::left << std::setw(24) << el->getName() << std::setw(24) << el->getTeam() << std::setw(12) << el->getSex()
         << std::setw(12) << el->getAge() << std::setw(12) << el->getResult() << std::setw(12) << el->getPlace() << std::setw(12) << el->getPoints() << "\n";
     }
-};
+}
 
-/* test all functions for a 'track' event */
+// test all functions for a 'track' event
 void driver() {
     const int NUM_PARTICIPANTS = 6;
     EventParticipant* participants[NUM_PARTICIPANTS];
@@ -97,9 +97,9 @@ void driver() {
     Utils::sort(NUM_PARTICIPANTS, participant, "t");
     Utils::awardPlacesPoints(NUM_PARTICIPANTS, participant, "t");
     displayOutput(NUM_PARTICIPANTS, participants, true);
-};
+}
 
-/* get inputs and show output */
+// get inputs and show output
 void userInterface() {
     // input event type
     std::string input;
@@ -126,11 +126,9 @@ void userInterface() {
     Utils::sort(numParticipants, participants, sortType);
     Utils::awardPlacesPoints(numParticipants, participants, sortType);
     displayOutput(numParticipants, participants, isTrack);
-};
+}
 
 int main() {
     userInterface();
     std::cout << std::endl;
-
-    return 0;
 }
