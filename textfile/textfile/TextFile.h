@@ -58,8 +58,8 @@ private:
 	void insert_word(std::string& word1, std::string& word2);
 
 public:
-	TextFile() {};
-	TextFile(const std::string& in) : in(in) {};
+	TextFile() {}
+	TextFile(const std::string& in) : in(in) {}
 
 	void set_input(const std::string& in, const std::string& person);
 	void parse_into_tree(bool phrases = false);

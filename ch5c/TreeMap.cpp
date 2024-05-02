@@ -5,7 +5,7 @@ TreeMap::TreeMap(const std::string& filePath) {
     this->filePath = filePath;
     set_treemap_size();
     populate_treemap();
-};
+}
 
 
 void TreeMap::set_intmap(int& id) {
@@ -24,12 +24,12 @@ void TreeMap::set_intmap(int& id) {
             }
         }
     }
-};
+}
 
 
 void TreeMap::print_treemap() {
     print_matrix<char>(treeMap, mapRows, mapCols); 
-};
+}
 
 void TreeMap::print_treemap_parsed() {
     for (int i = 0; i < mapRows; ++i) {
@@ -40,11 +40,11 @@ void TreeMap::print_treemap_parsed() {
         std::cout << "\n";
     }
     std::cout << std::endl;
-};
+}
 
 void TreeMap::print_intmap() {
     print_matrix<int>(intMap, mapRows, mapCols);
-};
+}
 
 void TreeMap::output_treemap(const std::string& outPath) {
     std::ofstream fout(outPath);
@@ -54,7 +54,7 @@ void TreeMap::output_treemap(const std::string& outPath) {
         }
         fout << "\n";
     }
-};
+}
 
 
 // change small burn stands to grass
@@ -87,7 +87,7 @@ void TreeMap::remove_shadows() {
             }
         }
     }
-};
+}
 
 // replace burned tree stands with burn chars
 // condition: there is no grass in the burn island
@@ -123,7 +123,7 @@ void TreeMap::burn(int numStands) {
 
     // replace burned stand cells with the new char
     populate_treemap(-1);
-};
+}
 
 
 // dynamically allocate a 2D array
@@ -134,7 +134,7 @@ T** TreeMap::get_array(int rows, int cols) {
         arr[i] = new T[cols];
     }
     return arr;
-};
+}
 
 // allocate and populate all elements with a value
 template <typename T> 
@@ -150,7 +150,7 @@ T** TreeMap::get_array(int rows, int cols, T defaultVal) {
         }
     }
     return arr;
-};
+}
 
 void TreeMap::set_treemap_size() {
     std::fstream fin(filePath);
@@ -170,7 +170,7 @@ void TreeMap::set_treemap_size() {
     mapCols = std::stoi(arrSizeInfo.substr(last + 1)) + 2;
 
     treeMap = get_array<char>(mapRows, mapCols);
-};
+}
 
 void TreeMap::populate_treemap() {
     // add a grassland border
@@ -199,7 +199,7 @@ void TreeMap::populate_treemap() {
             treeMap[i][j] = line[k];
         }
     }
-};
+}
 
 // update the treemap to reflect the intmap
 void TreeMap::populate_treemap(int burnNum) {
@@ -209,7 +209,7 @@ void TreeMap::populate_treemap(int burnNum) {
             if (intMap[i][j] == burnNum) treeMap[i][j] = 'b';
         }
     }
-};
+}
 
 
 template <typename T> 
@@ -221,7 +221,7 @@ void TreeMap::print_matrix(T**& arr, int rows, int cols) {
         std::cout << "\n";
     }
     std::cout << std::endl;
-};
+}
 
 
 // give all cells within a stand a predetermined id in a matrix of ints 
@@ -243,7 +243,7 @@ int TreeMap::mark_stand(char**& arrTracker, int**& map, int row, int col, int id
     count = mark_stand(arrTracker, map, row - 1, col, id, count, tree);
 
     return count;
-};
+}
 
 
 // remove the grassland border
@@ -258,7 +258,7 @@ void TreeMap::trim_intmap() {
         }
     }
     intMap = map;
-};
+}
 
 // peek the surrounding cells
 void TreeMap::set_surrounding(int*& surrounding, int row, int col) {
@@ -269,7 +269,7 @@ void TreeMap::set_surrounding(int*& surrounding, int row, int col) {
     surrounding[1] = row - 1 < 0 ? current : intMap[row-1][col]; 
     surrounding[2] = col + 1 >= mapCols ? current : intMap[row][col+1]; 
     surrounding[3] = col - 1 < 0 ? current : intMap[row][col-1];
-};
+}
 
 // determine if a cell in a stand violates the burn conditions
 void TreeMap::set_burned(bool*& isBurned, int*& surrounding, int id) {
@@ -281,4 +281,4 @@ void TreeMap::set_burned(bool*& isBurned, int*& surrounding, int id) {
             return;
         }
     }
-};
+}

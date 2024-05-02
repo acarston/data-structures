@@ -8,18 +8,18 @@ template <typename T>
 SLList<T>::SLList() {
     head = nullptr;
     tail = nullptr;
-};
+}
 
 
-/* return the length of the list */
+// return the length of the list
 template <typename T>
 unsigned int SLList<T>::length() {
     int i = 0;
     for (SLLNode<T>* node = head; node != nullptr; node = node->next, ++i);
     return i;
-};
+}
 
-/* print each list element */
+// print each list element
 template <typename T>
 void SLList<T>::out() {
     SLLNode<T> *current = head;
@@ -28,9 +28,9 @@ void SLList<T>::out() {
         current = current->next;
     }
     std::cout << "\n";
-};
+}
 
-/* print each list element in reverse */
+// print each list element in reverse
 template <typename T>
 void SLList<T>::outReversed() {
     Stack<T> stack;
@@ -45,9 +45,9 @@ void SLList<T>::outReversed() {
         stack.pop();
     }
     std::cout << "\n";
-};
+}
 
-/* find the index of a node's info */
+// find the index of a node's info
 template <typename T>
 int SLList<T>::findFirst(T item) {
     int i = 0;
@@ -55,10 +55,10 @@ int SLList<T>::findFirst(T item) {
         if (node->info == item) return i;
     }
     return -1; // not found gives negative index
-};
+}
 
 
-/* give the node at an index */
+// give the node at an index
 template <typename T>
 SLLNode<T>* SLList<T>::iterate(int index, bool headIfNeg) {
     SLLNode<T>* node = head;
@@ -75,9 +75,9 @@ SLLNode<T>* SLList<T>::iterate(int index, bool headIfNeg) {
         if (node == nullptr) return nullptr; // index out of range gives null
     }
     return node;
-};
+}
 
-/* return a reference to a node's info */
+// return a reference to a node's info
 template <typename T>
 T& SLList<T>::at(int index) {
     return iterate(index)->info;
@@ -97,7 +97,7 @@ void SLList<T>::pushBack(T info) {
         tail->next = new SLLNode<T>(info); // otherwise.
         tail = tail->next;
     }
-};
+}
 
 template <typename T>
 void SLList<T>::pushForward(T info) {
@@ -114,9 +114,9 @@ void SLList<T>::pushForward(T info) {
         head = newHead;
         newHead = nullptr;
     }
-};
+}
 
-/* remove the node at index */
+// remove the node at index
 template <typename T>
 void SLList<T>::removeAt(int index) {
     SLLNode<T>* toRemove = iterate(index, false);
@@ -138,17 +138,17 @@ void SLList<T>::removeAt(int index) {
     }
 
     if (head == tail) tail = nullptr; // list is two elements
-};
+}
 
-/* remove the node containing info */
+// remove the node containing info
 template <typename T>
 void SLList<T>::removeFirst(T info) {
     int index = findFirst(info);
     if (index == -1) return; // do nothing if node DNE
     removeAt(index);
-};
+}
 
-/* allocate a new node and insert after index */
+// allocate a new node and insert after index
 template <typename T>
 void SLList<T>::insert(T info, int index) {
     SLLNode<T>* toInsert = new SLLNode<T>(info);
@@ -168,10 +168,10 @@ void SLList<T>::insert(T info, int index) {
     }
 
     toInsert = nullptr;
-};
+}
 
 
-/* insert info as a new node while keeping ascending order */
+// insert info as a new node while keeping ascending order
 template <typename T>
 void SLList<T>::orderInsert(T info) {
     int length = this->length();
@@ -191,4 +191,4 @@ void SLList<T>::orderInsert(T info) {
 
     int index = length - 1;
     insert(info, index); // i.e. append if largest
-};
+}

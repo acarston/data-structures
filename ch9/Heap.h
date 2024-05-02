@@ -30,7 +30,7 @@ class Heap {
         void heapify() { for (int i = this->size / 2 - 1; i >= 0; --i) move_down(i, this->size); }
 
     public:
-        Heap(T* heap, const int size, const bool ascending = true) : heap(heap), size(size), ascending(ascending) {};
+        Heap(T* heap, const int size, const bool ascending = true) : heap(heap), size(size), ascending(ascending) {}
 
         void sort() {
             heapify();

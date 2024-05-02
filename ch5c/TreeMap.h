@@ -23,13 +23,14 @@ class TreeMap {
 
         void remove_shadows();
         void burn(int numStands);
+
     private:
         std::string filePath;
         int mapRows, mapCols;
         char** treeMap = nullptr;
         int** intMap = nullptr;
 
-        char**& get_treemap() { return treeMap; };
+        char**& get_treemap() { return treeMap; }
         
         template <typename T> T** get_array(int rows, int cols);
         template <typename T> T** get_array(int rows, int cols, T defaultVal);

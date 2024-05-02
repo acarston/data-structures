@@ -27,23 +27,23 @@ private:
 			return true;
 		}
 		return false;
-	};
+	}
 
 	int get_height(Node<T>* node) {
 		if (node == nullptr) return 0;
 		else return node->height;
-	};
+	}
 
 	// calculate a subtree height
 	// defined as the largest height of its subtrees plus 1
 	void set_height(Node<T>* node) {
 		node->height = 1 + (std::max)(get_height(node->right), get_height(node->left));
-	};
+	}
 
 	// calculate the balance factor based on node subtree heights
 	int get_balfactor(Node<T>* node) {
 		return get_height(node->right) - get_height(node->left);
-	};
+	}
 
 	Node<T>* rotate_left(Node<T>* p, Node<T>* ch) {
 		p->right = ch->left;
@@ -53,7 +53,7 @@ private:
 		set_height(ch);
 
 		return ch;
-	};
+	}
 
 	Node<T>* rotate_right(Node<T>* p, Node<T>* ch) {
 		p->left = ch->right;
@@ -63,17 +63,17 @@ private:
 		set_height(ch);
 
 		return ch;
-	};
+	}
 
 	Node<T>* rotate_leftright(Node<T>* p, Node<T>* ch) {
 		p->left = rotate_left(ch, ch->right);
 		return rotate_right(p, p->left);
-	};
+	}
 
 	Node<T>* rotate_rightleft(Node<T>* p, Node<T>* ch) {
 		p->right = rotate_right(ch, ch->left);
 		return rotate_left(p, p->right);
-	};
+	}
 
 	// perform rotations along the insert path
 	void balance(std::stack<Node<T>*>& path) {
@@ -121,11 +121,11 @@ private:
 			path.pop();
 			if (path.empty()) break;
 		}
-	};
+	}
 
 public:
-	BSTree() {};
-	BSTree(T rootVal) { root = new Node<T>(rootVal); };
+	BSTree() {}
+	BSTree(T rootVal) { root = new Node<T>(rootVal); }
 
 	// make an insertion with AVL self-balancing
 	// implementation is original; everything is managed by a stack
@@ -163,7 +163,7 @@ public:
 		}
 
 		balance(path);
-	};
+	}
 
 	// insert with custom comparison values
 	template <typename U>
@@ -198,7 +198,7 @@ public:
 		}
 
 		balance(path);
-	};
+	}
 
 	// insert with custom comparison function
 	// requires duplicate handling
@@ -233,7 +233,7 @@ public:
 		}
 
 		balance(path);
-	};
+	}
 
 	// Morris inorder traversal algorithm. adapted from 
 	// https://takeuforward.org/data-structure/morris-inorder-traversal-of-a-binary-tree/
@@ -268,7 +268,7 @@ public:
 				}
 			}
 		}
-	};
+	}
 
 	// traverse and visit with an output file
 	void traverse_inorder(void (*visit)(T& info, std::ofstream& f), const std::string& filePath) {
@@ -297,7 +297,7 @@ public:
 				}
 			}
 		}
-	};
+	}
 };
 
 #endif

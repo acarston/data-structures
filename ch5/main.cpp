@@ -10,7 +10,7 @@ void check_args(int argc) {
         std::cout << "too many arguments" << std::endl;
         exit(0);
     }
-};
+}
 
 void user_interact(int argc, char* argv[]) {
     TreeMap treeMap(argv[1]);
@@ -32,9 +32,9 @@ void user_interact(int argc, char* argv[]) {
         std::cout << "outputting to file...";
         treeMap.output_intmap(argv[2]);
     }
-};
+}
 
 int main(int argc, char* argv[]) {
     check_args(argc);
     user_interact(argc, argv);
-};
+}

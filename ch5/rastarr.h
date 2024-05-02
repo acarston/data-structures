@@ -11,7 +11,7 @@ namespace {
             arr[i] = new T[cols];
         }
         return arr;
-    };
+    }
 
     // allocate and populate all elements with a value
     template <typename T> 
@@ -27,7 +27,7 @@ namespace {
             }
         }
         return arr;
-    };
+    }
 
     // give all cells within a stand a predetermined id in a matrix of ints 
     // modifies the original array of chars due to pass by reference
@@ -44,8 +44,8 @@ namespace {
         mark_stand(arrTracker, map, row + 1, col, id);
         mark_stand(arrTracker, map, row, col + 1, id);
         mark_stand(arrTracker, map, row - 1, col, id);
-    };
-};
+    }
+}
 
 namespace rastarr {
     template <typename T> 
@@ -57,7 +57,7 @@ namespace rastarr {
             std::cout << "\n";
         }
         std::cout << std::endl;
-    };
+    }
 
     template <typename T>
     void print_matrix_parsed(T**& arr, int rows, int cols, T toParse) {
@@ -69,7 +69,7 @@ namespace rastarr {
             std::cout << "\n";
         }
         std::cout << std::endl;
-    };
+    }
 
     // get an array of the appropriate size based on a file
     char** get_empty(const std::string& filePath, int& rows, int& cols) {
@@ -90,7 +90,7 @@ namespace rastarr {
         cols = std::stoi(arrSizeInfo.substr(last + 1)) + 2;
 
         return get_array<char>(rows, cols);
-    };
+    }
 
     void populate(char**& arr, const std::string& filePath, int rows, int cols) {
         // add a grassland border
@@ -118,7 +118,7 @@ namespace rastarr {
                 arr[i][j] = line[k];
             }
         }
-    };
+    }
 
     int** get_map(char**& arr, int rows, int cols) {
         int** map = get_array<int>(rows, cols, 0);
@@ -134,7 +134,7 @@ namespace rastarr {
         }
 
         return map;
-    };
+    }
 
     template <typename T>
     T** trim(T**& arr, int& rows, int& cols) {
@@ -149,7 +149,7 @@ namespace rastarr {
         }
 
         return map;
-    };
+    }
 
     void output_map(int**& map, int rows, int cols, const std::string& filePath) {
         std::ofstream fout(filePath);
@@ -159,5 +159,5 @@ namespace rastarr {
             }
             fout << "\n";
         }
-    };
-};
+    }
+}

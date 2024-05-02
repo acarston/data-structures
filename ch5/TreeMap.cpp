@@ -5,18 +5,18 @@ TreeMap::TreeMap(const std::string& filePath) {
     this->filePath = filePath;
     set_treemap_size();
     populate_treemap();
-};
+}
 
 // explicitly create the numbered stand map
 // call only when the tree map is no longer in use
 void TreeMap::build_stands() {
     set_intmap();
     trim_intmap();
-};
+}
 
 void TreeMap::print_treemap() {
     print_matrix<char>(treeMap, mapRows, mapCols); 
-};
+}
 
 void TreeMap::print_treemap_parsed() {
     for (int i = 0; i < mapRows; ++i) {
@@ -27,11 +27,11 @@ void TreeMap::print_treemap_parsed() {
         std::cout << "\n";
     }
     std::cout << std::endl;
-};
+}
 
 void TreeMap::print_intmap() {
     print_matrix<int>(intMap, mapRows, mapCols);
-};
+}
 
 void TreeMap::output_intmap(const std::string& outPath) {
     std::ofstream fout(outPath);
@@ -41,7 +41,7 @@ void TreeMap::output_intmap(const std::string& outPath) {
         }
         fout << "\n";
     }
-};
+}
 
 
 // dynamically allocate a 2D array
@@ -52,7 +52,7 @@ T** TreeMap::get_array(int rows, int cols) {
         arr[i] = new T[cols];
     }
     return arr;
-};
+}
 
 // allocate and populate all elements with a value
 template <typename T> 
@@ -68,7 +68,7 @@ T** TreeMap::get_array(int rows, int cols, T defaultVal) {
         }
     }
     return arr;
-};
+}
 
 void TreeMap::set_treemap_size() {
     std::fstream fin(filePath);
@@ -88,7 +88,7 @@ void TreeMap::set_treemap_size() {
     mapCols = std::stoi(arrSizeInfo.substr(last + 1)) + 2;
 
     treeMap = get_array<char>(mapRows, mapCols);
-};
+}
 
 void TreeMap::populate_treemap() {
     // add a grassland border
@@ -117,7 +117,7 @@ void TreeMap::populate_treemap() {
             treeMap[i][j] = line[k];
         }
     }
-};
+}
 
 
 template <typename T> 
@@ -129,7 +129,7 @@ void TreeMap::print_matrix(T**& arr, int rows, int cols) {
         std::cout << "\n";
     }
     std::cout << std::endl;
-};
+}
 
 
 // give all cells within a stand a predetermined id in a matrix of ints 
@@ -147,7 +147,7 @@ void TreeMap::mark_stand(int row, int col, int& id) {
     mark_stand(row + 1, col, id);
     mark_stand(row, col + 1, id);
     mark_stand(row - 1, col, id);
-};
+}
 
 void TreeMap::set_intmap() {
     intMap = get_array<int>(mapRows, mapCols, 0);
@@ -162,7 +162,7 @@ void TreeMap::set_intmap() {
             }
         }
     }
-};
+}
 
 // remove the grassland border
 void TreeMap::trim_intmap() {
@@ -176,4 +176,4 @@ void TreeMap::trim_intmap() {
         }
     }
     intMap = map;
-};
+}

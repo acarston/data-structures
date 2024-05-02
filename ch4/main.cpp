@@ -51,7 +51,7 @@ void delimiter_matching(std::unordered_map<std::string, std::string>& delimiters
         delimerr::where(filePath, lineMarker, lineNumMarker);
         delimerr::what(delimiters[stack.top()], false);
     }
-};
+}
 
 int main(int argc, char* argv[]) {
     delimerr::check_arguments(argc, 2);
@@ -62,5 +62,4 @@ int main(int argc, char* argv[]) {
     delimiter_matching(delimiters, argv[1]);
 
     std::cout << std::endl;
-    return 0;
 }

@@ -3,11 +3,11 @@
 
 #include "SLLNode.h"
 
-/* many of the methods here can technically be private.
-however, this class is a general SLL implementation,
-so it is appropriate for the object to have the 
-following functionality. i'm opting for 
-lowerCamelCase to indicate generality */
+// many of the methods here can technically be private.
+// however, this class is a general SLL implementation,
+// so it is appropriate for the object to have the 
+// following functionality. i'm opting for 
+// lowerCamelCase to indicate generality
 
 template <typename T>
 class SLList {

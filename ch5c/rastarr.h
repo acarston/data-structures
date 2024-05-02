@@ -13,7 +13,7 @@ namespace {
             arr[i] = new T[cols];
         }
         return arr;
-    };
+    }
 
     // allocate and populate all elements with a value
     template <typename T> 
@@ -29,7 +29,7 @@ namespace {
             }
         }
         return arr;
-    };
+    }
 
     // give all cells within a stand a predetermined id in a matrix of ints 
     // modifies the original array of chars due to pass by reference
@@ -49,7 +49,7 @@ namespace {
         count =       mark_stand(arrTracker, map, row - 1, col, id, count, tree);
 
         return count;
-    };
+    }
 
     void set_surrounding(int**& map, int rows, int cols, int*& surrounding, int row, int col) {
         int current = map[row][col];
@@ -58,7 +58,7 @@ namespace {
         surrounding[1] = row - 1 < 0 ? current : map[row-1][col]; 
         surrounding[2] = col + 1 >= cols ? current : map[row][col+1]; 
         surrounding[3] = col - 1 < 0 ? current : map[row][col-1];
-    };
+    }
 
     void set_burned(int**& map, bool*& isBurned, int*& surrounding, int id) {
         for (int i = 0; i < 4; ++i) {
@@ -67,8 +67,8 @@ namespace {
                 return;
             }
         }
-    };
-};
+    }
+}
 
 namespace rastarr {
     template <typename T> 
@@ -80,7 +80,7 @@ namespace rastarr {
             std::cout << "\n";
         }
         std::cout << std::endl;
-    };
+    }
 
     template <typename T>
     void print_matrix_parsed(T**& arr, int rows, int cols, T toParse) {
@@ -92,7 +92,7 @@ namespace rastarr {
             std::cout << "\n";
         }
         std::cout << std::endl;
-    };
+    }
 
     // get an array of the appropriate size based on a file
     char** get_empty(const std::string& filePath, int& rows, int& cols) {
@@ -113,7 +113,7 @@ namespace rastarr {
         cols = std::stoi(arrSizeInfo.substr(last + 1)) + 2;
 
         return get_array<char>(rows, cols);
-    };
+    }
 
     void populate(char**& arr, const std::string& filePath, int rows, int cols) {
         // add a grassland border
@@ -141,7 +141,7 @@ namespace rastarr {
                 arr[i][j] = line[k];
             }
         }
-    };
+    }
 
     template <typename T>
     T** trim(T**& arr, int& rows, int& cols) {
@@ -156,7 +156,7 @@ namespace rastarr {
         }
 
         return map;
-    };
+    }
 
     int** get_map(char**& arr, int rows, int cols, int& id) {
         int** map = get_array<int>(rows, cols, 0);
@@ -175,7 +175,7 @@ namespace rastarr {
         }
 
         return map;
-    };
+    }
 
     char** get_map(int**& arr, int rows, int cols) {
         char** map = get_array<char>(rows, cols, 'g');
@@ -186,7 +186,7 @@ namespace rastarr {
             }
         }
         return map;
-    };
+    }
 
     void burn(int**& map, int rows, int cols, int numStands) {
         // dynamic allocation because only the pointer is necessary
@@ -208,7 +208,7 @@ namespace rastarr {
                 if (isBurned[id]) id = -1;
             }
         }
-    };
+    }
 
     void remove_shadows(char**& arr, char**& arrTracker, int rows, int cols) {
         int** map = get_array<int>(rows, cols, 0);
@@ -231,7 +231,7 @@ namespace rastarr {
                 }
             }
         }
-    };
+    }
 
     template <typename T>
     void output_map(T**& map, int rows, int cols, const std::string& filePath) {
@@ -242,5 +242,5 @@ namespace rastarr {
             }
             fout << "\n";
         }
-    };
-};
+    }
+}

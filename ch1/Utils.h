@@ -16,5 +16,4 @@ class Utils {
         static bool shouldSwap(std::string in, EventParticipant* par1, EventParticipant* par2);
 };
 
-//#include "Utils.cpp"
 #endif

@@ -11,7 +11,7 @@ namespace iohelpers {
         T temp;
         std::cin >> temp;
         return temp;
-    };
+    }
 
     std::string get_line(const std::string& prompt) {
         std::cout << prompt;
@@ -29,7 +29,7 @@ namespace iohelpers {
             std::cout << "FATAL: too many arguments";
             exit(-1);
         }
-    };
+    }
 };
 
 #endif

@@ -12,5 +12,4 @@ class FieldParticipant: public EventParticipant {
         std::string distance;
 };
 
-//#include "FieldParticipant.cpp"
 #endif

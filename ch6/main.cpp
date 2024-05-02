@@ -12,7 +12,7 @@ void user_interact(const int argc,  const char* argv[], TextFile& f) {
 		std::cout << "outputting to file..." << std::endl;
 		f.print_words(argv[2]);
 	}
-};
+}
 
 int main(int argc, const char* argv[]) {
 	iohelpers::check_args(argc, 2, 3);
@@ -20,4 +20,4 @@ int main(int argc, const char* argv[]) {
 	TextFile f(argv[1]);
 	f.parse_into_tree();
 	user_interact(argc, argv, f);
-};
+}

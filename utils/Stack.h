@@ -22,21 +22,21 @@ class Stack {
             else {
                 head = new SLLNode<T>(info, head);
             }
-        };
+        }
 
         void pop() {
             SLLNode<T>* temp = head->next;
             delete head; 
             head = temp;
-        };
+        }
 
         T top() {
             return head->info;
-        };
+        }
 
         bool empty() {
             return head == nullptr;
-        };
+        }
 
     private:
         SLLNode<T>* head = nullptr;

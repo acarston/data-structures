@@ -1,16 +1,15 @@
 #include <iostream>
 
-//#include "../utils/SLList.h"
 #include "SLList.h"
 #include "Flight.h"
 
 void ExitMessage() {
     std::cout << "terminating program..." << std::endl;
-};
+}
 
 void InputError() {
     std::cout << "invalid input!\n";
-};
+}
 
 template <typename T>
 T GetInput(const std::string& prompt) {
@@ -18,7 +17,7 @@ T GetInput(const std::string& prompt) {
     T temp;
     std::cin >> temp;
     return temp;
-};
+}
 
 void PrintAll(SLList<Flight>& list) {
     for (int i = 0; i < list.length(); ++i) {
@@ -26,7 +25,7 @@ void PrintAll(SLList<Flight>& list) {
         std::cout << "flight number " << flight.GetId() << ":\n";
         flight.PrintPassengers();
     }
-};
+}
 
 int GetOrCreateFlightIndex(SLList<Flight>& list, int id) { 
     // give the list index of flight with flight number 'id'
@@ -41,7 +40,7 @@ int GetOrCreateFlightIndex(SLList<Flight>& list, int id) {
     Flight flight(id);
     list.pushBack(flight);
     return GetOrCreateFlightIndex(list, id);
-};
+}
 
 void DisplaceLoki (SLList<Flight>& list) {
     // define a reference to flight 2515
@@ -70,7 +69,7 @@ void DisplaceLoki (SLList<Flight>& list) {
 
     std::cout << "\nreprinting all manifests...\n\n";
     PrintAll(list);
-};
+}
 
 void Driver() { 
     std::string names[] = {"Hamilton Dale", "Hamilton Leslie", "Hamilton Jonathan", "Hamilton Nicholas",
@@ -97,7 +96,7 @@ void Driver() {
     PrintAll(flights);
 
     DisplaceLoki(flights);
-};
+}
 
 void AddManyPassengers (Flight& flight) {
     std::string in;
@@ -106,9 +105,9 @@ void AddManyPassengers (Flight& flight) {
         if (in == "0") return;
         else flight.AddPassenger(in);
     }
-};
+}
 
-/* manipulate a flight according to user input */
+// manipulate a flight according to user input
 void UserReservation(SLList<Flight>& list) {
     int flightNum = GetInput<int>("enter a flight number: ");
     
@@ -154,7 +153,7 @@ void UserReservation(SLList<Flight>& list) {
                 break;
         }
     }
-};
+}
 
 void UserInteract(SLList<Flight>& list) {
     while (true) {
@@ -180,12 +179,11 @@ void UserInteract(SLList<Flight>& list) {
                 break;
         }
     }
-};
+}
 
 int main() {
     SLList<Flight> list;
     UserInteract(list);
 
     ExitMessage();
-    return 0;
-};
+}

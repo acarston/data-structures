@@ -10,7 +10,7 @@ void check_args(int argc) {
         std::cout << "too many arguments" << std::endl;
         exit(0);
     }
-};
+}
 
 void user_interact(char**& arr, int rows, int cols, int argc) {
     char in = iohelpers::get_input<char>("enable verbose outputs? (not recommended for large files) [y/n]: ");
@@ -23,7 +23,7 @@ void user_interact(char**& arr, int rows, int cols, int argc) {
 
     if (argc == 2) std::cout << "output matrix:\n";
     else std::cout << "outputting to file...";
-};
+}
 
 int main(int argc, char* argv[]) {
     check_args(argc);
@@ -49,4 +49,4 @@ int main(int argc, char* argv[]) {
 
     if (argc == 2) rastarr::print_matrix<char>(newMap, rows, cols);
     else rastarr::output_map<char>(newMap, rows, cols, argv[2]);
-};
+}

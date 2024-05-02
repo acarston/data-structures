@@ -11,10 +11,10 @@ class SLLNode {
         SLLNode(T info, SLLNode* next = nullptr) {
             this->info = info;
             this->next = next;
-        };
+        }
         
         // return a reference to info
-        T& getInfo() { return this->info; };
+        T& getInfo() { return this->info; }
     private:
         T info;
         SLLNode* next = nullptr;

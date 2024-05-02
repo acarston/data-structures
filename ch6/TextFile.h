@@ -38,7 +38,7 @@ class TextFile {
 		void insert_word(std::string& word, int& lineNum);
 
 	public:
-		TextFile(const std::string& filePath): filePath(filePath) {};
+		TextFile(const std::string& filePath): filePath(filePath) {}
 
 		void parse_into_tree();
 		void print_words();
